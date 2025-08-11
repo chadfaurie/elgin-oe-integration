@@ -1,0 +1,183 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\chadf\\source\\repos\\elgin-oe-integration\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{12345678-1234-5678-9ABC-123456789ABC}|ElginOeIntegration.csproj|c:\\users\\chadf\\source\\repos\\elgin-oe-integration\\services\\datamappingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{12345678-1234-5678-9ABC-123456789ABC}|ElginOeIntegration.csproj|solutionrelative:services\\datamappingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{12345678-1234-5678-9ABC-123456789ABC}|ElginOeIntegration.csproj|c:\\users\\chadf\\source\\repos\\elgin-oe-integration\\models\\xmlschema.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{12345678-1234-5678-9ABC-123456789ABC}|ElginOeIntegration.csproj|solutionrelative:models\\xmlschema.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{12345678-1234-5678-9ABC-123456789ABC}|ElginOeIntegration.csproj|c:\\users\\chadf\\source\\repos\\elgin-oe-integration\\services\\xmlextractorservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{12345678-1234-5678-9ABC-123456789ABC}|ElginOeIntegration.csproj|solutionrelative:services\\xmlextractorservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\chadf\\source\\repos\\elgin-oe-integration\\bin\\Debug\\.downloads\\2025_08_11_F21.xml||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:bin\\Debug\\.downloads\\2025_08_11_F21.xml||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{12345678-1234-5678-9ABC-123456789ABC}|ElginOeIntegration.csproj|c:\\users\\chadf\\source\\repos\\elgin-oe-integration\\utils\\fullintegrationworkflow.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{12345678-1234-5678-9ABC-123456789ABC}|ElginOeIntegration.csproj|solutionrelative:utils\\fullintegrationworkflow.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{12345678-1234-5678-9ABC-123456789ABC}|ElginOeIntegration.csproj|c:\\users\\chadf\\source\\repos\\elgin-oe-integration\\modules\\scraper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{12345678-1234-5678-9ABC-123456789ABC}|ElginOeIntegration.csproj|solutionrelative:modules\\scraper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{12345678-1234-5678-9ABC-123456789ABC}|ElginOeIntegration.csproj|c:\\users\\chadf\\source\\repos\\elgin-oe-integration\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{12345678-1234-5678-9ABC-123456789ABC}|ElginOeIntegration.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{12345678-1234-5678-9ABC-123456789ABC}|ElginOeIntegration.csproj|c:\\users\\chadf\\source\\repos\\elgin-oe-integration\\services\\woolworthsscraperservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{12345678-1234-5678-9ABC-123456789ABC}|ElginOeIntegration.csproj|solutionrelative:services\\woolworthsscraperservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{12345678-1234-5678-9ABC-123456789ABC}|ElginOeIntegration.csproj|c:\\users\\chadf\\source\\repos\\elgin-oe-integration\\modules\\base.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{12345678-1234-5678-9ABC-123456789ABC}|ElginOeIntegration.csproj|solutionrelative:modules\\base.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 171,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "DataMappingService.cs",
+              "DocumentMoniker": "C:\\Users\\chadf\\source\\repos\\elgin-oe-integration\\Services\\DataMappingService.cs",
+              "RelativeDocumentMoniker": "Services\\DataMappingService.cs",
+              "ToolTip": "C:\\Users\\chadf\\source\\repos\\elgin-oe-integration\\Services\\DataMappingService.cs",
+              "RelativeToolTip": "Services\\DataMappingService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAA7AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-11T15:21:26.25Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "XmlSchema.cs",
+              "DocumentMoniker": "C:\\Users\\chadf\\source\\repos\\elgin-oe-integration\\Models\\XmlSchema.cs",
+              "RelativeDocumentMoniker": "Models\\XmlSchema.cs",
+              "ToolTip": "C:\\Users\\chadf\\source\\repos\\elgin-oe-integration\\Models\\XmlSchema.cs",
+              "RelativeToolTip": "Models\\XmlSchema.cs",
+              "ViewState": "AgIAABAAAAAAMjMzM7MpwEMAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-11T15:08:16.054Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "FullIntegrationWorkflow.cs",
+              "DocumentMoniker": "C:\\Users\\chadf\\source\\repos\\elgin-oe-integration\\Utils\\FullIntegrationWorkflow.cs",
+              "RelativeDocumentMoniker": "Utils\\FullIntegrationWorkflow.cs",
+              "ToolTip": "C:\\Users\\chadf\\source\\repos\\elgin-oe-integration\\Utils\\FullIntegrationWorkflow.cs",
+              "RelativeToolTip": "Utils\\FullIntegrationWorkflow.cs",
+              "ViewState": "AgIAAD4AAAAAAAAAAAAAwF4AAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-11T14:41:00.421Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "XmlExtractorService.cs",
+              "DocumentMoniker": "C:\\Users\\chadf\\source\\repos\\elgin-oe-integration\\Services\\XmlExtractorService.cs",
+              "RelativeDocumentMoniker": "Services\\XmlExtractorService.cs",
+              "ToolTip": "C:\\Users\\chadf\\source\\repos\\elgin-oe-integration\\Services\\XmlExtractorService.cs",
+              "RelativeToolTip": "Services\\XmlExtractorService.cs",
+              "ViewState": "AgIAAGAAAACAzMzMzAwnwIcAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-11T15:00:35.847Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Scraper.cs",
+              "DocumentMoniker": "C:\\Users\\chadf\\source\\repos\\elgin-oe-integration\\Modules\\Scraper.cs",
+              "RelativeDocumentMoniker": "Modules\\Scraper.cs",
+              "ToolTip": "C:\\Users\\chadf\\source\\repos\\elgin-oe-integration\\Modules\\Scraper.cs",
+              "RelativeToolTip": "Modules\\Scraper.cs",
+              "ViewState": "AgIAAEgAAAAAAAAAAAAawHYAAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-11T14:49:48.827Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\chadf\\source\\repos\\elgin-oe-integration\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Users\\chadf\\source\\repos\\elgin-oe-integration\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACoAAABIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-11T14:41:41.131Z",
+              "EditorCaption": ""
+            }
+          ]
+        },
+        {
+          "DockedWidth": 171,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "2025_08_11_F21.xml",
+              "DocumentMoniker": "C:\\Users\\chadf\\source\\repos\\elgin-oe-integration\\bin\\Debug\\.downloads\\2025_08_11_F21.xml",
+              "RelativeDocumentMoniker": "bin\\Debug\\.downloads\\2025_08_11_F21.xml",
+              "ToolTip": "C:\\Users\\chadf\\source\\repos\\elgin-oe-integration\\bin\\Debug\\.downloads\\2025_08_11_F21.xml",
+              "RelativeToolTip": "bin\\Debug\\.downloads\\2025_08_11_F21.xml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACUAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003576|",
+              "WhenOpened": "2025-08-11T15:09:22.192Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "WoolworthsScraperService.cs",
+              "DocumentMoniker": "C:\\Users\\chadf\\source\\repos\\elgin-oe-integration\\Services\\WoolworthsScraperService.cs",
+              "RelativeDocumentMoniker": "Services\\WoolworthsScraperService.cs",
+              "ToolTip": "C:\\Users\\chadf\\source\\repos\\elgin-oe-integration\\Services\\WoolworthsScraperService.cs",
+              "RelativeToolTip": "Services\\WoolworthsScraperService.cs",
+              "ViewState": "AgIAAFIAAAAAmpmZmZkpwHYAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-11T15:01:42.554Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "base.cs",
+              "DocumentMoniker": "C:\\Users\\chadf\\source\\repos\\elgin-oe-integration\\Modules\\base.cs",
+              "RelativeDocumentMoniker": "Modules\\base.cs",
+              "ToolTip": "C:\\Users\\chadf\\source\\repos\\elgin-oe-integration\\Modules\\base.cs",
+              "RelativeToolTip": "Modules\\base.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-11T14:58:15.91Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

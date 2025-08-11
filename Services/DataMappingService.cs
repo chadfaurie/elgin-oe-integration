@@ -9,7 +9,7 @@ namespace ElginOeIntegration.Services
     public interface IDataMappingService
     {
         Task<OeImportData> MapPlanDownloadToOeOrdersAsync(PlanDownload planDownload);
-        Task<OeOrderHeader> MapPlanDetailToOrderAsync(IGrouping<string, PlanDetail> groupedDetails);
+        Task<OeOrderHeader> MapPlanDetailToOrderAsync(IGrouping<DateTime, PlanDetail> groupedDetails);
         Task<OeOrderDetail> MapPlanDetailToOrderDetailAsync(PlanDetail planDetail, int lineNumber);
     }
 
@@ -40,8 +40,8 @@ namespace ElginOeIntegration.Services
             {
                 // Group plan details by supplier code to create separate orders per supplier
                 var groupedBySupplier = planDownload.PlanDetail
-                    .Where(p => !string.IsNullOrEmpty(p.SupplierCode))
-                    .GroupBy(p => p.SupplierCode);
+                    .Where(p => !string.IsNullOrEmpty(p.ProductSKU))
+                    .GroupBy(p => p.ProductSKU);
 
                 foreach (var supplierGroup in groupedBySupplier)
                 {
@@ -65,7 +65,7 @@ namespace ElginOeIntegration.Services
             }
         }
 
-        public async Task<OeOrderHeader> MapPlanDetailToOrderAsync(IGrouping<string, PlanDetail> groupedDetails)
+        public async Task<OeOrderHeader> MapPlanDetailToOrderAsync(IGrouping<DateTime, PlanDetail> groupedDetails)
         {
             var firstDetail = groupedDetails.First();
             var deliveryDate = firstDetail.DeliveryDate;

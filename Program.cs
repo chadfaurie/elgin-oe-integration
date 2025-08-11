@@ -16,19 +16,43 @@ namespace ElginOeIntegration
         {
             var container = new Container();
 
+            /*Register Configurations*/
+            var woolworthsConfig = new WoolworthsConfig
+            {
+                // Set properties as needed, e.g.:
+                SiteUrl = "http://caissanet.woolworths.co.za/WebClients/SPort/Login.aspx?ReturnUrl=%2fWebClients%2fSPort%2fSupplierPlansJDAReport.aspx&__CFW_AuthFailed=True",
+                Username = "s54506_010",
+                Password = "Elgin2020f",
+                StoragePath = ".downloads"
+                // SiteName = "Woolworths"
+            };
+            container.RegisterInstance(woolworthsConfig);
+
+            var sage300Config = new Sage300Config
+            {
+                ServerName = "localhost",
+                DatabaseId = "SAMLTD",
+                UserId = "ADMIN",
+                Password = "password",
+                Version = "68A"
+            };
+            container.RegisterInstance(sage300Config);
+
             // Register dependencies
             container.Register<IWoolworthsScraperService, WoolworthsScraperService>();
             container.Register<IXmlExtractorService, XmlExtractorService>();
-            container.Register<ISage300OeService, Sage300OeService>();
             container.Register<IDataMappingService, DataMappingService>();
+            //container.Register<ISage300OeService, Sage300OeService>();
+
+            container.Register<IFullIntegrationWorkflow, FullIntegrationWorkflow>();
 
             // Optionally verify
             container.Verify();
 
             // Resolve and use
-            var service = container.GetInstance<IWoolworthsScraperService>();
+            var service = container.GetInstance<IFullIntegrationWorkflow>();
 
-            service.ScrapeAsync().GetAwaiter().GetResult();
+            service.RunCompleteWorkflowAsync().GetAwaiter().GetResult();
         }
     }
 }

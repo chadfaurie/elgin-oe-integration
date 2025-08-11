@@ -8,10 +8,11 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>ElginOeIntegration</RootNamespace>
     <AssemblyName>ElginOeIntegration</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -43,10 +44,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Modules\base.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Modules\Scraper.cs" />
-    <Compile Include="Services\ExampleScraperService.cs" />
     <Compile Include="Services\WoolworthsScraperService.cs" />
     <Compile Include="Services\XmlExtractorService.cs" />
     <Compile Include="Services\Sage300Service.cs" />
@@ -55,8 +56,6 @@
     <Compile Include="Models\WoolworthsConfig.cs" />
     <Compile Include="Models\XmlSchema.cs" />
     <Compile Include="Models\Sage300Models.cs" />
-    <Compile Include="Utils\ScraperFactory.cs" />
-    <Compile Include="Utils\IntegrationExample.cs" />
     <Compile Include="Utils\FullIntegrationWorkflow.cs" />
     <Compile Include="Exceptions\XmlExceptions.cs" />
   </ItemGroup>
@@ -66,6 +65,9 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="PuppeteerSharp" Version="10.0.0" />
+    <PackageReference Include="SimpleInjector">
+      <Version>5.5.0</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

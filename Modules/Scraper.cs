@@ -1,6 +1,9 @@
-using System;
-using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 using PuppeteerSharp;
+using System;
+using System.ComponentModel;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace ElginOeIntegration.Modules
 {
@@ -9,10 +12,10 @@ namespace ElginOeIntegration.Modules
         public string DownloadPath { get; set; } = "./downloads";
     }
 
-    public abstract class ScraperService
+    public abstract class ScraperService : IntegrationService
     {
         protected readonly int Timeout = 10_000; // Default timeout for operations
-        
+
         private IBrowser _browser;
         private IPage _page;
         private readonly ScraperOptions _options;
@@ -46,11 +49,6 @@ namespace ElginOeIntegration.Modules
             _options = options ?? new ScraperOptions();
         }
 
-        protected void LogDebug(string message)
-        {
-            Console.WriteLine($"[DEBUG] {DateTime.Now:yyyy-MM-dd HH:mm:ss} - {GetType().Name}: {message}");
-        }
-
         protected async Task<IBrowser> StartBrowserAsync()
         {
             // Download Chromium if not already downloaded
@@ -80,31 +78,45 @@ namespace ElginOeIntegration.Modules
             }
         }
 
+        public string getDownloadPath()
+        {
+            var p4 = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), _options.DownloadPath));
+
+            if (!Directory.Exists(p4))
+            {
+                Directory.CreateDirectory(p4);
+            }
+
+            LogDebug($"Download Path set to: {p4}");
+
+            return p4;
+        }
+
         protected async Task<IPage> InitPageAsync(string url)
         {
             if (_page == null)
             {
                 _page = await Browser.NewPageAsync();
-                
+
                 // Set up download behavior
                 await _page.Client.SendAsync("Page.setDownloadBehavior", new
                 {
                     behavior = "allow",
-                    downloadPath = _options.DownloadPath
+                    downloadPath = getDownloadPath(),
                 });
             }
 
             // Navigate the page to a URL
-            await _page.GoToAsync(url, new NavigationOptions 
-            { 
-                WaitUntil = new[] { WaitUntilNavigation.Networkidle2 } 
+            await _page.GoToAsync(url, new NavigationOptions
+            {
+                WaitUntil = new[] { WaitUntilNavigation.Networkidle2 }
             });
 
             // Set screen size
-            await _page.SetViewportAsync(new ViewPortOptions 
-            { 
-                Width = 1080, 
-                Height = 1024 
+            await _page.SetViewportAsync(new ViewPortOptions
+            {
+                Width = 600,
+                Height = 800
             });
 
             LogDebug($"Navigated to {url}");
@@ -147,9 +159,9 @@ namespace ElginOeIntegration.Modules
             else
             {
                 // Clear existing content first
-                await Page.ClickAsync(selector, new ClickOptions { ClickCount = 3 });
+                await Page.ClickAsync(selector, new PuppeteerSharp.Input.ClickOptions());
                 await Page.Keyboard.PressAsync("Backspace");
-                
+
                 // If it's an input, use type
                 await Page.TypeAsync(selector, value);
                 LogDebug($"Typed {value} in input field");

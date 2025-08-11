@@ -7,166 +7,138 @@ using ElginOeIntegration.Models;
 
 namespace ElginOeIntegration.Utils
 {
-    public static class FullIntegrationWorkflow
+    interface IFullIntegrationWorkflow
     {
-        public static async Task RunCompleteWorkflowAsync()
+        Task RunCompleteWorkflowAsync();
+        Task RunTestWorkflowAsync();
+    }
+
+    public class FullIntegrationWorkflow : IntegrationService, IFullIntegrationWorkflow
+    {
+        private readonly IWoolworthsScraperService scraperService;
+        private readonly IXmlExtractorService xmlExtractorService;
+
+        public FullIntegrationWorkflow(IWoolworthsScraperService scraperService, IXmlExtractorService xmlExtractorService )
         {
-            Console.WriteLine("=== Starting Woolworths to Sage300 OE Integration Workflow ===");
-            Console.WriteLine();
+            this.scraperService = scraperService;
+            this.xmlExtractorService = xmlExtractorService;
+            // Constructor can be used for dependency injection if needed
+        }
+
+        public async Task RunCompleteWorkflowAsync()
+        {
+            LogDebug("=== Starting Woolworths to Sage300 OE Integration Workflow ===");
 
             try
             {
-                // Step 1: Initialize services
-                Console.WriteLine("Step 1: Initializing services...");
-                var services = InitializeServices();
-                
-                // Step 2: Scrape data from Woolworths
-                Console.WriteLine("Step 2: Scraping data from Woolworths...");
-                await services.scraperService.ScrapeAsync();
-                
+                // Step 1: Scrape data from Woolworths
+                //LogDebug("Step 1: Scraping data from Woolworths...");
+                //await scraperService.ScrapeAsync();
+
                 // Step 3: Process downloaded XML files
-                Console.WriteLine("Step 3: Processing downloaded XML files...");
-                var planDownload = await ProcessDownloadedXmlFiles(services.xmlExtractor, services.woolworthsConfig.StoragePath);
-                
+                LogDebug("Step 3: Processing downloaded XML files...");
+                var planDownload = await ProcessDownloadedXmlFiles(scraperService.getDownloadPath());
+
                 if (planDownload == null)
                 {
-                    Console.WriteLine("No XML data found to process. Workflow terminated.");
+                    LogDebug("No XML data found to process. Workflow terminated.");
                     return;
                 }
 
-                // Step 4: Map XML data to Sage300 OE orders
-                Console.WriteLine("Step 4: Mapping XML data to Sage300 OE orders...");
-                var oeImportData = await services.dataMapper.MapPlanDownloadToOeOrdersAsync(planDownload);
-                
-                // Step 5: Import orders into Sage300
-                Console.WriteLine("Step 5: Importing orders into Sage300 OE...");
-                var importResult = await services.sage300Service.ImportOrdersAsync(oeImportData);
-                
-                // Step 6: Display results
-                Console.WriteLine("Step 6: Integration Results");
-                DisplayResults(importResult);
-                
-                Console.WriteLine();
-                Console.WriteLine("=== Integration Workflow Completed Successfully ===");
+                //// Step 4: Map XML data to Sage300 OE orders
+                //LogDebug("Step 4: Mapping XML data to Sage300 OE orders...");
+                //var oeImportData = await services.dataMapper.MapPlanDownloadToOeOrdersAsync(planDownload);
+
+                //// Step 5: Import orders into Sage300
+                //LogDebug("Step 5: Importing orders into Sage300 OE...");
+                //var importResult = await services.sage300Service.ImportOrdersAsync(oeImportData);
+
+                //// Step 6: Display results
+                //LogDebug("Step 6: Integration Results");
+                //DisplayResults(importResult);
+
+                LogDebug("=== Integration Workflow Completed Successfully ===");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Integration workflow failed: {ex.Message}");
-                Console.WriteLine($"Stack trace: {ex.StackTrace}");
+                LogDebug($"Integration workflow failed: {ex.Message}");
+                LogDebug($"Stack trace: {ex.StackTrace}");
                 throw;
             }
         }
 
-        private static (
-            WoolworthsScraperService scraperService,
-            XmlExtractorService xmlExtractor,
-            DataMappingService dataMapper,
-            Sage300OeService sage300Service,
-            WoolworthsConfig woolworthsConfig
-        ) InitializeServices()
-        {
-            // Woolworths configuration
-            var woolworthsConfig = new WoolworthsConfig
-            {
-                SiteUrl = Environment.GetEnvironmentVariable("WOOLWORTHS_SITE_URL") ?? "https://example.com",
-                Username = Environment.GetEnvironmentVariable("WOOLWORTHS_USERNAME") ?? "your-username",
-                Password = Environment.GetEnvironmentVariable("WOOLWORTHS_PASSWORD") ?? "your-password",
-                StoragePath = Environment.GetEnvironmentVariable("WOOLWORTHS_STORAGE_PATH") ?? "./downloads"
-            };
-
-            // Sage300 configuration
-            var sage300Config = new Sage300Config
-            {
-                ServerName = Environment.GetEnvironmentVariable("SAGE300_SERVER") ?? "localhost",
-                DatabaseId = Environment.GetEnvironmentVariable("SAGE300_DATABASE") ?? "SAMLTD",
-                UserId = Environment.GetEnvironmentVariable("SAGE300_USER") ?? "ADMIN",
-                Password = Environment.GetEnvironmentVariable("SAGE300_PASSWORD") ?? "password",
-                Version = "68A"
-            };
-
-            // Initialize services
-            var scraperService = new WoolworthsScraperService(woolworthsConfig);
-            var xmlExtractor = new XmlExtractorService();
-            var dataMapper = new DataMappingService();
-            var sage300Service = new Sage300OeService(sage300Config);
-
-            Console.WriteLine("✓ Services initialized successfully");
-            return (scraperService, xmlExtractor, dataMapper, sage300Service, woolworthsConfig);
-        }
-
-        private static async Task<PlanDownload> ProcessDownloadedXmlFiles(XmlExtractorService xmlExtractor, string downloadPath)
+        private async Task<PlanDownload> ProcessDownloadedXmlFiles(string downloadPath)
         {
             try
             {
                 if (!Directory.Exists(downloadPath))
                 {
-                    Console.WriteLine($"Download directory does not exist: {downloadPath}");
+                    LogDebug($"Download directory does not exist: {downloadPath}");
                     return null;
                 }
 
                 var xmlFiles = Directory.GetFiles(downloadPath, "*.xml");
-                
+
                 if (xmlFiles.Length == 0)
                 {
-                    Console.WriteLine("No XML files found in download directory");
+                    LogDebug("No XML files found in download directory");
                     return null;
                 }
 
-                Console.WriteLine($"Found {xmlFiles.Length} XML file(s) to process");
+                LogDebug($"Found {xmlFiles.Length} XML file(s) to process");
 
                 // Process the first/latest XML file
                 var xmlFile = xmlFiles[0];
-                Console.WriteLine($"Processing file: {Path.GetFileName(xmlFile)}");
-                
-                var xmlContent = await File.ReadAllTextAsync(xmlFile);
-                var planDownload = await xmlExtractor.ExtractXmlDataAsync(xmlContent);
+                LogDebug($"Processing file: {Path.GetFileName(xmlFile)}");
 
-                Console.WriteLine($"✓ Successfully extracted {planDownload.PlanDetail.Count} plan details");
+                var xmlContent = File.ReadAllText(xmlFile);
+                var planDownload = await this.xmlExtractorService.ExtractXmlDataAsync(xmlContent);
+
+                LogDebug($"✓ Successfully extracted {planDownload.PlanDetail.Count} plan details");
                 return planDownload;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error processing XML files: {ex.Message}");
+                LogDebug($"Error processing XML files: {ex.Message}");
                 throw;
             }
         }
 
-        private static void DisplayResults(Sage300ImportResult result)
+        private void DisplayResults(Sage300ImportResult result)
         {
-            Console.WriteLine();
-            Console.WriteLine("=== IMPORT RESULTS ===");
-            Console.WriteLine($"Success: {(result.Success ? "✓ YES" : "✗ NO")}");
-            Console.WriteLine($"Message: {result.Message}");
-            Console.WriteLine($"Records Processed: {result.RecordsProcessed}");
-            Console.WriteLine($"Records Successful: {result.RecordsSuccessful}");
-            Console.WriteLine($"Records Failed: {result.RecordsFailed}");
-            Console.WriteLine($"Processed At: {result.ProcessedAt:yyyy-MM-dd HH:mm:ss}");
+            LogDebug("=== IMPORT RESULTS ===");
+            LogDebug($"Success: {(result.Success ? "✓ YES" : "✗ NO")}");
+            LogDebug($"Message: {result.Message}");
+            LogDebug($"Records Processed: {result.RecordsProcessed}");
+            LogDebug($"Records Successful: {result.RecordsSuccessful}");
+            LogDebug($"Records Failed: {result.RecordsFailed}");
+            LogDebug($"Processed At: {result.ProcessedAt:yyyy-MM-dd HH:mm:ss}");
 
             if (result.Errors.Any())
             {
-                Console.WriteLine();
-                Console.WriteLine("ERRORS:");
+
+                LogDebug("ERRORS:");
                 foreach (var error in result.Errors)
                 {
-                    Console.WriteLine($"  • {error}");
+                    LogDebug($"  • {error}");
                 }
             }
 
             if (result.FailedRecords.Any())
             {
-                Console.WriteLine();
-                Console.WriteLine("FAILED RECORDS:");
+
+                LogDebug("FAILED RECORDS:");
                 foreach (var failedRecord in result.FailedRecords)
                 {
-                    Console.WriteLine($"  • {failedRecord}");
+                    LogDebug($"  • {failedRecord}");
                 }
             }
         }
 
-        public static async Task RunTestWorkflowAsync()
+        public async Task RunTestWorkflowAsync()
         {
-            Console.WriteLine("=== Running Test Workflow (Sage300 Connection Test) ===");
-            
+            LogDebug("=== Running Test Workflow (Sage300 Connection Test) ===");
+
             try
             {
                 var sage300Config = new Sage300Config
@@ -179,28 +151,28 @@ namespace ElginOeIntegration.Utils
 
                 var sage300Service = new Sage300OeService(sage300Config);
 
-                Console.WriteLine("Testing Sage300 connection...");
+                LogDebug("Testing Sage300 connection...");
                 var connectionTest = await sage300Service.TestConnectionAsync();
-                
+
                 if (connectionTest)
                 {
-                    Console.WriteLine("✓ Sage300 connection test successful");
-                    
+                    LogDebug("✓ Sage300 connection test successful");
+
                     // Test order number generation
                     await sage300Service.ConnectAsync();
                     var nextOrderNumber = await sage300Service.GetNextOrderNumberAsync();
-                    Console.WriteLine($"✓ Generated order number: {nextOrderNumber}");
-                    
+                    LogDebug($"✓ Generated order number: {nextOrderNumber}");
+
                     await sage300Service.DisconnectAsync();
                 }
                 else
                 {
-                    Console.WriteLine("✗ Sage300 connection test failed");
+                    LogDebug("✗ Sage300 connection test failed");
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Test workflow failed: {ex.Message}");
+                LogDebug($"Test workflow failed: {ex.Message}");
             }
         }
     }

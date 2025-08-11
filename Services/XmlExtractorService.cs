@@ -13,16 +13,11 @@ namespace ElginOeIntegration.Services
     public interface IXmlExtractorService
     {
         Task<PlanDownload> ExtractXmlDataAsync(string xmlString);
-        void ValidateSchema(Schema schema);
+        void ValidateSchema(PlanDownload schema);
     }
 
-    public class XmlExtractorService : IXmlExtractorService
+    public class XmlExtractorService : IntegrationService, IXmlExtractorService
     {
-        protected void LogDebug(string message)
-        {
-            Console.WriteLine($"[DEBUG] {DateTime.Now:yyyy-MM-dd HH:mm:ss} - {GetType().Name}: {message}");
-        }
-
         protected void LogError(string message)
         {
             Console.WriteLine($"[ERROR] {DateTime.Now:yyyy-MM-dd HH:mm:ss} - {GetType().Name}: {message}");
@@ -40,7 +35,7 @@ namespace ElginOeIntegration.Services
                 LogDebug("Starting XML extraction");
 
                 var schema = await Task.Run(() => ParseXmlString(xmlString));
-                
+
                 // Validate the schema
                 ValidateSchema(schema);
 
@@ -55,7 +50,7 @@ namespace ElginOeIntegration.Services
 
                 LogDebug("XML extraction completed successfully");
 
-                return schema.PlanDownload;
+                return schema;
             }
             catch (XmlExtractionError)
             {
@@ -68,21 +63,23 @@ namespace ElginOeIntegration.Services
             }
         }
 
-        private Schema ParseXmlString(string xmlString)
+        private PlanDownload ParseXmlString(string xmlString)
         {
             try
             {
-                var serializer = new XmlSerializer(typeof(Schema));
-                
+                var serializer = new XmlSerializer(typeof(PlanDownload));
+
                 using (var stringReader = new StringReader(xmlString))
                 using (var xmlReader = XmlReader.Create(stringReader))
                 {
-                    if (!serializer.CanDeserialize(xmlReader))
-                    {
-                        throw new XmlExtractionError("XML format is not compatible with expected schema");
-                    }
+                    //serializer.Deserialize()
 
-                    var result = (Schema)serializer.Deserialize(xmlReader);
+                    //if (!serializer.CanDeserialize(xmlReader))
+                    //{
+                    //    throw new XmlExtractionError("XML format is not compatible with expected schema");
+                    //}
+
+                    var result = (PlanDownload)serializer.Deserialize(xmlReader);
                     return result;
                 }
             }
@@ -96,42 +93,45 @@ namespace ElginOeIntegration.Services
             }
         }
 
-        public void ValidateSchema(Schema schema)
+        public void ValidateSchema(PlanDownload schema)
         {
             if (schema == null)
             {
                 throw new XmlExtractionError("Parsed schema is null");
             }
 
-            if (schema.PlanDownload == null)
+            if (schema.PlanDetail == null)
             {
                 throw new XmlExtractionError("PlanDownload element is missing from schema");
             }
 
-            if (schema.PlanDownload.PlanDetail == null)
+            if (schema.PlanDetail == null)
             {
                 throw new XmlExtractionError("PlanDetail collection is missing from schema");
             }
 
             // Validate individual plan details
             var invalidItems = new List<string>();
-            
-            for (int i = 0; i < schema.PlanDownload.PlanDetail.Count; i++)
+
+            for (int i = 0; i < schema.PlanDetail.Count; i++)
             {
-                var item = schema.PlanDownload.PlanDetail[i];
+                var item = schema.PlanDetail[i];
                 var errors = new List<string>();
 
-                if (string.IsNullOrWhiteSpace(item.ProductCode))
-                    {errors.Add("ProductCode is required");}
+                if (string.IsNullOrWhiteSpace(item.ProductSKU))
+                {
+                    errors.Add("ProductSKU is required");
+                }
 
-                if (string.IsNullOrWhiteSpace(item.Description))
-                    {errors.Add("Description is required");}
+                if (string.IsNullOrWhiteSpace(item.Confirmed))
+                {
+                    errors.Add("Confirmed is required");
+                }
 
                 if (item.Quantity < 0)
-                    {errors.Add("Quantity must be non-negative");}
-
-                if (string.IsNullOrWhiteSpace(item.SupplierCode))
-                    {errors.Add("SupplierCode is required");}
+                {
+                    errors.Add("Quantity must be non-negative");
+                }
 
                 if (errors.Any())
                 {
@@ -144,7 +144,7 @@ namespace ElginOeIntegration.Services
                 throw new XmlExtractionError($"Schema validation failed: {string.Join("; ", invalidItems)}");
             }
 
-            LogDebug($"Schema validation passed. Found {schema.PlanDownload.PlanDetail.Count} plan details");
+            LogDebug($"Schema validation passed. Found {schema.PlanDetail.Count} plan details");
         }
     }
 }
