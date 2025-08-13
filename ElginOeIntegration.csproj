@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\OeOrderModels.cs" />
     <Compile Include="Modules\base.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -80,6 +81,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="references\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Services\reference.cs" />
+    <Content Include="Services\reference.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

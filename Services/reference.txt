@@ -1,0 +1,3811 @@
+Sub MainSub()
+'
+' Sage 300 Macro file: C:\Sage\SageERP300\MACROS\MACRO01WW1.AVB
+' Recorded at: Tue Aug  5 08:52:48 2025
+'
+
+On Error GoTo ACCPACErrorHandler
+
+' TODO: To increase efficiency, comment out any unused DB links.
+Dim mDBLinkCmpRW As AccpacCOMAPI.AccpacDBLink
+Set mDBLinkCmpRW = OpenDBLink(DBLINK_COMPANY, DBLINK_FLG_READWRITE)
+
+Dim mDBLinkSysRW As AccpacCOMAPI.AccpacDBLink
+Set mDBLinkSysRW = OpenDBLink(DBLINK_SYSTEM, DBLINK_FLG_READWRITE)
+
+Dim temp As Boolean
+Dim OEORD1header As AccpacCOMAPI.AccpacView
+Dim OEORD1headerFields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0520", OEORD1header
+Set OEORD1headerFields = OEORD1header.Fields
+
+Dim OEORD1detail1 As AccpacCOMAPI.AccpacView
+Dim OEORD1detail1Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0500", OEORD1detail1
+Set OEORD1detail1Fields = OEORD1detail1.Fields
+
+Dim OEORD1detail2 As AccpacCOMAPI.AccpacView
+Dim OEORD1detail2Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0740", OEORD1detail2
+Set OEORD1detail2Fields = OEORD1detail2.Fields
+
+Dim OEORD1detail3 As AccpacCOMAPI.AccpacView
+Dim OEORD1detail3Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0180", OEORD1detail3
+Set OEORD1detail3Fields = OEORD1detail3.Fields
+
+Dim OEORD1detail4 As AccpacCOMAPI.AccpacView
+Dim OEORD1detail4Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0526", OEORD1detail4
+Set OEORD1detail4Fields = OEORD1detail4.Fields
+
+Dim OEORD1detail5 As AccpacCOMAPI.AccpacView
+Dim OEORD1detail5Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0522", OEORD1detail5
+Set OEORD1detail5Fields = OEORD1detail5.Fields
+
+Dim OEORD1detail6 As AccpacCOMAPI.AccpacView
+Dim OEORD1detail6Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0508", OEORD1detail6
+Set OEORD1detail6Fields = OEORD1detail6.Fields
+
+Dim OEORD1detail7 As AccpacCOMAPI.AccpacView
+Dim OEORD1detail7Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0507", OEORD1detail7
+Set OEORD1detail7Fields = OEORD1detail7.Fields
+
+Dim OEORD1detail8 As AccpacCOMAPI.AccpacView
+Dim OEORD1detail8Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0501", OEORD1detail8
+Set OEORD1detail8Fields = OEORD1detail8.Fields
+
+Dim OEORD1detail9 As AccpacCOMAPI.AccpacView
+Dim OEORD1detail9Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0502", OEORD1detail9
+Set OEORD1detail9Fields = OEORD1detail9.Fields
+
+Dim OEORD1detail10 As AccpacCOMAPI.AccpacView
+Dim OEORD1detail10Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0504", OEORD1detail10
+Set OEORD1detail10Fields = OEORD1detail10.Fields
+
+Dim OEORD1detail11 As AccpacCOMAPI.AccpacView
+Dim OEORD1detail11Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0506", OEORD1detail11
+Set OEORD1detail11Fields = OEORD1detail11.Fields
+
+Dim OEORD1detail12 As AccpacCOMAPI.AccpacView
+Dim OEORD1detail12Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0503", OEORD1detail12
+Set OEORD1detail12Fields = OEORD1detail12.Fields
+
+OEORD1header.Compose Array(OEORD1detail1, Nothing, OEORD1detail3, OEORD1detail2, OEORD1detail4, OEORD1detail5)
+
+OEORD1detail1.Compose Array(OEORD1header, OEORD1detail8, OEORD1detail12, OEORD1detail9, OEORD1detail6, OEORD1detail7)
+
+OEORD1detail2.Compose Array(OEORD1header)
+
+OEORD1detail3.Compose Array(OEORD1header, OEORD1detail1)
+
+OEORD1detail4.Compose Array(OEORD1header)
+
+OEORD1detail5.Compose Array(OEORD1header)
+
+OEORD1detail6.Compose Array(OEORD1detail1)
+
+OEORD1detail7.Compose Array(OEORD1detail1)
+
+OEORD1detail8.Compose Array(OEORD1detail1)
+
+OEORD1detail9.Compose Array(OEORD1detail1, OEORD1detail10, OEORD1detail11)
+
+OEORD1detail10.Compose Array(OEORD1detail9)
+
+OEORD1detail11.Compose Array(OEORD1detail9)
+
+OEORD1detail12.Compose Array(OEORD1detail1)
+
+
+
+OEORD1headerFields("DRIVENBYUI").Value = "1"                          ' Driven by UI
+
+OEORD1detail1Fields("DRIVENBYUI").Value = "1"                         ' Driven by UI
+OEORD1header.Cancel
+OEORD1header.Cancel
+OEORD1header.Init
+OEORD1detail2.Browse "", 1
+OEORD1detail2.Fetch
+OEORD1headerFields("CUSTOMER").Value = "WOOL001"                      ' Customer Number
+OEORD1detail2.Browse "", 1
+
+OEORD1detail2Fields("PAYMENT").PutWithoutVerification ("-32767")      ' Payment Number
+
+OEORD1detail2.Browse "", -1
+OEORD1detail2.Fetch
+OEORD1headerFields("PROCESSCMD").PutWithoutVerification ("1")         ' Process OIP Command
+OEORD1header.Process
+
+OEORD1headerFields("PONUMBER").Value = "70295363 FOOD WC1"            ' Purchase Order Number
+OEORD1headerFields("REQUESDATE").Value = DateSerial(2025, 8, 6)       ' Date Requested
+OEORD1headerFields("EXPDATE").Value = DateSerial(2025, 8, 6)          ' Expected Ship Date
+temp = OEORD1detail1.Exists
+OEORD1detail1.RecordClear
+temp = OEORD1detail1.Exists
+OEORD1detail1.RecordCreate 0
+temp = OEORD1detail1.Exists
+
+OEORD1detail1Fields("ITEM").Value = "S.WWP1875"                       ' Item
+OEORD1detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD1detail1.Process
+temp = OEORD1detail1.Exists
+
+OEORD1detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD1detail1Fields("QTYORDERED").Value = "9.0000"                    ' Quantity Ordered
+
+temp = OEORD1detail1.Exists
+OEORD1detail1.Insert
+temp = OEORD1detail1.Exists
+temp = OEORD1detail1.Exists
+
+OEORD1detail1Fields("LINENUM").PutWithoutVerification ("-1")          ' Line Number
+
+OEORD1detail1.Read
+temp = OEORD1detail1.Exists
+temp = OEORD1detail1.Exists
+OEORD1detail1.RecordCreate 0
+temp = OEORD1detail1.Exists
+
+OEORD1detail1Fields("LINENUM").PutWithoutVerification ("-1")          ' Line Number
+
+OEORD1detail1.Read
+OEORD1detail5Fields("OPTFIELD").PutWithoutVerification ("OEPICK")     ' Optional Field
+
+OEORD1detail5Fields("OPTFIELD").PutWithoutVerification ("OEPICK")     ' Optional Field
+
+OEORD1detail5.Read
+
+OEORD1detail5Fields("VALIFBOOL").Value = "1"                          ' Yes/No Value
+
+temp = OEORD1detail5.Exists
+OEORD1detail5.Update
+
+OEORD1detail5Fields("OPTFIELD").PutWithoutVerification ("TRUCK")      ' Optional Field
+
+OEORD1detail5.Read
+
+OEORD1detail5Fields("VALIFTEXT").Value = "WWTRANS"                    ' Text Value
+
+OEORD1detail5.Update
+
+OEORD1detail5Fields("OPTFIELD").PutWithoutVerification ("TRUCK")      ' Optional Field
+
+OEORD1detail5.Read
+OEORD1headerFields("OECOMMAND").Value = "4"                           ' Process O/E Command
+
+OEORD1headerFields("REFERENCE").PutWithoutVerification ("WW PORTAL")   ' Order Reference
+OEORD1headerFields("DESC").PutWithoutVerification ("70295363 FOOD WC1")   ' Order Description
+
+OEORD1header.Process
+OEORD1header.Insert
+OEORD1header.Order = 1
+OEORD1header.Read
+OEORD1header.Order = 0
+OEORD1detail1Fields("LINENUM").PutWithoutVerification ("-32767")      ' Line Number
+OEORD1detail1.Browse "", 1
+OEORD1detail1.Fetch
+OEORD1detail9Fields("PRNCOMPNUM").PutWithoutVerification ("-2147483647")   ' Parent Component Number
+
+OEORD1detail9Fields("COMPNUM").PutWithoutVerification ("-2147483647")   ' Component Number
+
+OEORD1detail9.Browse "", 1
+OEORD1detail9.Fetch
+OEORD1detail3Fields("UNIQUIFIER").PutWithoutVerification ("-32767")   ' Uniquifier
+OEORD1detail3.Browse "", 1
+OEORD1detail3.Fetch
+OEORD1detail2Fields("PAYMENT").PutWithoutVerification ("-32767")      ' Payment Number
+OEORD1detail2.Browse "", -1
+OEORD1detail2.Fetch
+
+OEORD1detail2Fields("PAYMENT").PutWithoutVerification ("-1")          ' Payment Number
+OEORD1detail2.Browse "", 1
+
+OEORD1detail2Fields("PAYMENT").PutWithoutVerification ("-32767")      ' Payment Number
+
+OEORD1detail2.Browse "", -1
+OEORD1detail2.Fetch
+temp = OEORD1header.Exists
+OEORD1detail1Fields("LINENUM").PutWithoutVerification ("32")          ' Line Number
+OEORD1detail1.Read
+OEORD1headerFields("OECOMMAND").Value = "4"                           ' Process O/E Command
+OEORD1header.Process
+temp = OEORD1header.Exists
+OEORD1header.Update
+OEORD1header.Order = 1
+OEORD1header.Read
+OEORD1header.Order = 0
+OEORD1detail1Fields("LINENUM").PutWithoutVerification ("-32767")      ' Line Number
+OEORD1detail1.Browse "", 1
+OEORD1detail1.Fetch
+OEORD1detail9Fields("PRNCOMPNUM").PutWithoutVerification ("-2147483647")   ' Parent Component Number
+
+OEORD1detail9Fields("COMPNUM").PutWithoutVerification ("-2147483647")   ' Component Number
+
+OEORD1detail9.Browse "", 1
+OEORD1detail9.Fetch
+OEORD1detail3Fields("UNIQUIFIER").PutWithoutVerification ("-32767")   ' Uniquifier
+OEORD1detail3.Browse "", 1
+OEORD1detail3.Fetch
+OEORD1detail2Fields("PAYMENT").PutWithoutVerification ("-32767")      ' Payment Number
+OEORD1detail2.Browse "", -1
+OEORD1detail2.Fetch
+OEORD1detail2.Browse "", 1
+
+OEORD1detail2Fields("PAYMENT").PutWithoutVerification ("-32767")      ' Payment Number
+
+OEORD1detail2.Browse "", -1
+OEORD1detail2.Fetch
+temp = OEORD1header.Exists
+
+Dim OEORD2header As AccpacCOMAPI.AccpacView
+Dim OEORD2headerFields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0520", OEORD2header
+Set OEORD2headerFields = OEORD2header.Fields
+
+Dim OEORD2detail1 As AccpacCOMAPI.AccpacView
+Dim OEORD2detail1Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0500", OEORD2detail1
+Set OEORD2detail1Fields = OEORD2detail1.Fields
+
+Dim OEORD2detail2 As AccpacCOMAPI.AccpacView
+Dim OEORD2detail2Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0740", OEORD2detail2
+Set OEORD2detail2Fields = OEORD2detail2.Fields
+
+Dim OEORD2detail3 As AccpacCOMAPI.AccpacView
+Dim OEORD2detail3Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0180", OEORD2detail3
+Set OEORD2detail3Fields = OEORD2detail3.Fields
+
+Dim OEORD2detail4 As AccpacCOMAPI.AccpacView
+Dim OEORD2detail4Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0526", OEORD2detail4
+Set OEORD2detail4Fields = OEORD2detail4.Fields
+
+Dim OEORD2detail5 As AccpacCOMAPI.AccpacView
+Dim OEORD2detail5Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0522", OEORD2detail5
+Set OEORD2detail5Fields = OEORD2detail5.Fields
+
+Dim OEORD2detail6 As AccpacCOMAPI.AccpacView
+Dim OEORD2detail6Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0508", OEORD2detail6
+Set OEORD2detail6Fields = OEORD2detail6.Fields
+
+Dim OEORD2detail7 As AccpacCOMAPI.AccpacView
+Dim OEORD2detail7Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0507", OEORD2detail7
+Set OEORD2detail7Fields = OEORD2detail7.Fields
+
+Dim OEORD2detail8 As AccpacCOMAPI.AccpacView
+Dim OEORD2detail8Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0501", OEORD2detail8
+Set OEORD2detail8Fields = OEORD2detail8.Fields
+
+Dim OEORD2detail9 As AccpacCOMAPI.AccpacView
+Dim OEORD2detail9Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0502", OEORD2detail9
+Set OEORD2detail9Fields = OEORD2detail9.Fields
+
+Dim OEORD2detail10 As AccpacCOMAPI.AccpacView
+Dim OEORD2detail10Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0504", OEORD2detail10
+Set OEORD2detail10Fields = OEORD2detail10.Fields
+
+Dim OEORD2detail11 As AccpacCOMAPI.AccpacView
+Dim OEORD2detail11Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0506", OEORD2detail11
+Set OEORD2detail11Fields = OEORD2detail11.Fields
+
+Dim OEORD2detail12 As AccpacCOMAPI.AccpacView
+Dim OEORD2detail12Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0503", OEORD2detail12
+Set OEORD2detail12Fields = OEORD2detail12.Fields
+
+OEORD2header.Compose Array(OEORD2detail1, Nothing, OEORD2detail3, OEORD2detail2, OEORD2detail4, OEORD2detail5)
+
+OEORD2detail1.Compose Array(OEORD2header, OEORD2detail8, OEORD2detail12, OEORD2detail9, OEORD2detail6, OEORD2detail7)
+
+OEORD2detail2.Compose Array(OEORD2header)
+
+OEORD2detail3.Compose Array(OEORD2header, OEORD2detail1)
+
+OEORD2detail4.Compose Array(OEORD2header)
+
+OEORD2detail5.Compose Array(OEORD2header)
+
+OEORD2detail6.Compose Array(OEORD2detail1)
+
+OEORD2detail7.Compose Array(OEORD2detail1)
+
+OEORD2detail8.Compose Array(OEORD2detail1)
+
+OEORD2detail9.Compose Array(OEORD2detail1, OEORD2detail10, OEORD2detail11)
+
+OEORD2detail10.Compose Array(OEORD2detail9)
+
+OEORD2detail11.Compose Array(OEORD2detail9)
+
+OEORD2detail12.Compose Array(OEORD2detail1)
+
+
+
+OEORD2headerFields("DRIVENBYUI").Value = "1"                          ' Driven by UI
+
+OEORD2detail1Fields("DRIVENBYUI").Value = "1"                         ' Driven by UI
+OEORD2header.Cancel
+OEORD2header.Cancel
+OEORD2header.Init
+OEORD2detail2.Browse "", 1
+OEORD2detail2.Fetch
+OEORD2headerFields("CUSTOMER").Value = "WOOL001"                      ' Customer Number
+OEORD2detail2.Browse "", 1
+
+OEORD2detail2Fields("PAYMENT").PutWithoutVerification ("-32767")      ' Payment Number
+
+OEORD2detail2.Browse "", -1
+OEORD2detail2.Fetch
+OEORD2headerFields("PROCESSCMD").PutWithoutVerification ("1")         ' Process OIP Command
+OEORD2header.Process
+
+OEORD2headerFields("PONUMBER").Value = "70300443 VA"                  ' Purchase Order Number
+OEORD2headerFields("REQUESDATE").Value = DateSerial(2025, 8, 6)       ' Date Requested
+OEORD2headerFields("EXPDATE").Value = DateSerial(2025, 8, 6)          ' Expected Ship Date
+temp = OEORD2detail1.Exists
+OEORD2detail1.RecordClear
+temp = OEORD2detail1.Exists
+OEORD2detail1.RecordCreate 0
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("ITEM").Value = "S.WWV1701"                       ' Item
+OEORD2detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD2detail1.Process
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD2detail1Fields("QTYORDERED").Value = "79.0000"                   ' Quantity Ordered
+
+temp = OEORD2detail1.Exists
+OEORD2detail1.Insert
+temp = OEORD2detail1.Exists
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("LINENUM").PutWithoutVerification ("-1")          ' Line Number
+
+OEORD2detail1.Read
+temp = OEORD2detail1.Exists
+temp = OEORD2detail1.Exists
+OEORD2detail1.RecordCreate 0
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("ITEM").Value = "S.WWV0099"                       ' Item
+OEORD2detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD2detail1.Process
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD2detail1Fields("QTYORDERED").Value = "35.0000"                   ' Quantity Ordered
+
+temp = OEORD2detail1.Exists
+OEORD2detail1.Insert
+temp = OEORD2detail1.Exists
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("LINENUM").PutWithoutVerification ("-2")          ' Line Number
+
+OEORD2detail1.Read
+temp = OEORD2detail1.Exists
+temp = OEORD2detail1.Exists
+OEORD2detail1.RecordCreate 0
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("ITEM").Value = "S.WWV0130NUOM"                   ' Item
+OEORD2detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD2detail1.Process
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD2detail1Fields("QTYORDERED").Value = "32.0000"                   ' Quantity Ordered
+
+temp = OEORD2detail1.Exists
+OEORD2detail1.Insert
+temp = OEORD2detail1.Exists
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("LINENUM").PutWithoutVerification ("-3")          ' Line Number
+
+OEORD2detail1.Read
+temp = OEORD2detail1.Exists
+temp = OEORD2detail1.Exists
+OEORD2detail1.RecordCreate 0
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("ITEM").Value = "S.WWV1943"                       ' Item
+OEORD2detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD2detail1.Process
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD2detail1Fields("QTYORDERED").Value = "63.0000"                   ' Quantity Ordered
+
+temp = OEORD2detail1.Exists
+OEORD2detail1.Insert
+temp = OEORD2detail1.Exists
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("LINENUM").PutWithoutVerification ("-4")          ' Line Number
+
+OEORD2detail1.Read
+temp = OEORD2detail1.Exists
+temp = OEORD2detail1.Exists
+OEORD2detail1.RecordCreate 0
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("ITEM").Value = "S.WWV2099"                       ' Item
+OEORD2detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD2detail1.Process
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD2detail1Fields("QTYORDERED").Value = "95.0000"                   ' Quantity Ordered
+
+temp = OEORD2detail1.Exists
+OEORD2detail1.Insert
+temp = OEORD2detail1.Exists
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("LINENUM").PutWithoutVerification ("-5")          ' Line Number
+
+OEORD2detail1.Read
+temp = OEORD2detail1.Exists
+temp = OEORD2detail1.Exists
+OEORD2detail1.RecordCreate 0
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("ITEM").Value = "S.WWV1850"                       ' Item
+OEORD2detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD2detail1.Process
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD2detail1Fields("QTYORDERED").Value = "14.0000"                   ' Quantity Ordered
+
+temp = OEORD2detail1.Exists
+OEORD2detail1.Insert
+temp = OEORD2detail1.Exists
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("LINENUM").PutWithoutVerification ("-6")          ' Line Number
+
+OEORD2detail1.Read
+temp = OEORD2detail1.Exists
+temp = OEORD2detail1.Exists
+OEORD2detail1.RecordCreate 0
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("ITEM").Value = "S.WWV0350NUOM2"                  ' Item
+OEORD2detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD2detail1.Process
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD2detail1Fields("QTYORDERED").Value = "214.0000"                  ' Quantity Ordered
+
+temp = OEORD2detail1.Exists
+OEORD2detail1.Insert
+temp = OEORD2detail1.Exists
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("LINENUM").PutWithoutVerification ("-7")          ' Line Number
+
+OEORD2detail1.Read
+temp = OEORD2detail1.Exists
+temp = OEORD2detail1.Exists
+OEORD2detail1.RecordCreate 0
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("ITEM").Value = "S.WWV0370NUOM2"                  ' Item
+OEORD2detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD2detail1.Process
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD2detail1Fields("QTYORDERED").Value = "170.0000"                  ' Quantity Ordered
+
+temp = OEORD2detail1.Exists
+OEORD2detail1.Insert
+temp = OEORD2detail1.Exists
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("LINENUM").PutWithoutVerification ("-8")          ' Line Number
+
+OEORD2detail1.Read
+temp = OEORD2detail1.Exists
+temp = OEORD2detail1.Exists
+OEORD2detail1.RecordCreate 0
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("ITEM").Value = "S.WWV0352"                       ' Item
+OEORD2detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD2detail1.Process
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD2detail1Fields("QTYORDERED").Value = "65.0000"                   ' Quantity Ordered
+
+temp = OEORD2detail1.Exists
+OEORD2detail1.Insert
+temp = OEORD2detail1.Exists
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("LINENUM").PutWithoutVerification ("-9")          ' Line Number
+
+OEORD2detail1.Read
+temp = OEORD2detail1.Exists
+temp = OEORD2detail1.Exists
+OEORD2detail1.RecordCreate 0
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("ITEM").Value = "S.WWV1906"                       ' Item
+OEORD2detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD2detail1.Process
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD2detail1Fields("QTYORDERED").Value = "68.0000"                   ' Quantity Ordered
+
+temp = OEORD2detail1.Exists
+OEORD2detail1.Insert
+temp = OEORD2detail1.Exists
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("LINENUM").PutWithoutVerification ("-10")         ' Line Number
+
+OEORD2detail1.Read
+temp = OEORD2detail1.Exists
+temp = OEORD2detail1.Exists
+OEORD2detail1.RecordCreate 0
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("ITEM").Value = "S.WWV1907"                       ' Item
+OEORD2detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD2detail1.Process
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD2detail1Fields("QTYORDERED").Value = "91.0000"                   ' Quantity Ordered
+
+temp = OEORD2detail1.Exists
+OEORD2detail1.Insert
+temp = OEORD2detail1.Exists
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("LINENUM").PutWithoutVerification ("-11")         ' Line Number
+
+OEORD2detail1.Read
+temp = OEORD2detail1.Exists
+temp = OEORD2detail1.Exists
+OEORD2detail1.RecordCreate 0
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("ITEM").Value = "S.WWV1822"                       ' Item
+OEORD2detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD2detail1.Process
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD2detail1Fields("QTYORDERED").Value = "55.0000"                   ' Quantity Ordered
+
+temp = OEORD2detail1.Exists
+OEORD2detail1.Insert
+temp = OEORD2detail1.Exists
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("LINENUM").PutWithoutVerification ("-12")         ' Line Number
+
+OEORD2detail1.Read
+temp = OEORD2detail1.Exists
+temp = OEORD2detail1.Exists
+OEORD2detail1.RecordCreate 0
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("ITEM").Value = "S.WWV1821"                       ' Item
+OEORD2detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD2detail1.Process
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD2detail1Fields("QTYORDERED").Value = "82.0000"                   ' Quantity Ordered
+
+temp = OEORD2detail1.Exists
+OEORD2detail1.Insert
+temp = OEORD2detail1.Exists
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("LINENUM").PutWithoutVerification ("-13")         ' Line Number
+
+OEORD2detail1.Read
+temp = OEORD2detail1.Exists
+temp = OEORD2detail1.Exists
+OEORD2detail1.RecordCreate 0
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("ITEM").Value = "S.WWV0185"                       ' Item
+OEORD2detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD2detail1.Process
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD2detail1Fields("QTYORDERED").Value = "20.0000"                   ' Quantity Ordered
+
+temp = OEORD2detail1.Exists
+OEORD2detail1.Insert
+temp = OEORD2detail1.Exists
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("LINENUM").PutWithoutVerification ("-14")         ' Line Number
+
+OEORD2detail1.Read
+temp = OEORD2detail1.Exists
+temp = OEORD2detail1.Exists
+OEORD2detail1.RecordCreate 0
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("ITEM").Value = "S.WWV1751"                       ' Item
+OEORD2detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD2detail1.Process
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD2detail1Fields("QTYORDERED").Value = "30.0000"                   ' Quantity Ordered
+
+temp = OEORD2detail1.Exists
+OEORD2detail1.Insert
+temp = OEORD2detail1.Exists
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("LINENUM").PutWithoutVerification ("-15")         ' Line Number
+
+OEORD2detail1.Read
+temp = OEORD2detail1.Exists
+temp = OEORD2detail1.Exists
+OEORD2detail1.RecordCreate 0
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("ITEM").Value = "S.WWV1750"                       ' Item
+OEORD2detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD2detail1.Process
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD2detail1Fields("QTYORDERED").Value = "43.0000"                   ' Quantity Ordered
+
+temp = OEORD2detail1.Exists
+OEORD2detail1.Insert
+temp = OEORD2detail1.Exists
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("LINENUM").PutWithoutVerification ("-16")         ' Line Number
+
+OEORD2detail1.Read
+temp = OEORD2detail1.Exists
+temp = OEORD2detail1.Exists
+OEORD2detail1.RecordCreate 0
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("ITEM").Value = "S.WWV0901"                       ' Item
+OEORD2detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD2detail1.Process
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD2detail1Fields("QTYORDERED").Value = "57.0000"                   ' Quantity Ordered
+
+temp = OEORD2detail1.Exists
+OEORD2detail1.Insert
+temp = OEORD2detail1.Exists
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("LINENUM").PutWithoutVerification ("-17")         ' Line Number
+
+OEORD2detail1.Read
+temp = OEORD2detail1.Exists
+temp = OEORD2detail1.Exists
+OEORD2detail1.RecordCreate 0
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("ITEM").Value = "S.WWV0754"                       ' Item
+OEORD2detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD2detail1.Process
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD2detail1Fields("QTYORDERED").Value = "15.0000"                   ' Quantity Ordered
+
+temp = OEORD2detail1.Exists
+OEORD2detail1.Insert
+temp = OEORD2detail1.Exists
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("LINENUM").PutWithoutVerification ("-18")         ' Line Number
+
+OEORD2detail1.Read
+temp = OEORD2detail1.Exists
+temp = OEORD2detail1.Exists
+OEORD2detail1.RecordCreate 0
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("ITEM").Value = "S.WWV1300"                       ' Item
+OEORD2detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD2detail1.Process
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD2detail1Fields("QTYORDERED").Value = "16.0000"                   ' Quantity Ordered
+
+temp = OEORD2detail1.Exists
+OEORD2detail1.Insert
+temp = OEORD2detail1.Exists
+temp = OEORD2detail1.Exists
+
+OEORD2detail1Fields("LINENUM").PutWithoutVerification ("-19")         ' Line Number
+
+OEORD2detail1.Read
+temp = OEORD2detail1.Exists
+temp = OEORD2detail1.Exists
+OEORD2detail1.RecordCreate 0
+temp = OEORD2detail1.Exists
+OEORD2detail1.Browse "", 0
+
+OEORD2detail1Fields("LINENUM").PutWithoutVerification ("-1")          ' Line Number
+
+OEORD2detail1.Read
+OEORD2detail5Fields("OPTFIELD").PutWithoutVerification ("OEPICK")     ' Optional Field
+
+OEORD2detail5Fields("OPTFIELD").PutWithoutVerification ("OEPICK")     ' Optional Field
+
+OEORD2detail5.Read
+
+OEORD2detail5Fields("VALIFBOOL").Value = "1"                          ' Yes/No Value
+
+temp = OEORD2detail5.Exists
+OEORD2detail5.Update
+
+OEORD2detail5Fields("OPTFIELD").PutWithoutVerification ("TRUCK")      ' Optional Field
+
+OEORD2detail5.Read
+
+OEORD2detail5Fields("VALIFTEXT").Value = "WWTRANS"                    ' Text Value
+
+OEORD2detail5.Update
+
+OEORD2detail5Fields("OPTFIELD").PutWithoutVerification ("TRUCK")      ' Optional Field
+
+OEORD2detail5.Read
+OEORD2headerFields("OECOMMAND").Value = "4"                           ' Process O/E Command
+
+OEORD2headerFields("REFERENCE").PutWithoutVerification ("WW PORTAL")   ' Order Reference
+OEORD2headerFields("DESC").PutWithoutVerification ("70300443 VA")     ' Order Description
+
+OEORD2header.Process
+OEORD2header.Insert
+OEORD2header.Order = 1
+OEORD2header.Read
+OEORD2header.Order = 0
+OEORD2detail1Fields("LINENUM").PutWithoutVerification ("-32767")      ' Line Number
+OEORD2detail1.Browse "", 1
+OEORD2detail1.Fetch
+OEORD2detail9Fields("PRNCOMPNUM").PutWithoutVerification ("-2147483647")   ' Parent Component Number
+
+OEORD2detail9Fields("COMPNUM").PutWithoutVerification ("-2147483647")   ' Component Number
+
+OEORD2detail9.Browse "", 1
+OEORD2detail9.Fetch
+OEORD2detail3Fields("UNIQUIFIER").PutWithoutVerification ("-32767")   ' Uniquifier
+OEORD2detail3.Browse "", 1
+OEORD2detail3.Fetch
+OEORD2detail2Fields("PAYMENT").PutWithoutVerification ("-32767")      ' Payment Number
+OEORD2detail2.Browse "", -1
+OEORD2detail2.Fetch
+
+OEORD2detail2Fields("PAYMENT").PutWithoutVerification ("-1")          ' Payment Number
+OEORD2detail2.Browse "", 1
+
+OEORD2detail2Fields("PAYMENT").PutWithoutVerification ("-32767")      ' Payment Number
+
+OEORD2detail2.Browse "", -1
+OEORD2detail2.Fetch
+temp = OEORD2header.Exists
+OEORD2detail1Fields("LINENUM").PutWithoutVerification ("32")          ' Line Number
+OEORD2detail1.Read
+OEORD2headerFields("OECOMMAND").Value = "4"                           ' Process O/E Command
+OEORD2header.Process
+temp = OEORD2header.Exists
+OEORD2header.Update
+OEORD2header.Order = 1
+OEORD2header.Read
+OEORD2header.Order = 0
+OEORD2detail1Fields("LINENUM").PutWithoutVerification ("-32767")      ' Line Number
+OEORD2detail1.Browse "", 1
+OEORD2detail1.Fetch
+OEORD2detail9Fields("PRNCOMPNUM").PutWithoutVerification ("-2147483647")   ' Parent Component Number
+
+OEORD2detail9Fields("COMPNUM").PutWithoutVerification ("-2147483647")   ' Component Number
+
+OEORD2detail9.Browse "", 1
+OEORD2detail9.Fetch
+OEORD2detail3Fields("UNIQUIFIER").PutWithoutVerification ("-32767")   ' Uniquifier
+OEORD2detail3.Browse "", 1
+OEORD2detail3.Fetch
+OEORD2detail2Fields("PAYMENT").PutWithoutVerification ("-32767")      ' Payment Number
+OEORD2detail2.Browse "", -1
+OEORD2detail2.Fetch
+OEORD2detail2.Browse "", 1
+
+OEORD2detail2Fields("PAYMENT").PutWithoutVerification ("-32767")      ' Payment Number
+
+OEORD2detail2.Browse "", -1
+OEORD2detail2.Fetch
+temp = OEORD2header.Exists
+
+Dim OEORD3header As AccpacCOMAPI.AccpacView
+Dim OEORD3headerFields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0520", OEORD3header
+Set OEORD3headerFields = OEORD3header.Fields
+
+Dim OEORD3detail1 As AccpacCOMAPI.AccpacView
+Dim OEORD3detail1Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0500", OEORD3detail1
+Set OEORD3detail1Fields = OEORD3detail1.Fields
+
+Dim OEORD3detail2 As AccpacCOMAPI.AccpacView
+Dim OEORD3detail2Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0740", OEORD3detail2
+Set OEORD3detail2Fields = OEORD3detail2.Fields
+
+Dim OEORD3detail3 As AccpacCOMAPI.AccpacView
+Dim OEORD3detail3Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0180", OEORD3detail3
+Set OEORD3detail3Fields = OEORD3detail3.Fields
+
+Dim OEORD3detail4 As AccpacCOMAPI.AccpacView
+Dim OEORD3detail4Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0526", OEORD3detail4
+Set OEORD3detail4Fields = OEORD3detail4.Fields
+
+Dim OEORD3detail5 As AccpacCOMAPI.AccpacView
+Dim OEORD3detail5Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0522", OEORD3detail5
+Set OEORD3detail5Fields = OEORD3detail5.Fields
+
+Dim OEORD3detail6 As AccpacCOMAPI.AccpacView
+Dim OEORD3detail6Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0508", OEORD3detail6
+Set OEORD3detail6Fields = OEORD3detail6.Fields
+
+Dim OEORD3detail7 As AccpacCOMAPI.AccpacView
+Dim OEORD3detail7Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0507", OEORD3detail7
+Set OEORD3detail7Fields = OEORD3detail7.Fields
+
+Dim OEORD3detail8 As AccpacCOMAPI.AccpacView
+Dim OEORD3detail8Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0501", OEORD3detail8
+Set OEORD3detail8Fields = OEORD3detail8.Fields
+
+Dim OEORD3detail9 As AccpacCOMAPI.AccpacView
+Dim OEORD3detail9Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0502", OEORD3detail9
+Set OEORD3detail9Fields = OEORD3detail9.Fields
+
+Dim OEORD3detail10 As AccpacCOMAPI.AccpacView
+Dim OEORD3detail10Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0504", OEORD3detail10
+Set OEORD3detail10Fields = OEORD3detail10.Fields
+
+Dim OEORD3detail11 As AccpacCOMAPI.AccpacView
+Dim OEORD3detail11Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0506", OEORD3detail11
+Set OEORD3detail11Fields = OEORD3detail11.Fields
+
+Dim OEORD3detail12 As AccpacCOMAPI.AccpacView
+Dim OEORD3detail12Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0503", OEORD3detail12
+Set OEORD3detail12Fields = OEORD3detail12.Fields
+
+OEORD3header.Compose Array(OEORD3detail1, Nothing, OEORD3detail3, OEORD3detail2, OEORD3detail4, OEORD3detail5)
+
+OEORD3detail1.Compose Array(OEORD3header, OEORD3detail8, OEORD3detail12, OEORD3detail9, OEORD3detail6, OEORD3detail7)
+
+OEORD3detail2.Compose Array(OEORD3header)
+
+OEORD3detail3.Compose Array(OEORD3header, OEORD3detail1)
+
+OEORD3detail4.Compose Array(OEORD3header)
+
+OEORD3detail5.Compose Array(OEORD3header)
+
+OEORD3detail6.Compose Array(OEORD3detail1)
+
+OEORD3detail7.Compose Array(OEORD3detail1)
+
+OEORD3detail8.Compose Array(OEORD3detail1)
+
+OEORD3detail9.Compose Array(OEORD3detail1, OEORD3detail10, OEORD3detail11)
+
+OEORD3detail10.Compose Array(OEORD3detail9)
+
+OEORD3detail11.Compose Array(OEORD3detail9)
+
+OEORD3detail12.Compose Array(OEORD3detail1)
+
+
+
+OEORD3headerFields("DRIVENBYUI").Value = "1"                          ' Driven by UI
+
+OEORD3detail1Fields("DRIVENBYUI").Value = "1"                         ' Driven by UI
+OEORD3header.Cancel
+OEORD3header.Cancel
+OEORD3header.Init
+OEORD3detail2.Browse "", 1
+OEORD3detail2.Fetch
+OEORD3headerFields("CUSTOMER").Value = "WOOL001"                      ' Customer Number
+OEORD3detail2.Browse "", 1
+
+OEORD3detail2Fields("PAYMENT").PutWithoutVerification ("-32767")      ' Payment Number
+
+OEORD3detail2.Browse "", -1
+OEORD3detail2.Fetch
+OEORD3headerFields("PROCESSCMD").PutWithoutVerification ("1")         ' Process OIP Command
+OEORD3header.Process
+
+OEORD3headerFields("PONUMBER").Value = "70300446 HOT WC"              ' Purchase Order Number
+OEORD3headerFields("REQUESDATE").Value = DateSerial(2025, 8, 6)       ' Date Requested
+OEORD3headerFields("EXPDATE").Value = DateSerial(2025, 8, 6)          ' Expected Ship Date
+temp = OEORD3detail1.Exists
+OEORD3detail1.RecordClear
+temp = OEORD3detail1.Exists
+OEORD3detail1.RecordCreate 0
+temp = OEORD3detail1.Exists
+
+OEORD3detail1Fields("ITEM").Value = "S.WWP1603"                       ' Item
+OEORD3detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD3detail1.Process
+temp = OEORD3detail1.Exists
+
+OEORD3detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD3detail1Fields("QTYORDERED").Value = "101.0000"                  ' Quantity Ordered
+
+temp = OEORD3detail1.Exists
+OEORD3detail1.Insert
+temp = OEORD3detail1.Exists
+temp = OEORD3detail1.Exists
+
+OEORD3detail1Fields("LINENUM").PutWithoutVerification ("-1")          ' Line Number
+
+OEORD3detail1.Read
+temp = OEORD3detail1.Exists
+temp = OEORD3detail1.Exists
+OEORD3detail1.RecordCreate 0
+temp = OEORD3detail1.Exists
+
+OEORD3detail1Fields("ITEM").Value = "S.WWV0320"                       ' Item
+OEORD3detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD3detail1.Process
+temp = OEORD3detail1.Exists
+
+OEORD3detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD3detail1Fields("QTYORDERED").Value = "31.0000"                   ' Quantity Ordered
+
+temp = OEORD3detail1.Exists
+OEORD3detail1.Insert
+temp = OEORD3detail1.Exists
+temp = OEORD3detail1.Exists
+
+OEORD3detail1Fields("LINENUM").PutWithoutVerification ("-2")          ' Line Number
+
+OEORD3detail1.Read
+temp = OEORD3detail1.Exists
+temp = OEORD3detail1.Exists
+OEORD3detail1.RecordCreate 0
+temp = OEORD3detail1.Exists
+
+OEORD3detail1Fields("ITEM").Value = "S.WWV1988"                       ' Item
+OEORD3detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD3detail1.Process
+temp = OEORD3detail1.Exists
+
+OEORD3detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD3detail1Fields("QTYORDERED").Value = "40.0000"                   ' Quantity Ordered
+
+temp = OEORD3detail1.Exists
+OEORD3detail1.Insert
+temp = OEORD3detail1.Exists
+temp = OEORD3detail1.Exists
+
+OEORD3detail1Fields("LINENUM").PutWithoutVerification ("-3")          ' Line Number
+
+OEORD3detail1.Read
+temp = OEORD3detail1.Exists
+temp = OEORD3detail1.Exists
+OEORD3detail1.RecordCreate 0
+temp = OEORD3detail1.Exists
+
+OEORD3detail1Fields("ITEM").Value = "S.WWV1860"                       ' Item
+OEORD3detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD3detail1.Process
+temp = OEORD3detail1.Exists
+
+OEORD3detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD3detail1Fields("QTYORDERED").Value = "4.0000"                    ' Quantity Ordered
+
+temp = OEORD3detail1.Exists
+OEORD3detail1.Insert
+temp = OEORD3detail1.Exists
+temp = OEORD3detail1.Exists
+
+OEORD3detail1Fields("LINENUM").PutWithoutVerification ("-4")          ' Line Number
+
+OEORD3detail1.Read
+temp = OEORD3detail1.Exists
+temp = OEORD3detail1.Exists
+OEORD3detail1.RecordCreate 0
+temp = OEORD3detail1.Exists
+
+OEORD3detail1Fields("ITEM").Value = "S.WWV0329"                       ' Item
+OEORD3detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD3detail1.Process
+temp = OEORD3detail1.Exists
+
+OEORD3detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD3detail1Fields("QTYORDERED").Value = "18.0000"                   ' Quantity Ordered
+
+temp = OEORD3detail1.Exists
+OEORD3detail1.Insert
+temp = OEORD3detail1.Exists
+temp = OEORD3detail1.Exists
+
+OEORD3detail1Fields("LINENUM").PutWithoutVerification ("-5")          ' Line Number
+
+OEORD3detail1.Read
+temp = OEORD3detail1.Exists
+temp = OEORD3detail1.Exists
+OEORD3detail1.RecordCreate 0
+temp = OEORD3detail1.Exists
+
+OEORD3detail1Fields("ITEM").Value = "S.WWV0330"                       ' Item
+OEORD3detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD3detail1.Process
+temp = OEORD3detail1.Exists
+
+OEORD3detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD3detail1Fields("QTYORDERED").Value = "12.0000"                   ' Quantity Ordered
+
+temp = OEORD3detail1.Exists
+OEORD3detail1.Insert
+temp = OEORD3detail1.Exists
+temp = OEORD3detail1.Exists
+
+OEORD3detail1Fields("LINENUM").PutWithoutVerification ("-6")          ' Line Number
+
+OEORD3detail1.Read
+temp = OEORD3detail1.Exists
+temp = OEORD3detail1.Exists
+OEORD3detail1.RecordCreate 0
+temp = OEORD3detail1.Exists
+OEORD3detail1.Browse "", 1
+
+OEORD3detail1Fields("LINENUM").PutWithoutVerification ("-6")          ' Line Number
+
+OEORD3detail1.Read
+OEORD3detail5Fields("OPTFIELD").PutWithoutVerification ("OEPICK")     ' Optional Field
+
+OEORD3detail5Fields("OPTFIELD").PutWithoutVerification ("OEPICK")     ' Optional Field
+
+OEORD3detail5.Read
+
+OEORD3detail5Fields("VALIFBOOL").Value = "1"                          ' Yes/No Value
+
+temp = OEORD3detail5.Exists
+OEORD3detail5.Update
+
+OEORD3detail5Fields("OPTFIELD").PutWithoutVerification ("TRUCK")      ' Optional Field
+
+OEORD3detail5.Read
+
+OEORD3detail5Fields("VALIFTEXT").Value = "WWTRANS"                    ' Text Value
+
+OEORD3detail5.Update
+
+OEORD3detail5Fields("OPTFIELD").PutWithoutVerification ("TRUCK")      ' Optional Field
+
+OEORD3detail5.Read
+OEORD3headerFields("OECOMMAND").Value = "4"                           ' Process O/E Command
+
+OEORD3headerFields("REFERENCE").PutWithoutVerification ("WW PORTAL")   ' Order Reference
+OEORD3headerFields("DESC").PutWithoutVerification ("70300446 HOT WC")   ' Order Description
+
+OEORD3header.Process
+OEORD3header.Insert
+OEORD3header.Order = 1
+OEORD3header.Read
+OEORD3header.Order = 0
+OEORD3detail1Fields("LINENUM").PutWithoutVerification ("-32767")      ' Line Number
+OEORD3detail1.Browse "", 1
+OEORD3detail1.Fetch
+OEORD3detail9Fields("PRNCOMPNUM").PutWithoutVerification ("-2147483647")   ' Parent Component Number
+
+OEORD3detail9Fields("COMPNUM").PutWithoutVerification ("-2147483647")   ' Component Number
+
+OEORD3detail9.Browse "", 1
+OEORD3detail9.Fetch
+OEORD3detail3Fields("UNIQUIFIER").PutWithoutVerification ("-32767")   ' Uniquifier
+OEORD3detail3.Browse "", 1
+OEORD3detail3.Fetch
+OEORD3detail2Fields("PAYMENT").PutWithoutVerification ("-32767")      ' Payment Number
+OEORD3detail2.Browse "", -1
+OEORD3detail2.Fetch
+
+OEORD3detail2Fields("PAYMENT").PutWithoutVerification ("-1")          ' Payment Number
+OEORD3detail2.Browse "", 1
+
+OEORD3detail2Fields("PAYMENT").PutWithoutVerification ("-32767")      ' Payment Number
+
+OEORD3detail2.Browse "", -1
+OEORD3detail2.Fetch
+temp = OEORD3header.Exists
+
+Dim OEORD4header As AccpacCOMAPI.AccpacView
+Dim OEORD4headerFields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0520", OEORD4header
+Set OEORD4headerFields = OEORD4header.Fields
+
+Dim OEORD4detail1 As AccpacCOMAPI.AccpacView
+Dim OEORD4detail1Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0500", OEORD4detail1
+Set OEORD4detail1Fields = OEORD4detail1.Fields
+
+Dim OEORD4detail2 As AccpacCOMAPI.AccpacView
+Dim OEORD4detail2Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0740", OEORD4detail2
+Set OEORD4detail2Fields = OEORD4detail2.Fields
+
+Dim OEORD4detail3 As AccpacCOMAPI.AccpacView
+Dim OEORD4detail3Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0180", OEORD4detail3
+Set OEORD4detail3Fields = OEORD4detail3.Fields
+
+Dim OEORD4detail4 As AccpacCOMAPI.AccpacView
+Dim OEORD4detail4Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0526", OEORD4detail4
+Set OEORD4detail4Fields = OEORD4detail4.Fields
+
+Dim OEORD4detail5 As AccpacCOMAPI.AccpacView
+Dim OEORD4detail5Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0522", OEORD4detail5
+Set OEORD4detail5Fields = OEORD4detail5.Fields
+
+Dim OEORD4detail6 As AccpacCOMAPI.AccpacView
+Dim OEORD4detail6Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0508", OEORD4detail6
+Set OEORD4detail6Fields = OEORD4detail6.Fields
+
+Dim OEORD4detail7 As AccpacCOMAPI.AccpacView
+Dim OEORD4detail7Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0507", OEORD4detail7
+Set OEORD4detail7Fields = OEORD4detail7.Fields
+
+Dim OEORD4detail8 As AccpacCOMAPI.AccpacView
+Dim OEORD4detail8Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0501", OEORD4detail8
+Set OEORD4detail8Fields = OEORD4detail8.Fields
+
+Dim OEORD4detail9 As AccpacCOMAPI.AccpacView
+Dim OEORD4detail9Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0502", OEORD4detail9
+Set OEORD4detail9Fields = OEORD4detail9.Fields
+
+Dim OEORD4detail10 As AccpacCOMAPI.AccpacView
+Dim OEORD4detail10Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0504", OEORD4detail10
+Set OEORD4detail10Fields = OEORD4detail10.Fields
+
+Dim OEORD4detail11 As AccpacCOMAPI.AccpacView
+Dim OEORD4detail11Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0506", OEORD4detail11
+Set OEORD4detail11Fields = OEORD4detail11.Fields
+
+Dim OEORD4detail12 As AccpacCOMAPI.AccpacView
+Dim OEORD4detail12Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0503", OEORD4detail12
+Set OEORD4detail12Fields = OEORD4detail12.Fields
+
+OEORD4header.Compose Array(OEORD4detail1, Nothing, OEORD4detail3, OEORD4detail2, OEORD4detail4, OEORD4detail5)
+
+OEORD4detail1.Compose Array(OEORD4header, OEORD4detail8, OEORD4detail12, OEORD4detail9, OEORD4detail6, OEORD4detail7)
+
+OEORD4detail2.Compose Array(OEORD4header)
+
+OEORD4detail3.Compose Array(OEORD4header, OEORD4detail1)
+
+OEORD4detail4.Compose Array(OEORD4header)
+
+OEORD4detail5.Compose Array(OEORD4header)
+
+OEORD4detail6.Compose Array(OEORD4detail1)
+
+OEORD4detail7.Compose Array(OEORD4detail1)
+
+OEORD4detail8.Compose Array(OEORD4detail1)
+
+OEORD4detail9.Compose Array(OEORD4detail1, OEORD4detail10, OEORD4detail11)
+
+OEORD4detail10.Compose Array(OEORD4detail9)
+
+OEORD4detail11.Compose Array(OEORD4detail9)
+
+OEORD4detail12.Compose Array(OEORD4detail1)
+
+
+
+OEORD4headerFields("DRIVENBYUI").Value = "1"                          ' Driven by UI
+
+OEORD4detail1Fields("DRIVENBYUI").Value = "1"                         ' Driven by UI
+OEORD4header.Cancel
+OEORD4header.Cancel
+OEORD4header.Init
+OEORD4detail2.Browse "", 1
+OEORD4detail2.Fetch
+OEORD4headerFields("CUSTOMER").Value = "WOOL001"                      ' Customer Number
+OEORD4detail2.Browse "", 1
+
+OEORD4detail2Fields("PAYMENT").PutWithoutVerification ("-32767")      ' Payment Number
+
+OEORD4detail2.Browse "", -1
+OEORD4detail2.Fetch
+OEORD4headerFields("PROCESSCMD").PutWithoutVerification ("1")         ' Process OIP Command
+OEORD4header.Process
+
+OEORD4headerFields("PONUMBER").Value = "70300448 PRIMAL WC"           ' Purchase Order Number
+OEORD4headerFields("REQUESDATE").Value = DateSerial(2025, 8, 6)       ' Date Requested
+OEORD4headerFields("EXPDATE").Value = DateSerial(2025, 8, 6)          ' Expected Ship Date
+temp = OEORD4detail1.Exists
+OEORD4detail1.RecordClear
+temp = OEORD4detail1.Exists
+OEORD4detail1.RecordCreate 0
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ITEM").Value = "S.WWV0110"                       ' Item
+OEORD4detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD4detail1.Process
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD4detail1Fields("QTYORDERED").Value = "31.0000"                   ' Quantity Ordered
+
+temp = OEORD4detail1.Exists
+OEORD4detail1.Insert
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("LINENUM").PutWithoutVerification ("-1")          ' Line Number
+
+OEORD4detail1.Read
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+OEORD4detail1.RecordCreate 0
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ITEM").Value = "S.WWV0111"                       ' Item
+OEORD4detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD4detail1.Process
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD4detail1Fields("QTYORDERED").Value = "33.0000"                   ' Quantity Ordered
+
+temp = OEORD4detail1.Exists
+OEORD4detail1.Insert
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("LINENUM").PutWithoutVerification ("-2")          ' Line Number
+
+OEORD4detail1.Read
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+OEORD4detail1.RecordCreate 0
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ITEM").Value = "S.WWV0112"                       ' Item
+OEORD4detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD4detail1.Process
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD4detail1Fields("QTYORDERED").Value = "28.0000"                   ' Quantity Ordered
+
+temp = OEORD4detail1.Exists
+OEORD4detail1.Insert
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("LINENUM").PutWithoutVerification ("-3")          ' Line Number
+
+OEORD4detail1.Read
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+OEORD4detail1.RecordCreate 0
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ITEM").Value = "S.WWV0805"                       ' Item
+OEORD4detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD4detail1.Process
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD4detail1Fields("QTYORDERED").Value = "34.0000"                   ' Quantity Ordered
+
+temp = OEORD4detail1.Exists
+OEORD4detail1.Insert
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("LINENUM").PutWithoutVerification ("-4")          ' Line Number
+
+OEORD4detail1.Read
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+OEORD4detail1.RecordCreate 0
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ITEM").Value = "S.WWV0810"                       ' Item
+OEORD4detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD4detail1.Process
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD4detail1Fields("QTYORDERED").Value = "17.0000"                   ' Quantity Ordered
+
+temp = OEORD4detail1.Exists
+OEORD4detail1.Insert
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("LINENUM").PutWithoutVerification ("-5")          ' Line Number
+
+OEORD4detail1.Read
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+OEORD4detail1.RecordCreate 0
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ITEM").Value = "S.WWV0655"                       ' Item
+OEORD4detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD4detail1.Process
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD4detail1Fields("QTYORDERED").Value = "46.0000"                   ' Quantity Ordered
+
+temp = OEORD4detail1.Exists
+OEORD4detail1.Insert
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("LINENUM").PutWithoutVerification ("-6")          ' Line Number
+
+OEORD4detail1.Read
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+OEORD4detail1.RecordCreate 0
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ITEM").Value = "S.WWV0656"                       ' Item
+OEORD4detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD4detail1.Process
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD4detail1Fields("QTYORDERED").Value = "20.0000"                   ' Quantity Ordered
+
+temp = OEORD4detail1.Exists
+OEORD4detail1.Insert
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("LINENUM").PutWithoutVerification ("-7")          ' Line Number
+
+OEORD4detail1.Read
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+OEORD4detail1.RecordCreate 0
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ITEM").Value = "S.WWP1200"                       ' Item
+OEORD4detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD4detail1.Process
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD4detail1Fields("QTYORDERED").Value = "170.0000"                  ' Quantity Ordered
+
+temp = OEORD4detail1.Exists
+OEORD4detail1.Insert
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("LINENUM").PutWithoutVerification ("-8")          ' Line Number
+
+OEORD4detail1.Read
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+OEORD4detail1.RecordCreate 0
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ITEM").Value = "S.WWP1700"                       ' Item
+OEORD4detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD4detail1.Process
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD4detail1Fields("QTYORDERED").Value = "114.0000"                  ' Quantity Ordered
+
+temp = OEORD4detail1.Exists
+OEORD4detail1.Insert
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("LINENUM").PutWithoutVerification ("-9")          ' Line Number
+
+OEORD4detail1.Read
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+OEORD4detail1.RecordCreate 0
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ITEM").Value = "S.WWP2000NUOM"                   ' Item
+OEORD4detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD4detail1.Process
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD4detail1Fields("QTYORDERED").Value = "25.0000"                   ' Quantity Ordered
+
+temp = OEORD4detail1.Exists
+OEORD4detail1.Insert
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("LINENUM").PutWithoutVerification ("-10")         ' Line Number
+
+OEORD4detail1.Read
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+OEORD4detail1.RecordCreate 0
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ITEM").Value = "S.WWP2200"                       ' Item
+OEORD4detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD4detail1.Process
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD4detail1Fields("QTYORDERED").Value = "97.0000"                   ' Quantity Ordered
+
+temp = OEORD4detail1.Exists
+OEORD4detail1.Insert
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("LINENUM").PutWithoutVerification ("-11")         ' Line Number
+
+OEORD4detail1.Read
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+OEORD4detail1.RecordCreate 0
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ITEM").Value = "S.WWP1800NUOM"                   ' Item
+OEORD4detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD4detail1.Process
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD4detail1Fields("QTYORDERED").Value = "167.0000"                  ' Quantity Ordered
+
+temp = OEORD4detail1.Exists
+OEORD4detail1.Insert
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("LINENUM").PutWithoutVerification ("-12")         ' Line Number
+
+OEORD4detail1.Read
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+OEORD4detail1.RecordCreate 0
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ITEM").Value = "S.WWP2050"                       ' Item
+OEORD4detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD4detail1.Process
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD4detail1Fields("QTYORDERED").Value = "33.0000"                   ' Quantity Ordered
+
+temp = OEORD4detail1.Exists
+OEORD4detail1.Insert
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("LINENUM").PutWithoutVerification ("-13")         ' Line Number
+
+OEORD4detail1.Read
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+OEORD4detail1.RecordCreate 0
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ITEM").Value = "S.WWP2300"                       ' Item
+OEORD4detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD4detail1.Process
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD4detail1Fields("QTYORDERED").Value = "61.0000"                   ' Quantity Ordered
+
+temp = OEORD4detail1.Exists
+OEORD4detail1.Insert
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("LINENUM").PutWithoutVerification ("-14")         ' Line Number
+
+OEORD4detail1.Read
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+OEORD4detail1.RecordCreate 0
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ITEM").Value = "S.WWP0300"                       ' Item
+OEORD4detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD4detail1.Process
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD4detail1Fields("QTYORDERED").Value = "232.0000"                  ' Quantity Ordered
+
+temp = OEORD4detail1.Exists
+OEORD4detail1.Insert
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("LINENUM").PutWithoutVerification ("-15")         ' Line Number
+
+OEORD4detail1.Read
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+OEORD4detail1.RecordCreate 0
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ITEM").Value = "S.WWP3100NUOM1"                  ' Item
+OEORD4detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD4detail1.Process
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD4detail1Fields("QTYORDERED").Value = "110.0000"                  ' Quantity Ordered
+
+temp = OEORD4detail1.Exists
+OEORD4detail1.Insert
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("LINENUM").PutWithoutVerification ("-16")         ' Line Number
+
+OEORD4detail1.Read
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+OEORD4detail1.RecordCreate 0
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ITEM").Value = "S.WWP0600NUOM"                   ' Item
+OEORD4detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD4detail1.Process
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD4detail1Fields("QTYORDERED").Value = "95.0000"                   ' Quantity Ordered
+
+temp = OEORD4detail1.Exists
+OEORD4detail1.Insert
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("LINENUM").PutWithoutVerification ("-17")         ' Line Number
+
+OEORD4detail1.Read
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+OEORD4detail1.RecordCreate 0
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ITEM").Value = "S.WWP2900"                       ' Item
+OEORD4detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD4detail1.Process
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD4detail1Fields("QTYORDERED").Value = "71.0000"                   ' Quantity Ordered
+
+temp = OEORD4detail1.Exists
+OEORD4detail1.Insert
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("LINENUM").PutWithoutVerification ("-18")         ' Line Number
+
+OEORD4detail1.Read
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+OEORD4detail1.RecordCreate 0
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ITEM").Value = "S.WWP0200"                       ' Item
+OEORD4detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD4detail1.Process
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD4detail1Fields("QTYORDERED").Value = "24.0000"                   ' Quantity Ordered
+
+temp = OEORD4detail1.Exists
+OEORD4detail1.Insert
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("LINENUM").PutWithoutVerification ("-19")         ' Line Number
+
+OEORD4detail1.Read
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+OEORD4detail1.RecordCreate 0
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ITEM").Value = "S.WWP3300"                       ' Item
+OEORD4detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD4detail1.Process
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD4detail1Fields("QTYORDERED").Value = "28.0000"                   ' Quantity Ordered
+
+temp = OEORD4detail1.Exists
+OEORD4detail1.Insert
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("LINENUM").PutWithoutVerification ("-20")         ' Line Number
+
+OEORD4detail1.Read
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+OEORD4detail1.RecordCreate 0
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ITEM").Value = "S.WWP1450"                       ' Item
+OEORD4detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD4detail1.Process
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD4detail1Fields("QTYORDERED").Value = "28.0000"                   ' Quantity Ordered
+
+temp = OEORD4detail1.Exists
+OEORD4detail1.Insert
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("LINENUM").PutWithoutVerification ("-21")         ' Line Number
+
+OEORD4detail1.Read
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+OEORD4detail1.RecordCreate 0
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ITEM").Value = "S.WWP0400"                       ' Item
+OEORD4detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD4detail1.Process
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD4detail1Fields("QTYORDERED").Value = "125.0000"                  ' Quantity Ordered
+
+temp = OEORD4detail1.Exists
+OEORD4detail1.Insert
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("LINENUM").PutWithoutVerification ("-22")         ' Line Number
+
+OEORD4detail1.Read
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+OEORD4detail1.RecordCreate 0
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ITEM").Value = "S.WWP1500NUOM1"                  ' Item
+OEORD4detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD4detail1.Process
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD4detail1Fields("QTYORDERED").Value = "107.0000"                  ' Quantity Ordered
+
+temp = OEORD4detail1.Exists
+OEORD4detail1.Insert
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("LINENUM").PutWithoutVerification ("-23")         ' Line Number
+
+OEORD4detail1.Read
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+OEORD4detail1.RecordCreate 0
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ITEM").Value = "S.WWP0800"                       ' Item
+OEORD4detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD4detail1.Process
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD4detail1Fields("QTYORDERED").Value = "21.0000"                   ' Quantity Ordered
+
+temp = OEORD4detail1.Exists
+OEORD4detail1.Insert
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("LINENUM").PutWithoutVerification ("-24")         ' Line Number
+
+OEORD4detail1.Read
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+OEORD4detail1.RecordCreate 0
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ITEM").Value = "S.WWP3218"                       ' Item
+OEORD4detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD4detail1.Process
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD4detail1Fields("QTYORDERED").Value = "63.0000"                   ' Quantity Ordered
+
+temp = OEORD4detail1.Exists
+OEORD4detail1.Insert
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("LINENUM").PutWithoutVerification ("-25")         ' Line Number
+
+OEORD4detail1.Read
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+OEORD4detail1.RecordCreate 0
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ITEM").Value = "S.WWP1505NUOM"                   ' Item
+OEORD4detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD4detail1.Process
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD4detail1Fields("QTYORDERED").Value = "10.0000"                   ' Quantity Ordered
+
+temp = OEORD4detail1.Exists
+OEORD4detail1.Insert
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("LINENUM").PutWithoutVerification ("-26")         ' Line Number
+
+OEORD4detail1.Read
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+OEORD4detail1.RecordCreate 0
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ITEM").Value = "S.WWP3001"                       ' Item
+OEORD4detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD4detail1.Process
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD4detail1Fields("QTYORDERED").Value = "108.0000"                  ' Quantity Ordered
+
+temp = OEORD4detail1.Exists
+OEORD4detail1.Insert
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("LINENUM").PutWithoutVerification ("-27")         ' Line Number
+
+OEORD4detail1.Read
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+OEORD4detail1.RecordCreate 0
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ITEM").Value = "S.WWT1800"                       ' Item
+OEORD4detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD4detail1.Process
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD4detail1Fields("QTYORDERED").Value = "39.0000"                   ' Quantity Ordered
+
+temp = OEORD4detail1.Exists
+OEORD4detail1.Insert
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("LINENUM").PutWithoutVerification ("-28")         ' Line Number
+
+OEORD4detail1.Read
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+OEORD4detail1.RecordCreate 0
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ITEM").Value = "S.WWT1810"                       ' Item
+OEORD4detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD4detail1.Process
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD4detail1Fields("QTYORDERED").Value = "23.0000"                   ' Quantity Ordered
+
+temp = OEORD4detail1.Exists
+OEORD4detail1.Insert
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("LINENUM").PutWithoutVerification ("-29")         ' Line Number
+
+OEORD4detail1.Read
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+OEORD4detail1.RecordCreate 0
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ITEM").Value = "S.WWT1830"                       ' Item
+OEORD4detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD4detail1.Process
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD4detail1Fields("QTYORDERED").Value = "19.0000"                   ' Quantity Ordered
+
+temp = OEORD4detail1.Exists
+OEORD4detail1.Insert
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("LINENUM").PutWithoutVerification ("-30")         ' Line Number
+
+OEORD4detail1.Read
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+OEORD4detail1.RecordCreate 0
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ITEM").Value = "S.WWT1801"                       ' Item
+OEORD4detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD4detail1.Process
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD4detail1Fields("QTYORDERED").Value = "34.0000"                   ' Quantity Ordered
+
+temp = OEORD4detail1.Exists
+OEORD4detail1.Insert
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("LINENUM").PutWithoutVerification ("-31")         ' Line Number
+
+OEORD4detail1.Read
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+OEORD4detail1.RecordCreate 0
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ITEM").Value = "S.WWT1820"                       ' Item
+OEORD4detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD4detail1.Process
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD4detail1Fields("QTYORDERED").Value = "18.0000"                   ' Quantity Ordered
+
+temp = OEORD4detail1.Exists
+OEORD4detail1.Insert
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("LINENUM").PutWithoutVerification ("-32")         ' Line Number
+
+OEORD4detail1.Read
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+OEORD4detail1.RecordCreate 0
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ITEM").Value = "S.WWT1803"                       ' Item
+OEORD4detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD4detail1.Process
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD4detail1Fields("QTYORDERED").Value = "13.0000"                   ' Quantity Ordered
+
+temp = OEORD4detail1.Exists
+OEORD4detail1.Insert
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("LINENUM").PutWithoutVerification ("-33")         ' Line Number
+
+OEORD4detail1.Read
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+OEORD4detail1.RecordCreate 0
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ITEM").Value = "S.WWT1804"                       ' Item
+OEORD4detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD4detail1.Process
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD4detail1Fields("QTYORDERED").Value = "18.0000"                   ' Quantity Ordered
+
+temp = OEORD4detail1.Exists
+OEORD4detail1.Insert
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+
+OEORD4detail1Fields("LINENUM").PutWithoutVerification ("-34")         ' Line Number
+
+OEORD4detail1.Read
+temp = OEORD4detail1.Exists
+temp = OEORD4detail1.Exists
+OEORD4detail1.RecordCreate 0
+temp = OEORD4detail1.Exists
+OEORD4detail1.Browse "", 0
+
+OEORD4detail1Fields("LINENUM").PutWithoutVerification ("-20")         ' Line Number
+
+OEORD4detail1.Read
+OEORD4detail5Fields("OPTFIELD").PutWithoutVerification ("OEPICK")     ' Optional Field
+
+OEORD4detail5Fields("OPTFIELD").PutWithoutVerification ("OEPICK")     ' Optional Field
+
+OEORD4detail5.Read
+
+OEORD4detail5Fields("VALIFBOOL").Value = "1"                          ' Yes/No Value
+
+temp = OEORD4detail5.Exists
+OEORD4detail5.Update
+
+OEORD4detail5Fields("OPTFIELD").PutWithoutVerification ("TRUCK")      ' Optional Field
+
+OEORD4detail5.Read
+
+OEORD4detail5Fields("VALIFTEXT").Value = "WWTRANS"                    ' Text Value
+
+OEORD4detail5.Update
+
+OEORD4detail5Fields("OPTFIELD").PutWithoutVerification ("TRUCK")      ' Optional Field
+
+OEORD4detail5.Read
+OEORD4headerFields("OECOMMAND").Value = "4"                           ' Process O/E Command
+
+OEORD4headerFields("REFERENCE").PutWithoutVerification ("WW PORTAL")   ' Order Reference
+OEORD4headerFields("DESC").PutWithoutVerification ("70300448 PRIMAL WC")   ' Order Description
+
+OEORD4header.Process
+OEORD4header.Insert
+OEORD4header.Order = 1
+OEORD4header.Read
+OEORD4header.Order = 0
+OEORD4detail1Fields("LINENUM").PutWithoutVerification ("-32767")      ' Line Number
+OEORD4detail1.Browse "", 1
+OEORD4detail1.Fetch
+OEORD4detail9Fields("PRNCOMPNUM").PutWithoutVerification ("-2147483647")   ' Parent Component Number
+
+OEORD4detail9Fields("COMPNUM").PutWithoutVerification ("-2147483647")   ' Component Number
+
+OEORD4detail9.Browse "", 1
+OEORD4detail9.Fetch
+OEORD4detail3Fields("UNIQUIFIER").PutWithoutVerification ("-32767")   ' Uniquifier
+OEORD4detail3.Browse "", 1
+OEORD4detail3.Fetch
+OEORD4detail2Fields("PAYMENT").PutWithoutVerification ("-32767")      ' Payment Number
+OEORD4detail2.Browse "", -1
+OEORD4detail2.Fetch
+
+OEORD4detail2Fields("PAYMENT").PutWithoutVerification ("-1")          ' Payment Number
+OEORD4detail2.Browse "", 1
+
+OEORD4detail2Fields("PAYMENT").PutWithoutVerification ("-32767")      ' Payment Number
+
+OEORD4detail2.Browse "", -1
+OEORD4detail2.Fetch
+temp = OEORD4header.Exists
+
+Dim OEORD5header As AccpacCOMAPI.AccpacView
+Dim OEORD5headerFields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0520", OEORD5header
+Set OEORD5headerFields = OEORD5header.Fields
+
+Dim OEORD5detail1 As AccpacCOMAPI.AccpacView
+Dim OEORD5detail1Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0500", OEORD5detail1
+Set OEORD5detail1Fields = OEORD5detail1.Fields
+
+Dim OEORD5detail2 As AccpacCOMAPI.AccpacView
+Dim OEORD5detail2Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0740", OEORD5detail2
+Set OEORD5detail2Fields = OEORD5detail2.Fields
+
+Dim OEORD5detail3 As AccpacCOMAPI.AccpacView
+Dim OEORD5detail3Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0180", OEORD5detail3
+Set OEORD5detail3Fields = OEORD5detail3.Fields
+
+Dim OEORD5detail4 As AccpacCOMAPI.AccpacView
+Dim OEORD5detail4Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0526", OEORD5detail4
+Set OEORD5detail4Fields = OEORD5detail4.Fields
+
+Dim OEORD5detail5 As AccpacCOMAPI.AccpacView
+Dim OEORD5detail5Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0522", OEORD5detail5
+Set OEORD5detail5Fields = OEORD5detail5.Fields
+
+Dim OEORD5detail6 As AccpacCOMAPI.AccpacView
+Dim OEORD5detail6Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0508", OEORD5detail6
+Set OEORD5detail6Fields = OEORD5detail6.Fields
+
+Dim OEORD5detail7 As AccpacCOMAPI.AccpacView
+Dim OEORD5detail7Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0507", OEORD5detail7
+Set OEORD5detail7Fields = OEORD5detail7.Fields
+
+Dim OEORD5detail8 As AccpacCOMAPI.AccpacView
+Dim OEORD5detail8Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0501", OEORD5detail8
+Set OEORD5detail8Fields = OEORD5detail8.Fields
+
+Dim OEORD5detail9 As AccpacCOMAPI.AccpacView
+Dim OEORD5detail9Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0502", OEORD5detail9
+Set OEORD5detail9Fields = OEORD5detail9.Fields
+
+Dim OEORD5detail10 As AccpacCOMAPI.AccpacView
+Dim OEORD5detail10Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0504", OEORD5detail10
+Set OEORD5detail10Fields = OEORD5detail10.Fields
+
+Dim OEORD5detail11 As AccpacCOMAPI.AccpacView
+Dim OEORD5detail11Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0506", OEORD5detail11
+Set OEORD5detail11Fields = OEORD5detail11.Fields
+
+Dim OEORD5detail12 As AccpacCOMAPI.AccpacView
+Dim OEORD5detail12Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0503", OEORD5detail12
+Set OEORD5detail12Fields = OEORD5detail12.Fields
+
+OEORD5header.Compose Array(OEORD5detail1, Nothing, OEORD5detail3, OEORD5detail2, OEORD5detail4, OEORD5detail5)
+
+OEORD5detail1.Compose Array(OEORD5header, OEORD5detail8, OEORD5detail12, OEORD5detail9, OEORD5detail6, OEORD5detail7)
+
+OEORD5detail2.Compose Array(OEORD5header)
+
+OEORD5detail3.Compose Array(OEORD5header, OEORD5detail1)
+
+OEORD5detail4.Compose Array(OEORD5header)
+
+OEORD5detail5.Compose Array(OEORD5header)
+
+OEORD5detail6.Compose Array(OEORD5detail1)
+
+OEORD5detail7.Compose Array(OEORD5detail1)
+
+OEORD5detail8.Compose Array(OEORD5detail1)
+
+OEORD5detail9.Compose Array(OEORD5detail1, OEORD5detail10, OEORD5detail11)
+
+OEORD5detail10.Compose Array(OEORD5detail9)
+
+OEORD5detail11.Compose Array(OEORD5detail9)
+
+OEORD5detail12.Compose Array(OEORD5detail1)
+
+
+
+OEORD5headerFields("DRIVENBYUI").Value = "1"                          ' Driven by UI
+
+OEORD5detail1Fields("DRIVENBYUI").Value = "1"                         ' Driven by UI
+OEORD5header.Cancel
+OEORD5header.Cancel
+OEORD5header.Init
+OEORD5detail2.Browse "", 1
+OEORD5detail2.Fetch
+OEORD5headerFields("CUSTOMER").Value = "WOOL001"                      ' Customer Number
+OEORD5detail2.Browse "", 1
+
+OEORD5detail2Fields("PAYMENT").PutWithoutVerification ("-32767")      ' Payment Number
+
+OEORD5detail2.Browse "", -1
+OEORD5detail2.Fetch
+OEORD5headerFields("PROCESSCMD").PutWithoutVerification ("1")         ' Process OIP Command
+OEORD5header.Process
+
+OEORD5headerFields("PONUMBER").Value = "70300453 FOOD GTG"            ' Purchase Order Number
+OEORD5headerFields("REQUESDATE").Value = DateSerial(2025, 8, 6)       ' Date Requested
+OEORD5headerFields("EXPDATE").Value = DateSerial(2025, 8, 6)          ' Expected Ship Date
+
+OEORD5headerFields("SHIPTO").Value = "WWGTG"                          ' Ship-To Location Code
+OEORD5headerFields("GOFCALCTAX").PutWithoutVerification ("1")         ' Perform Forced Tax Calculation
+OEORD5headerFields("DESC").PutWithoutVerification ("70300453 FOOD GTG")   ' Order Description
+
+OEORD5header.Process
+
+OEORD5headerFields("PROCESSCMD").PutWithoutVerification ("1")         ' Process OIP Command
+
+OEORD5header.Process
+temp = OEORD5detail1.Exists
+OEORD5detail1.RecordClear
+temp = OEORD5detail1.Exists
+OEORD5detail1.RecordCreate 0
+temp = OEORD5detail1.Exists
+
+OEORD5detail1Fields("ITEM").Value = "S.WWP1875"                       ' Item
+OEORD5detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD5detail1.Process
+temp = OEORD5detail1.Exists
+
+OEORD5detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD5detail1Fields("QTYORDERED").Value = "28.0000"                   ' Quantity Ordered
+
+temp = OEORD5detail1.Exists
+OEORD5detail1.Insert
+temp = OEORD5detail1.Exists
+temp = OEORD5detail1.Exists
+
+OEORD5detail1Fields("LINENUM").PutWithoutVerification ("-1")          ' Line Number
+
+OEORD5detail1.Read
+temp = OEORD5detail1.Exists
+temp = OEORD5detail1.Exists
+OEORD5detail1.RecordCreate 0
+temp = OEORD5detail1.Exists
+
+OEORD5detail1Fields("LINENUM").PutWithoutVerification ("-1")          ' Line Number
+
+OEORD5detail1.Read
+OEORD5detail5Fields("OPTFIELD").PutWithoutVerification ("OEPICK")     ' Optional Field
+
+OEORD5detail5Fields("OPTFIELD").PutWithoutVerification ("OEPICK")     ' Optional Field
+
+OEORD5detail5.Read
+
+OEORD5detail5Fields("VALIFBOOL").Value = "1"                          ' Yes/No Value
+
+temp = OEORD5detail5.Exists
+OEORD5detail5.Update
+
+OEORD5detail5Fields("OPTFIELD").PutWithoutVerification ("TRUCK")      ' Optional Field
+
+OEORD5detail5.Read
+
+OEORD5detail5Fields("VALIFTEXT").Value = "WWTRANS"                    ' Text Value
+
+OEORD5detail5.Update
+
+OEORD5detail5Fields("OPTFIELD").PutWithoutVerification ("TRUCK")      ' Optional Field
+
+OEORD5detail5.Read
+OEORD5headerFields("OECOMMAND").Value = "4"                           ' Process O/E Command
+
+OEORD5headerFields("REFERENCE").PutWithoutVerification ("WW PORTAL")   ' Order Reference
+
+OEORD5header.Process
+OEORD5header.Insert
+OEORD5header.Order = 1
+OEORD5header.Read
+OEORD5header.Order = 0
+OEORD5detail1Fields("LINENUM").PutWithoutVerification ("-32767")      ' Line Number
+OEORD5detail1.Browse "", 1
+OEORD5detail1.Fetch
+OEORD5detail9Fields("PRNCOMPNUM").PutWithoutVerification ("-2147483647")   ' Parent Component Number
+
+OEORD5detail9Fields("COMPNUM").PutWithoutVerification ("-2147483647")   ' Component Number
+
+OEORD5detail9.Browse "", 1
+OEORD5detail9.Fetch
+OEORD5detail3Fields("UNIQUIFIER").PutWithoutVerification ("-32767")   ' Uniquifier
+OEORD5detail3.Browse "", 1
+OEORD5detail3.Fetch
+OEORD5detail2Fields("PAYMENT").PutWithoutVerification ("-32767")      ' Payment Number
+OEORD5detail2.Browse "", -1
+OEORD5detail2.Fetch
+
+OEORD5detail2Fields("PAYMENT").PutWithoutVerification ("-1")          ' Payment Number
+OEORD5detail2.Browse "", 1
+
+OEORD5detail2Fields("PAYMENT").PutWithoutVerification ("-32767")      ' Payment Number
+
+OEORD5detail2.Browse "", -1
+OEORD5detail2.Fetch
+temp = OEORD5header.Exists
+
+Dim OEORD6header As AccpacCOMAPI.AccpacView
+Dim OEORD6headerFields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0520", OEORD6header
+Set OEORD6headerFields = OEORD6header.Fields
+
+Dim OEORD6detail1 As AccpacCOMAPI.AccpacView
+Dim OEORD6detail1Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0500", OEORD6detail1
+Set OEORD6detail1Fields = OEORD6detail1.Fields
+
+Dim OEORD6detail2 As AccpacCOMAPI.AccpacView
+Dim OEORD6detail2Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0740", OEORD6detail2
+Set OEORD6detail2Fields = OEORD6detail2.Fields
+
+Dim OEORD6detail3 As AccpacCOMAPI.AccpacView
+Dim OEORD6detail3Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0180", OEORD6detail3
+Set OEORD6detail3Fields = OEORD6detail3.Fields
+
+Dim OEORD6detail4 As AccpacCOMAPI.AccpacView
+Dim OEORD6detail4Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0526", OEORD6detail4
+Set OEORD6detail4Fields = OEORD6detail4.Fields
+
+Dim OEORD6detail5 As AccpacCOMAPI.AccpacView
+Dim OEORD6detail5Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0522", OEORD6detail5
+Set OEORD6detail5Fields = OEORD6detail5.Fields
+
+Dim OEORD6detail6 As AccpacCOMAPI.AccpacView
+Dim OEORD6detail6Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0508", OEORD6detail6
+Set OEORD6detail6Fields = OEORD6detail6.Fields
+
+Dim OEORD6detail7 As AccpacCOMAPI.AccpacView
+Dim OEORD6detail7Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0507", OEORD6detail7
+Set OEORD6detail7Fields = OEORD6detail7.Fields
+
+Dim OEORD6detail8 As AccpacCOMAPI.AccpacView
+Dim OEORD6detail8Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0501", OEORD6detail8
+Set OEORD6detail8Fields = OEORD6detail8.Fields
+
+Dim OEORD6detail9 As AccpacCOMAPI.AccpacView
+Dim OEORD6detail9Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0502", OEORD6detail9
+Set OEORD6detail9Fields = OEORD6detail9.Fields
+
+Dim OEORD6detail10 As AccpacCOMAPI.AccpacView
+Dim OEORD6detail10Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0504", OEORD6detail10
+Set OEORD6detail10Fields = OEORD6detail10.Fields
+
+Dim OEORD6detail11 As AccpacCOMAPI.AccpacView
+Dim OEORD6detail11Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0506", OEORD6detail11
+Set OEORD6detail11Fields = OEORD6detail11.Fields
+
+Dim OEORD6detail12 As AccpacCOMAPI.AccpacView
+Dim OEORD6detail12Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0503", OEORD6detail12
+Set OEORD6detail12Fields = OEORD6detail12.Fields
+
+OEORD6header.Compose Array(OEORD6detail1, Nothing, OEORD6detail3, OEORD6detail2, OEORD6detail4, OEORD6detail5)
+
+OEORD6detail1.Compose Array(OEORD6header, OEORD6detail8, OEORD6detail12, OEORD6detail9, OEORD6detail6, OEORD6detail7)
+
+OEORD6detail2.Compose Array(OEORD6header)
+
+OEORD6detail3.Compose Array(OEORD6header, OEORD6detail1)
+
+OEORD6detail4.Compose Array(OEORD6header)
+
+OEORD6detail5.Compose Array(OEORD6header)
+
+OEORD6detail6.Compose Array(OEORD6detail1)
+
+OEORD6detail7.Compose Array(OEORD6detail1)
+
+OEORD6detail8.Compose Array(OEORD6detail1)
+
+OEORD6detail9.Compose Array(OEORD6detail1, OEORD6detail10, OEORD6detail11)
+
+OEORD6detail10.Compose Array(OEORD6detail9)
+
+OEORD6detail11.Compose Array(OEORD6detail9)
+
+OEORD6detail12.Compose Array(OEORD6detail1)
+
+
+
+OEORD6headerFields("DRIVENBYUI").Value = "1"                          ' Driven by UI
+
+OEORD6detail1Fields("DRIVENBYUI").Value = "1"                         ' Driven by UI
+OEORD6header.Cancel
+OEORD6header.Cancel
+OEORD6header.Init
+OEORD6detail2.Browse "", 1
+OEORD6detail2.Fetch
+OEORD6headerFields("CUSTOMER").Value = "WOOL001"                      ' Customer Number
+OEORD6detail2.Browse "", 1
+
+OEORD6detail2Fields("PAYMENT").PutWithoutVerification ("-32767")      ' Payment Number
+
+OEORD6detail2.Browse "", -1
+OEORD6detail2.Fetch
+OEORD6headerFields("PROCESSCMD").PutWithoutVerification ("1")         ' Process OIP Command
+OEORD6header.Process
+
+OEORD6headerFields("PONUMBER").Value = "70300455 HOT GTG"             ' Purchase Order Number
+OEORD6headerFields("REQUESDATE").Value = DateSerial(2025, 8, 6)       ' Date Requested
+OEORD6headerFields("EXPDATE").Value = DateSerial(2025, 8, 6)          ' Expected Ship Date
+
+OEORD6headerFields("SHIPTO").Value = "WWGTG"                          ' Ship-To Location Code
+OEORD6headerFields("GOFCALCTAX").PutWithoutVerification ("1")         ' Perform Forced Tax Calculation
+OEORD6headerFields("DESC").PutWithoutVerification ("70300455 HOT GTG")   ' Order Description
+
+OEORD6header.Process
+
+OEORD6headerFields("PROCESSCMD").PutWithoutVerification ("1")         ' Process OIP Command
+
+OEORD6header.Process
+temp = OEORD6detail1.Exists
+OEORD6detail1.RecordClear
+temp = OEORD6detail1.Exists
+OEORD6detail1.RecordCreate 0
+temp = OEORD6detail1.Exists
+
+OEORD6detail1Fields("ITEM").Value = "S.WWP1605"                       ' Item
+OEORD6detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD6detail1.Process
+temp = OEORD6detail1.Exists
+
+OEORD6detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD6detail1Fields("QTYORDERED").Value = "221.0000"                  ' Quantity Ordered
+
+temp = OEORD6detail1.Exists
+OEORD6detail1.Insert
+temp = OEORD6detail1.Exists
+temp = OEORD6detail1.Exists
+
+OEORD6detail1Fields("LINENUM").PutWithoutVerification ("-1")          ' Line Number
+
+OEORD6detail1.Read
+temp = OEORD6detail1.Exists
+temp = OEORD6detail1.Exists
+OEORD6detail1.RecordCreate 0
+temp = OEORD6detail1.Exists
+
+OEORD6detail1Fields("ITEM").Value = "S.WWP1603"                       ' Item
+OEORD6detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD6detail1.Process
+temp = OEORD6detail1.Exists
+
+OEORD6detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD6detail1Fields("QTYORDERED").Value = "90.0000"                   ' Quantity Ordered
+
+temp = OEORD6detail1.Exists
+OEORD6detail1.Insert
+temp = OEORD6detail1.Exists
+temp = OEORD6detail1.Exists
+
+OEORD6detail1Fields("LINENUM").PutWithoutVerification ("-2")          ' Line Number
+
+OEORD6detail1.Read
+temp = OEORD6detail1.Exists
+temp = OEORD6detail1.Exists
+OEORD6detail1.RecordCreate 0
+temp = OEORD6detail1.Exists
+
+OEORD6detail1Fields("ITEM").Value = "S.WWV1988"                       ' Item
+OEORD6detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD6detail1.Process
+temp = OEORD6detail1.Exists
+
+OEORD6detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD6detail1Fields("QTYORDERED").Value = "102.0000"                  ' Quantity Ordered
+
+temp = OEORD6detail1.Exists
+OEORD6detail1.Insert
+temp = OEORD6detail1.Exists
+temp = OEORD6detail1.Exists
+
+OEORD6detail1Fields("LINENUM").PutWithoutVerification ("-3")          ' Line Number
+
+OEORD6detail1.Read
+temp = OEORD6detail1.Exists
+temp = OEORD6detail1.Exists
+OEORD6detail1.RecordCreate 0
+temp = OEORD6detail1.Exists
+
+OEORD6detail1Fields("ITEM").Value = "S.WWV0330"                       ' Item
+OEORD6detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD6detail1.Process
+temp = OEORD6detail1.Exists
+
+OEORD6detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD6detail1Fields("QTYORDERED").Value = "7.0000"                    ' Quantity Ordered
+
+temp = OEORD6detail1.Exists
+OEORD6detail1.Insert
+temp = OEORD6detail1.Exists
+temp = OEORD6detail1.Exists
+
+OEORD6detail1Fields("LINENUM").PutWithoutVerification ("-4")          ' Line Number
+
+OEORD6detail1.Read
+temp = OEORD6detail1.Exists
+temp = OEORD6detail1.Exists
+OEORD6detail1.RecordCreate 0
+temp = OEORD6detail1.Exists
+
+OEORD6detail1Fields("LINENUM").PutWithoutVerification ("-4")          ' Line Number
+
+OEORD6detail1.Read
+OEORD6detail5Fields("OPTFIELD").PutWithoutVerification ("OEPICK")     ' Optional Field
+
+OEORD6detail5Fields("OPTFIELD").PutWithoutVerification ("OEPICK")     ' Optional Field
+
+OEORD6detail5.Read
+
+OEORD6detail5Fields("VALIFBOOL").Value = "1"                          ' Yes/No Value
+
+temp = OEORD6detail5.Exists
+OEORD6detail5.Update
+
+OEORD6detail5Fields("OPTFIELD").PutWithoutVerification ("TRUCK")      ' Optional Field
+
+OEORD6detail5.Read
+
+OEORD6detail5Fields("VALIFTEXT").Value = "WWTRANS"                    ' Text Value
+
+OEORD6detail5.Update
+
+OEORD6detail5Fields("OPTFIELD").PutWithoutVerification ("TRUCK")      ' Optional Field
+
+OEORD6detail5.Read
+OEORD6headerFields("OECOMMAND").Value = "4"                           ' Process O/E Command
+
+OEORD6headerFields("REFERENCE").PutWithoutVerification ("WW PORTAL")   ' Order Reference
+
+OEORD6header.Process
+OEORD6header.Insert
+OEORD6header.Order = 1
+OEORD6header.Read
+OEORD6header.Order = 0
+OEORD6detail1Fields("LINENUM").PutWithoutVerification ("-32767")      ' Line Number
+OEORD6detail1.Browse "", 1
+OEORD6detail1.Fetch
+OEORD6detail9Fields("PRNCOMPNUM").PutWithoutVerification ("-2147483647")   ' Parent Component Number
+
+OEORD6detail9Fields("COMPNUM").PutWithoutVerification ("-2147483647")   ' Component Number
+
+OEORD6detail9.Browse "", 1
+OEORD6detail9.Fetch
+OEORD6detail3Fields("UNIQUIFIER").PutWithoutVerification ("-32767")   ' Uniquifier
+OEORD6detail3.Browse "", 1
+OEORD6detail3.Fetch
+OEORD6detail2Fields("PAYMENT").PutWithoutVerification ("-32767")      ' Payment Number
+OEORD6detail2.Browse "", -1
+OEORD6detail2.Fetch
+
+OEORD6detail2Fields("PAYMENT").PutWithoutVerification ("-1")          ' Payment Number
+OEORD6detail2.Browse "", 1
+
+OEORD6detail2Fields("PAYMENT").PutWithoutVerification ("-32767")      ' Payment Number
+
+OEORD6detail2.Browse "", -1
+OEORD6detail2.Fetch
+temp = OEORD6header.Exists
+
+Dim OEORD7header As AccpacCOMAPI.AccpacView
+Dim OEORD7headerFields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0520", OEORD7header
+Set OEORD7headerFields = OEORD7header.Fields
+
+Dim OEORD7detail1 As AccpacCOMAPI.AccpacView
+Dim OEORD7detail1Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0500", OEORD7detail1
+Set OEORD7detail1Fields = OEORD7detail1.Fields
+
+Dim OEORD7detail2 As AccpacCOMAPI.AccpacView
+Dim OEORD7detail2Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0740", OEORD7detail2
+Set OEORD7detail2Fields = OEORD7detail2.Fields
+
+Dim OEORD7detail3 As AccpacCOMAPI.AccpacView
+Dim OEORD7detail3Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0180", OEORD7detail3
+Set OEORD7detail3Fields = OEORD7detail3.Fields
+
+Dim OEORD7detail4 As AccpacCOMAPI.AccpacView
+Dim OEORD7detail4Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0526", OEORD7detail4
+Set OEORD7detail4Fields = OEORD7detail4.Fields
+
+Dim OEORD7detail5 As AccpacCOMAPI.AccpacView
+Dim OEORD7detail5Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0522", OEORD7detail5
+Set OEORD7detail5Fields = OEORD7detail5.Fields
+
+Dim OEORD7detail6 As AccpacCOMAPI.AccpacView
+Dim OEORD7detail6Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0508", OEORD7detail6
+Set OEORD7detail6Fields = OEORD7detail6.Fields
+
+Dim OEORD7detail7 As AccpacCOMAPI.AccpacView
+Dim OEORD7detail7Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0507", OEORD7detail7
+Set OEORD7detail7Fields = OEORD7detail7.Fields
+
+Dim OEORD7detail8 As AccpacCOMAPI.AccpacView
+Dim OEORD7detail8Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0501", OEORD7detail8
+Set OEORD7detail8Fields = OEORD7detail8.Fields
+
+Dim OEORD7detail9 As AccpacCOMAPI.AccpacView
+Dim OEORD7detail9Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0502", OEORD7detail9
+Set OEORD7detail9Fields = OEORD7detail9.Fields
+
+Dim OEORD7detail10 As AccpacCOMAPI.AccpacView
+Dim OEORD7detail10Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0504", OEORD7detail10
+Set OEORD7detail10Fields = OEORD7detail10.Fields
+
+Dim OEORD7detail11 As AccpacCOMAPI.AccpacView
+Dim OEORD7detail11Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0506", OEORD7detail11
+Set OEORD7detail11Fields = OEORD7detail11.Fields
+
+Dim OEORD7detail12 As AccpacCOMAPI.AccpacView
+Dim OEORD7detail12Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0503", OEORD7detail12
+Set OEORD7detail12Fields = OEORD7detail12.Fields
+
+OEORD7header.Compose Array(OEORD7detail1, Nothing, OEORD7detail3, OEORD7detail2, OEORD7detail4, OEORD7detail5)
+
+OEORD7detail1.Compose Array(OEORD7header, OEORD7detail8, OEORD7detail12, OEORD7detail9, OEORD7detail6, OEORD7detail7)
+
+OEORD7detail2.Compose Array(OEORD7header)
+
+OEORD7detail3.Compose Array(OEORD7header, OEORD7detail1)
+
+OEORD7detail4.Compose Array(OEORD7header)
+
+OEORD7detail5.Compose Array(OEORD7header)
+
+OEORD7detail6.Compose Array(OEORD7detail1)
+
+OEORD7detail7.Compose Array(OEORD7detail1)
+
+OEORD7detail8.Compose Array(OEORD7detail1)
+
+OEORD7detail9.Compose Array(OEORD7detail1, OEORD7detail10, OEORD7detail11)
+
+OEORD7detail10.Compose Array(OEORD7detail9)
+
+OEORD7detail11.Compose Array(OEORD7detail9)
+
+OEORD7detail12.Compose Array(OEORD7detail1)
+
+
+
+OEORD7headerFields("DRIVENBYUI").Value = "1"                          ' Driven by UI
+
+OEORD7detail1Fields("DRIVENBYUI").Value = "1"                         ' Driven by UI
+OEORD7header.Cancel
+OEORD7header.Cancel
+OEORD7header.Init
+OEORD7detail2.Browse "", 1
+OEORD7detail2.Fetch
+OEORD7headerFields("CUSTOMER").Value = "WOOL001"                      ' Customer Number
+OEORD7detail2.Browse "", 1
+
+OEORD7detail2Fields("PAYMENT").PutWithoutVerification ("-32767")      ' Payment Number
+
+OEORD7detail2.Browse "", -1
+OEORD7detail2.Fetch
+OEORD7headerFields("PROCESSCMD").PutWithoutVerification ("1")         ' Process OIP Command
+OEORD7header.Process
+
+OEORD7headerFields("PONUMBER").Value = "70300457 PRIMAL GTG"          ' Purchase Order Number
+OEORD7headerFields("REQUESDATE").Value = DateSerial(2025, 8, 6)       ' Date Requested
+OEORD7headerFields("EXPDATE").Value = DateSerial(2025, 8, 6)          ' Expected Ship Date
+
+OEORD7headerFields("SHIPTO").Value = "WWGTG"                          ' Ship-To Location Code
+OEORD7headerFields("GOFCALCTAX").PutWithoutVerification ("1")         ' Perform Forced Tax Calculation
+OEORD7headerFields("DESC").PutWithoutVerification ("70300457 PRIMAL GTG")   ' Order Description
+
+OEORD7header.Process
+
+OEORD7headerFields("PROCESSCMD").PutWithoutVerification ("1")         ' Process OIP Command
+
+OEORD7header.Process
+temp = OEORD7detail1.Exists
+OEORD7detail1.RecordClear
+temp = OEORD7detail1.Exists
+OEORD7detail1.RecordCreate 0
+temp = OEORD7detail1.Exists
+
+OEORD7detail1Fields("ITEM").Value = "S.WWV0110"                       ' Item
+OEORD7detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD7detail1.Process
+temp = OEORD7detail1.Exists
+
+OEORD7detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD7detail1Fields("QTYORDERED").Value = "56.0000"                   ' Quantity Ordered
+
+temp = OEORD7detail1.Exists
+OEORD7detail1.Insert
+temp = OEORD7detail1.Exists
+temp = OEORD7detail1.Exists
+
+OEORD7detail1Fields("LINENUM").PutWithoutVerification ("-1")          ' Line Number
+
+OEORD7detail1.Read
+temp = OEORD7detail1.Exists
+temp = OEORD7detail1.Exists
+OEORD7detail1.RecordCreate 0
+temp = OEORD7detail1.Exists
+
+OEORD7detail1Fields("ITEM").Value = "S.WWV0111"                       ' Item
+OEORD7detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD7detail1.Process
+temp = OEORD7detail1.Exists
+
+OEORD7detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD7detail1Fields("QTYORDERED").Value = "35.0000"                   ' Quantity Ordered
+
+temp = OEORD7detail1.Exists
+OEORD7detail1.Insert
+temp = OEORD7detail1.Exists
+temp = OEORD7detail1.Exists
+
+OEORD7detail1Fields("LINENUM").PutWithoutVerification ("-2")          ' Line Number
+
+OEORD7detail1.Read
+temp = OEORD7detail1.Exists
+temp = OEORD7detail1.Exists
+OEORD7detail1.RecordCreate 0
+temp = OEORD7detail1.Exists
+
+OEORD7detail1Fields("ITEM").Value = "S.WWV0112"                       ' Item
+OEORD7detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD7detail1.Process
+temp = OEORD7detail1.Exists
+
+OEORD7detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD7detail1Fields("QTYORDERED").Value = "31.0000"                   ' Quantity Ordered
+
+temp = OEORD7detail1.Exists
+OEORD7detail1.Insert
+temp = OEORD7detail1.Exists
+temp = OEORD7detail1.Exists
+
+OEORD7detail1Fields("LINENUM").PutWithoutVerification ("-3")          ' Line Number
+
+OEORD7detail1.Read
+temp = OEORD7detail1.Exists
+temp = OEORD7detail1.Exists
+OEORD7detail1.RecordCreate 0
+temp = OEORD7detail1.Exists
+
+OEORD7detail1Fields("ITEM").Value = "S.WWV0805"                       ' Item
+OEORD7detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD7detail1.Process
+temp = OEORD7detail1.Exists
+
+OEORD7detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD7detail1Fields("QTYORDERED").Value = "54.0000"                   ' Quantity Ordered
+
+temp = OEORD7detail1.Exists
+OEORD7detail1.Insert
+temp = OEORD7detail1.Exists
+temp = OEORD7detail1.Exists
+
+OEORD7detail1Fields("LINENUM").PutWithoutVerification ("-4")          ' Line Number
+
+OEORD7detail1.Read
+temp = OEORD7detail1.Exists
+temp = OEORD7detail1.Exists
+OEORD7detail1.RecordCreate 0
+temp = OEORD7detail1.Exists
+
+OEORD7detail1Fields("ITEM").Value = "S.WWV0810"                       ' Item
+OEORD7detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD7detail1.Process
+temp = OEORD7detail1.Exists
+
+OEORD7detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD7detail1Fields("QTYORDERED").Value = "27.0000"                   ' Quantity Ordered
+
+temp = OEORD7detail1.Exists
+OEORD7detail1.Insert
+temp = OEORD7detail1.Exists
+temp = OEORD7detail1.Exists
+
+OEORD7detail1Fields("LINENUM").PutWithoutVerification ("-5")          ' Line Number
+
+OEORD7detail1.Read
+temp = OEORD7detail1.Exists
+temp = OEORD7detail1.Exists
+OEORD7detail1.RecordCreate 0
+temp = OEORD7detail1.Exists
+
+OEORD7detail1Fields("ITEM").Value = "S.WWV0655"                       ' Item
+OEORD7detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD7detail1.Process
+temp = OEORD7detail1.Exists
+
+OEORD7detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD7detail1Fields("QTYORDERED").Value = "49.0000"                   ' Quantity Ordered
+
+temp = OEORD7detail1.Exists
+OEORD7detail1.Insert
+temp = OEORD7detail1.Exists
+temp = OEORD7detail1.Exists
+
+OEORD7detail1Fields("LINENUM").PutWithoutVerification ("-6")          ' Line Number
+
+OEORD7detail1.Read
+temp = OEORD7detail1.Exists
+temp = OEORD7detail1.Exists
+OEORD7detail1.RecordCreate 0
+temp = OEORD7detail1.Exists
+
+OEORD7detail1Fields("ITEM").Value = "S.WWV0656"                       ' Item
+OEORD7detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD7detail1.Process
+temp = OEORD7detail1.Exists
+
+OEORD7detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD7detail1Fields("QTYORDERED").Value = "29.0000"                   ' Quantity Ordered
+
+temp = OEORD7detail1.Exists
+OEORD7detail1.Insert
+temp = OEORD7detail1.Exists
+temp = OEORD7detail1.Exists
+
+OEORD7detail1Fields("LINENUM").PutWithoutVerification ("-7")          ' Line Number
+
+OEORD7detail1.Read
+temp = OEORD7detail1.Exists
+temp = OEORD7detail1.Exists
+OEORD7detail1.RecordCreate 0
+temp = OEORD7detail1.Exists
+
+OEORD7detail1Fields("ITEM").Value = "S.WWT1810"                       ' Item
+OEORD7detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD7detail1.Process
+temp = OEORD7detail1.Exists
+
+OEORD7detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD7detail1Fields("QTYORDERED").Value = "15.0000"                   ' Quantity Ordered
+
+temp = OEORD7detail1.Exists
+OEORD7detail1.Insert
+temp = OEORD7detail1.Exists
+temp = OEORD7detail1.Exists
+
+OEORD7detail1Fields("LINENUM").PutWithoutVerification ("-8")          ' Line Number
+
+OEORD7detail1.Read
+temp = OEORD7detail1.Exists
+temp = OEORD7detail1.Exists
+OEORD7detail1.RecordCreate 0
+temp = OEORD7detail1.Exists
+
+OEORD7detail1Fields("ITEM").Value = "S.WWT1830"                       ' Item
+OEORD7detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD7detail1.Process
+temp = OEORD7detail1.Exists
+
+OEORD7detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD7detail1Fields("QTYORDERED").Value = "6.0000"                    ' Quantity Ordered
+
+temp = OEORD7detail1.Exists
+OEORD7detail1.Insert
+temp = OEORD7detail1.Exists
+temp = OEORD7detail1.Exists
+
+OEORD7detail1Fields("LINENUM").PutWithoutVerification ("-9")          ' Line Number
+
+OEORD7detail1.Read
+temp = OEORD7detail1.Exists
+temp = OEORD7detail1.Exists
+OEORD7detail1.RecordCreate 0
+temp = OEORD7detail1.Exists
+
+OEORD7detail1Fields("ITEM").Value = "S.WWT1820"                       ' Item
+OEORD7detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD7detail1.Process
+temp = OEORD7detail1.Exists
+
+OEORD7detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD7detail1Fields("QTYORDERED").Value = "7.0000"                    ' Quantity Ordered
+
+temp = OEORD7detail1.Exists
+OEORD7detail1.Insert
+temp = OEORD7detail1.Exists
+temp = OEORD7detail1.Exists
+
+OEORD7detail1Fields("LINENUM").PutWithoutVerification ("-10")         ' Line Number
+
+OEORD7detail1.Read
+temp = OEORD7detail1.Exists
+temp = OEORD7detail1.Exists
+OEORD7detail1.RecordCreate 0
+temp = OEORD7detail1.Exists
+OEORD7detail1.Browse "", 1
+
+OEORD7detail1Fields("LINENUM").PutWithoutVerification ("-10")         ' Line Number
+
+OEORD7detail1.Read
+OEORD7detail5Fields("OPTFIELD").PutWithoutVerification ("OEPICK")     ' Optional Field
+
+OEORD7detail5Fields("OPTFIELD").PutWithoutVerification ("OEPICK")     ' Optional Field
+
+OEORD7detail5.Read
+
+OEORD7detail5Fields("VALIFBOOL").Value = "1"                          ' Yes/No Value
+
+temp = OEORD7detail5.Exists
+OEORD7detail5.Update
+
+OEORD7detail5Fields("OPTFIELD").PutWithoutVerification ("TRUCK")      ' Optional Field
+
+OEORD7detail5.Read
+
+OEORD7detail5Fields("VALIFTEXT").Value = "WWTRANS"                    ' Text Value
+
+OEORD7detail5.Update
+
+OEORD7detail5Fields("OPTFIELD").PutWithoutVerification ("TRUCK")      ' Optional Field
+
+OEORD7detail5.Read
+OEORD7headerFields("OECOMMAND").Value = "4"                           ' Process O/E Command
+
+OEORD7headerFields("REFERENCE").PutWithoutVerification ("WW PORTAL")   ' Order Reference
+
+OEORD7header.Process
+OEORD7header.Insert
+OEORD7header.Order = 1
+OEORD7header.Read
+OEORD7header.Order = 0
+OEORD7detail1Fields("LINENUM").PutWithoutVerification ("-32767")      ' Line Number
+OEORD7detail1.Browse "", 1
+OEORD7detail1.Fetch
+OEORD7detail9Fields("PRNCOMPNUM").PutWithoutVerification ("-2147483647")   ' Parent Component Number
+
+OEORD7detail9Fields("COMPNUM").PutWithoutVerification ("-2147483647")   ' Component Number
+
+OEORD7detail9.Browse "", 1
+OEORD7detail9.Fetch
+OEORD7detail3Fields("UNIQUIFIER").PutWithoutVerification ("-32767")   ' Uniquifier
+OEORD7detail3.Browse "", 1
+OEORD7detail3.Fetch
+OEORD7detail2Fields("PAYMENT").PutWithoutVerification ("-32767")      ' Payment Number
+OEORD7detail2.Browse "", -1
+OEORD7detail2.Fetch
+
+OEORD7detail2Fields("PAYMENT").PutWithoutVerification ("-1")          ' Payment Number
+OEORD7detail2.Browse "", 1
+
+OEORD7detail2Fields("PAYMENT").PutWithoutVerification ("-32767")      ' Payment Number
+
+OEORD7detail2.Browse "", -1
+OEORD7detail2.Fetch
+temp = OEORD7header.Exists
+
+Dim OEORD8header As AccpacCOMAPI.AccpacView
+Dim OEORD8headerFields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0520", OEORD8header
+Set OEORD8headerFields = OEORD8header.Fields
+
+Dim OEORD8detail1 As AccpacCOMAPI.AccpacView
+Dim OEORD8detail1Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0500", OEORD8detail1
+Set OEORD8detail1Fields = OEORD8detail1.Fields
+
+Dim OEORD8detail2 As AccpacCOMAPI.AccpacView
+Dim OEORD8detail2Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0740", OEORD8detail2
+Set OEORD8detail2Fields = OEORD8detail2.Fields
+
+Dim OEORD8detail3 As AccpacCOMAPI.AccpacView
+Dim OEORD8detail3Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0180", OEORD8detail3
+Set OEORD8detail3Fields = OEORD8detail3.Fields
+
+Dim OEORD8detail4 As AccpacCOMAPI.AccpacView
+Dim OEORD8detail4Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0526", OEORD8detail4
+Set OEORD8detail4Fields = OEORD8detail4.Fields
+
+Dim OEORD8detail5 As AccpacCOMAPI.AccpacView
+Dim OEORD8detail5Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0522", OEORD8detail5
+Set OEORD8detail5Fields = OEORD8detail5.Fields
+
+Dim OEORD8detail6 As AccpacCOMAPI.AccpacView
+Dim OEORD8detail6Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0508", OEORD8detail6
+Set OEORD8detail6Fields = OEORD8detail6.Fields
+
+Dim OEORD8detail7 As AccpacCOMAPI.AccpacView
+Dim OEORD8detail7Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0507", OEORD8detail7
+Set OEORD8detail7Fields = OEORD8detail7.Fields
+
+Dim OEORD8detail8 As AccpacCOMAPI.AccpacView
+Dim OEORD8detail8Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0501", OEORD8detail8
+Set OEORD8detail8Fields = OEORD8detail8.Fields
+
+Dim OEORD8detail9 As AccpacCOMAPI.AccpacView
+Dim OEORD8detail9Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0502", OEORD8detail9
+Set OEORD8detail9Fields = OEORD8detail9.Fields
+
+Dim OEORD8detail10 As AccpacCOMAPI.AccpacView
+Dim OEORD8detail10Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0504", OEORD8detail10
+Set OEORD8detail10Fields = OEORD8detail10.Fields
+
+Dim OEORD8detail11 As AccpacCOMAPI.AccpacView
+Dim OEORD8detail11Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0506", OEORD8detail11
+Set OEORD8detail11Fields = OEORD8detail11.Fields
+
+Dim OEORD8detail12 As AccpacCOMAPI.AccpacView
+Dim OEORD8detail12Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0503", OEORD8detail12
+Set OEORD8detail12Fields = OEORD8detail12.Fields
+
+OEORD8header.Compose Array(OEORD8detail1, Nothing, OEORD8detail3, OEORD8detail2, OEORD8detail4, OEORD8detail5)
+
+OEORD8detail1.Compose Array(OEORD8header, OEORD8detail8, OEORD8detail12, OEORD8detail9, OEORD8detail6, OEORD8detail7)
+
+OEORD8detail2.Compose Array(OEORD8header)
+
+OEORD8detail3.Compose Array(OEORD8header, OEORD8detail1)
+
+OEORD8detail4.Compose Array(OEORD8header)
+
+OEORD8detail5.Compose Array(OEORD8header)
+
+OEORD8detail6.Compose Array(OEORD8detail1)
+
+OEORD8detail7.Compose Array(OEORD8detail1)
+
+OEORD8detail8.Compose Array(OEORD8detail1)
+
+OEORD8detail9.Compose Array(OEORD8detail1, OEORD8detail10, OEORD8detail11)
+
+OEORD8detail10.Compose Array(OEORD8detail9)
+
+OEORD8detail11.Compose Array(OEORD8detail9)
+
+OEORD8detail12.Compose Array(OEORD8detail1)
+
+
+
+OEORD8headerFields("DRIVENBYUI").Value = "1"                          ' Driven by UI
+
+OEORD8detail1Fields("DRIVENBYUI").Value = "1"                         ' Driven by UI
+OEORD8header.Cancel
+OEORD8header.Cancel
+OEORD8header.Init
+OEORD8detail2.Browse "", 1
+OEORD8detail2.Fetch
+OEORD8headerFields("CUSTOMER").Value = "WOOL001"                      ' Customer Number
+OEORD8detail2.Browse "", 1
+
+OEORD8detail2Fields("PAYMENT").PutWithoutVerification ("-32767")      ' Payment Number
+
+OEORD8detail2.Browse "", -1
+OEORD8detail2.Fetch
+OEORD8headerFields("PROCESSCMD").PutWithoutVerification ("1")         ' Process OIP Command
+OEORD8header.Process
+
+OEORD8headerFields("PONUMBER").Value = "70300461 FOOD KZN"            ' Purchase Order Number
+OEORD8headerFields("REQUESDATE").Value = DateSerial(2025, 8, 6)       ' Date Requested
+OEORD8headerFields("EXPDATE").Value = DateSerial(2025, 8, 6)          ' Expected Ship Date
+
+OEORD8headerFields("SHIPTO").Value = "WWKZN"                          ' Ship-To Location Code
+OEORD8headerFields("GOFCALCTAX").PutWithoutVerification ("1")         ' Perform Forced Tax Calculation
+OEORD8headerFields("DESC").PutWithoutVerification ("70300461 FOOD KZN")   ' Order Description
+
+OEORD8header.Process
+
+OEORD8headerFields("PROCESSCMD").PutWithoutVerification ("1")         ' Process OIP Command
+
+OEORD8header.Process
+temp = OEORD8detail1.Exists
+OEORD8detail1.RecordClear
+temp = OEORD8detail1.Exists
+OEORD8detail1.RecordCreate 0
+temp = OEORD8detail1.Exists
+
+OEORD8detail1Fields("ITEM").Value = "S.WWP1875"                       ' Item
+OEORD8detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD8detail1.Process
+temp = OEORD8detail1.Exists
+
+OEORD8detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD8detail1Fields("QTYORDERED").Value = "3.0000"                    ' Quantity Ordered
+
+temp = OEORD8detail1.Exists
+OEORD8detail1.Insert
+temp = OEORD8detail1.Exists
+temp = OEORD8detail1.Exists
+
+OEORD8detail1Fields("LINENUM").PutWithoutVerification ("-1")          ' Line Number
+
+OEORD8detail1.Read
+temp = OEORD8detail1.Exists
+temp = OEORD8detail1.Exists
+OEORD8detail1.RecordCreate 0
+temp = OEORD8detail1.Exists
+
+OEORD8detail1Fields("LINENUM").PutWithoutVerification ("-1")          ' Line Number
+
+OEORD8detail1.Read
+OEORD8detail5Fields("OPTFIELD").PutWithoutVerification ("OEPICK")     ' Optional Field
+
+OEORD8detail5Fields("OPTFIELD").PutWithoutVerification ("OEPICK")     ' Optional Field
+
+OEORD8detail5.Read
+
+OEORD8detail5Fields("VALIFBOOL").Value = "1"                          ' Yes/No Value
+
+temp = OEORD8detail5.Exists
+OEORD8detail5.Update
+
+OEORD8detail5Fields("OPTFIELD").PutWithoutVerification ("TRUCK")      ' Optional Field
+
+OEORD8detail5.Read
+
+OEORD8detail5Fields("VALIFTEXT").Value = "WWTRANS"                    ' Text Value
+
+OEORD8detail5.Update
+
+OEORD8detail5Fields("OPTFIELD").PutWithoutVerification ("TRUCK")      ' Optional Field
+
+OEORD8detail5.Read
+OEORD8headerFields("OECOMMAND").Value = "4"                           ' Process O/E Command
+
+OEORD8headerFields("REFERENCE").PutWithoutVerification ("WW PORTAL")   ' Order Reference
+
+OEORD8header.Process
+OEORD8header.Insert
+OEORD8header.Order = 1
+OEORD8header.Read
+OEORD8header.Order = 0
+OEORD8detail1Fields("LINENUM").PutWithoutVerification ("-32767")      ' Line Number
+OEORD8detail1.Browse "", 1
+OEORD8detail1.Fetch
+OEORD8detail9Fields("PRNCOMPNUM").PutWithoutVerification ("-2147483647")   ' Parent Component Number
+
+OEORD8detail9Fields("COMPNUM").PutWithoutVerification ("-2147483647")   ' Component Number
+
+OEORD8detail9.Browse "", 1
+OEORD8detail9.Fetch
+OEORD8detail3Fields("UNIQUIFIER").PutWithoutVerification ("-32767")   ' Uniquifier
+OEORD8detail3.Browse "", 1
+OEORD8detail3.Fetch
+OEORD8detail2Fields("PAYMENT").PutWithoutVerification ("-32767")      ' Payment Number
+OEORD8detail2.Browse "", -1
+OEORD8detail2.Fetch
+
+OEORD8detail2Fields("PAYMENT").PutWithoutVerification ("-1")          ' Payment Number
+OEORD8detail2.Browse "", 1
+
+OEORD8detail2Fields("PAYMENT").PutWithoutVerification ("-32767")      ' Payment Number
+
+OEORD8detail2.Browse "", -1
+OEORD8detail2.Fetch
+temp = OEORD8header.Exists
+
+Dim OEORD9header As AccpacCOMAPI.AccpacView
+Dim OEORD9headerFields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0520", OEORD9header
+Set OEORD9headerFields = OEORD9header.Fields
+
+Dim OEORD9detail1 As AccpacCOMAPI.AccpacView
+Dim OEORD9detail1Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0500", OEORD9detail1
+Set OEORD9detail1Fields = OEORD9detail1.Fields
+
+Dim OEORD9detail2 As AccpacCOMAPI.AccpacView
+Dim OEORD9detail2Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0740", OEORD9detail2
+Set OEORD9detail2Fields = OEORD9detail2.Fields
+
+Dim OEORD9detail3 As AccpacCOMAPI.AccpacView
+Dim OEORD9detail3Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0180", OEORD9detail3
+Set OEORD9detail3Fields = OEORD9detail3.Fields
+
+Dim OEORD9detail4 As AccpacCOMAPI.AccpacView
+Dim OEORD9detail4Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0526", OEORD9detail4
+Set OEORD9detail4Fields = OEORD9detail4.Fields
+
+Dim OEORD9detail5 As AccpacCOMAPI.AccpacView
+Dim OEORD9detail5Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0522", OEORD9detail5
+Set OEORD9detail5Fields = OEORD9detail5.Fields
+
+Dim OEORD9detail6 As AccpacCOMAPI.AccpacView
+Dim OEORD9detail6Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0508", OEORD9detail6
+Set OEORD9detail6Fields = OEORD9detail6.Fields
+
+Dim OEORD9detail7 As AccpacCOMAPI.AccpacView
+Dim OEORD9detail7Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0507", OEORD9detail7
+Set OEORD9detail7Fields = OEORD9detail7.Fields
+
+Dim OEORD9detail8 As AccpacCOMAPI.AccpacView
+Dim OEORD9detail8Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0501", OEORD9detail8
+Set OEORD9detail8Fields = OEORD9detail8.Fields
+
+Dim OEORD9detail9 As AccpacCOMAPI.AccpacView
+Dim OEORD9detail9Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0502", OEORD9detail9
+Set OEORD9detail9Fields = OEORD9detail9.Fields
+
+Dim OEORD9detail10 As AccpacCOMAPI.AccpacView
+Dim OEORD9detail10Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0504", OEORD9detail10
+Set OEORD9detail10Fields = OEORD9detail10.Fields
+
+Dim OEORD9detail11 As AccpacCOMAPI.AccpacView
+Dim OEORD9detail11Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0506", OEORD9detail11
+Set OEORD9detail11Fields = OEORD9detail11.Fields
+
+Dim OEORD9detail12 As AccpacCOMAPI.AccpacView
+Dim OEORD9detail12Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0503", OEORD9detail12
+Set OEORD9detail12Fields = OEORD9detail12.Fields
+
+OEORD9header.Compose Array(OEORD9detail1, Nothing, OEORD9detail3, OEORD9detail2, OEORD9detail4, OEORD9detail5)
+
+OEORD9detail1.Compose Array(OEORD9header, OEORD9detail8, OEORD9detail12, OEORD9detail9, OEORD9detail6, OEORD9detail7)
+
+OEORD9detail2.Compose Array(OEORD9header)
+
+OEORD9detail3.Compose Array(OEORD9header, OEORD9detail1)
+
+OEORD9detail4.Compose Array(OEORD9header)
+
+OEORD9detail5.Compose Array(OEORD9header)
+
+OEORD9detail6.Compose Array(OEORD9detail1)
+
+OEORD9detail7.Compose Array(OEORD9detail1)
+
+OEORD9detail8.Compose Array(OEORD9detail1)
+
+OEORD9detail9.Compose Array(OEORD9detail1, OEORD9detail10, OEORD9detail11)
+
+OEORD9detail10.Compose Array(OEORD9detail9)
+
+OEORD9detail11.Compose Array(OEORD9detail9)
+
+OEORD9detail12.Compose Array(OEORD9detail1)
+
+
+
+OEORD9headerFields("DRIVENBYUI").Value = "1"                          ' Driven by UI
+
+OEORD9detail1Fields("DRIVENBYUI").Value = "1"                         ' Driven by UI
+OEORD9header.Cancel
+OEORD9header.Cancel
+OEORD9header.Init
+OEORD9detail2.Browse "", 1
+OEORD9detail2.Fetch
+OEORD9headerFields("CUSTOMER").Value = "WOOL001"                      ' Customer Number
+OEORD9detail2.Browse "", 1
+
+OEORD9detail2Fields("PAYMENT").PutWithoutVerification ("-32767")      ' Payment Number
+
+OEORD9detail2.Browse "", -1
+OEORD9detail2.Fetch
+OEORD9headerFields("PROCESSCMD").PutWithoutVerification ("1")         ' Process OIP Command
+OEORD9header.Process
+
+OEORD9headerFields("PONUMBER").Value = "70300462 HOT KZN"             ' Purchase Order Number
+
+OEORD9headerFields("SHIPTO").Value = "WWKZN"                          ' Ship-To Location Code
+OEORD9headerFields("GOFCALCTAX").PutWithoutVerification ("1")         ' Perform Forced Tax Calculation
+OEORD9headerFields("DESC").PutWithoutVerification ("70300462 HOT KZN")   ' Order Description
+
+OEORD9header.Process
+
+OEORD9headerFields("PROCESSCMD").PutWithoutVerification ("1")         ' Process OIP Command
+
+OEORD9header.Process
+
+OEORD9headerFields("REQUESDATE").Value = DateSerial(2025, 8, 6)       ' Date Requested
+OEORD9headerFields("EXPDATE").Value = DateSerial(2025, 8, 6)          ' Expected Ship Date
+temp = OEORD9detail1.Exists
+OEORD9detail1.RecordClear
+temp = OEORD9detail1.Exists
+OEORD9detail1.RecordCreate 0
+temp = OEORD9detail1.Exists
+
+OEORD9detail1Fields("ITEM").Value = "S.WWP1603"                       ' Item
+OEORD9detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD9detail1.Process
+temp = OEORD9detail1.Exists
+
+OEORD9detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD9detail1Fields("QTYORDERED").Value = "7.0000"                    ' Quantity Ordered
+
+temp = OEORD9detail1.Exists
+OEORD9detail1.Insert
+temp = OEORD9detail1.Exists
+temp = OEORD9detail1.Exists
+
+OEORD9detail1Fields("LINENUM").PutWithoutVerification ("-1")          ' Line Number
+
+OEORD9detail1.Read
+temp = OEORD9detail1.Exists
+temp = OEORD9detail1.Exists
+OEORD9detail1.RecordCreate 0
+temp = OEORD9detail1.Exists
+
+OEORD9detail1Fields("ITEM").Value = "S.WWV1988"                       ' Item
+OEORD9detail1Fields("PROCESSCMD").PutWithoutVerification ("1")        ' Process Command
+
+OEORD9detail1.Process
+temp = OEORD9detail1.Exists
+
+OEORD9detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD9detail1Fields("QTYORDERED").Value = "26.0000"                   ' Quantity Ordered
+
+temp = OEORD9detail1.Exists
+OEORD9detail1.Insert
+temp = OEORD9detail1.Exists
+temp = OEORD9detail1.Exists
+
+OEORD9detail1Fields("LINENUM").PutWithoutVerification ("-2")          ' Line Number
+
+OEORD9detail1.Read
+temp = OEORD9detail1.Exists
+temp = OEORD9detail1.Exists
+OEORD9detail1.RecordCreate 0
+temp = OEORD9detail1.Exists
+
+OEORD9detail1Fields("LINENUM").PutWithoutVerification ("-2")          ' Line Number
+
+OEORD9detail1.Read
+OEORD9detail5Fields("OPTFIELD").PutWithoutVerification ("OEPICK")     ' Optional Field
+
+OEORD9detail5Fields("OPTFIELD").PutWithoutVerification ("OEPICK")     ' Optional Field
+
+OEORD9detail5.Read
+
+OEORD9detail5Fields("VALIFBOOL").Value = "1"                          ' Yes/No Value
+
+temp = OEORD9detail5.Exists
+OEORD9detail5.Update
+
+OEORD9detail5Fields("OPTFIELD").PutWithoutVerification ("TRUCK")      ' Optional Field
+
+OEORD9detail5.Read
+
+OEORD9detail5Fields("VALIFTEXT").Value = "WWTRANS"                    ' Text Value
+
+OEORD9detail5.Update
+
+OEORD9detail5Fields("OPTFIELD").PutWithoutVerification ("TRUCK")      ' Optional Field
+
+OEORD9detail5.Read
+OEORD9headerFields("OECOMMAND").Value = "4"                           ' Process O/E Command
+
+OEORD9headerFields("REFERENCE").PutWithoutVerification ("WW PORTAL")   ' Order Reference
+
+OEORD9header.Process
+OEORD9header.Insert
+OEORD9header.Order = 1
+OEORD9header.Read
+OEORD9header.Order = 0
+OEORD9detail1Fields("LINENUM").PutWithoutVerification ("-32767")      ' Line Number
+OEORD9detail1.Browse "", 1
+OEORD9detail1.Fetch
+OEORD9detail9Fields("PRNCOMPNUM").PutWithoutVerification ("-2147483647")   ' Parent Component Number
+
+OEORD9detail9Fields("COMPNUM").PutWithoutVerification ("-2147483647")   ' Component Number
+
+OEORD9detail9.Browse "", 1
+OEORD9detail9.Fetch
+OEORD9detail3Fields("UNIQUIFIER").PutWithoutVerification ("-32767")   ' Uniquifier
+OEORD9detail3.Browse "", 1
+OEORD9detail3.Fetch
+OEORD9detail2Fields("PAYMENT").PutWithoutVerification ("-32767")      ' Payment Number
+OEORD9detail2.Browse "", -1
+OEORD9detail2.Fetch
+
+OEORD9detail2Fields("PAYMENT").PutWithoutVerification ("-1")          ' Payment Number
+OEORD9detail2.Browse "", 1
+
+OEORD9detail2Fields("PAYMENT").PutWithoutVerification ("-32767")      ' Payment Number
+
+OEORD9detail2.Browse "", -1
+OEORD9detail2.Fetch
+temp = OEORD9header.Exists
+
+Dim OEORD10header As AccpacCOMAPI.AccpacView
+Dim OEORD10headerFields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0520", OEORD10header
+Set OEORD10headerFields = OEORD10header.Fields
+
+Dim OEORD10detail1 As AccpacCOMAPI.AccpacView
+Dim OEORD10detail1Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0500", OEORD10detail1
+Set OEORD10detail1Fields = OEORD10detail1.Fields
+
+Dim OEORD10detail2 As AccpacCOMAPI.AccpacView
+Dim OEORD10detail2Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0740", OEORD10detail2
+Set OEORD10detail2Fields = OEORD10detail2.Fields
+
+Dim OEORD10detail3 As AccpacCOMAPI.AccpacView
+Dim OEORD10detail3Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0180", OEORD10detail3
+Set OEORD10detail3Fields = OEORD10detail3.Fields
+
+Dim OEORD10detail4 As AccpacCOMAPI.AccpacView
+Dim OEORD10detail4Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0526", OEORD10detail4
+Set OEORD10detail4Fields = OEORD10detail4.Fields
+
+Dim OEORD10detail5 As AccpacCOMAPI.AccpacView
+Dim OEORD10detail5Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0522", OEORD10detail5
+Set OEORD10detail5Fields = OEORD10detail5.Fields
+
+Dim OEORD10detail6 As AccpacCOMAPI.AccpacView
+Dim OEORD10detail6Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0508", OEORD10detail6
+Set OEORD10detail6Fields = OEORD10detail6.Fields
+
+Dim OEORD10detail7 As AccpacCOMAPI.AccpacView
+Dim OEORD10detail7Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0507", OEORD10detail7
+Set OEORD10detail7Fields = OEORD10detail7.Fields
+
+Dim OEORD10detail8 As AccpacCOMAPI.AccpacView
+Dim OEORD10detail8Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0501", OEORD10detail8
+Set OEORD10detail8Fields = OEORD10detail8.Fields
+
+Dim OEORD10detail9 As AccpacCOMAPI.AccpacView
+Dim OEORD10detail9Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0502", OEORD10detail9
+Set OEORD10detail9Fields = OEORD10detail9.Fields
+
+Dim OEORD10detail10 As AccpacCOMAPI.AccpacView
+Dim OEORD10detail10Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0504", OEORD10detail10
+Set OEORD10detail10Fields = OEORD10detail10.Fields
+
+Dim OEORD10detail11 As AccpacCOMAPI.AccpacView
+Dim OEORD10detail11Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0506", OEORD10detail11
+Set OEORD10detail11Fields = OEORD10detail11.Fields
+
+Dim OEORD10detail12 As AccpacCOMAPI.AccpacView
+Dim OEORD10detail12Fields As AccpacCOMAPI.AccpacViewFields
+mDBLinkCmpRW.OpenView "OE0503", OEORD10detail12
+Set OEORD10detail12Fields = OEORD10detail12.Fields
+
+OEORD10header.Compose Array(OEORD10detail1, Nothing, OEORD10detail3, OEORD10detail2, OEORD10detail4, OEORD10detail5)
+
+OEORD10detail1.Compose Array(OEORD10header, OEORD10detail8, OEORD10detail12, OEORD10detail9, OEORD10detail6, OEORD10detail7)
+
+OEORD10detail2.Compose Array(OEORD10header)
+
+OEORD10detail3.Compose Array(OEORD10header, OEORD10detail1)
+
+OEORD10detail4.Compose Array(OEORD10header)
+
+OEORD10detail5.Compose Array(OEORD10header)
+
+OEORD10detail6.Compose Array(OEORD10detail1)
+
+OEORD10detail7.Compose Array(OEORD10detail1)
+
+OEORD10detail8.Compose Array(OEORD10detail1)
+
+OEORD10detail9.Compose Array(OEORD10detail1, OEORD10detail10, OEORD10detail11)
+
+OEORD10detail10.Compose Array(OEORD10detail9)
+
+OEORD10detail11.Compose Array(OEORD10detail9)
+
+OEORD10detail12.Compose Array(OEORD10detail1)
+
+
+
+OEORD10headerFields("DRIVENBYUI").Value = "1"                         ' Driven by UI
+
+OEORD10detail1Fields("DRIVENBYUI").Value = "1"                        ' Driven by UI
+OEORD10header.Cancel
+OEORD10header.Cancel
+OEORD10header.Init
+OEORD10detail2.Browse "", 1
+OEORD10detail2.Fetch
+OEORD10headerFields("CUSTOMER").Value = "WOOL001"                     ' Customer Number
+OEORD10detail2.Browse "", 1
+
+OEORD10detail2Fields("PAYMENT").PutWithoutVerification ("-32767")     ' Payment Number
+
+OEORD10detail2.Browse "", -1
+OEORD10detail2.Fetch
+OEORD10headerFields("PROCESSCMD").PutWithoutVerification ("1")        ' Process OIP Command
+OEORD10header.Process
+
+OEORD10headerFields("PONUMBER").Value = "70300464 PRIMAL KZN"         ' Purchase Order Number
+OEORD10headerFields("REQUESDATE").Value = DateSerial(2025, 8, 6)      ' Date Requested
+OEORD10headerFields("EXPDATE").Value = DateSerial(2025, 8, 6)         ' Expected Ship Date
+
+OEORD10headerFields("SHIPTO").Value = "WWKZN"                         ' Ship-To Location Code
+OEORD10headerFields("GOFCALCTAX").PutWithoutVerification ("1")        ' Perform Forced Tax Calculation
+OEORD10headerFields("DESC").PutWithoutVerification ("70300464 PRIMAL KZN")   ' Order Description
+
+OEORD10header.Process
+
+OEORD10headerFields("PROCESSCMD").PutWithoutVerification ("1")        ' Process OIP Command
+
+OEORD10header.Process
+temp = OEORD10detail1.Exists
+OEORD10detail1.RecordClear
+temp = OEORD10detail1.Exists
+OEORD10detail1.RecordCreate 0
+temp = OEORD10detail1.Exists
+
+OEORD10detail1Fields("ITEM").Value = "S.WWV0110"                      ' Item
+OEORD10detail1Fields("PROCESSCMD").PutWithoutVerification ("1")       ' Process Command
+
+OEORD10detail1.Process
+temp = OEORD10detail1.Exists
+
+OEORD10detail1Fields("ORDUNIT").Value = "CRATE"                       ' Order Unit of Measure
+OEORD10detail1Fields("QTYORDERED").Value = "16.0000"                  ' Quantity Ordered
+
+temp = OEORD10detail1.Exists
+OEORD10detail1.Insert
+temp = OEORD10detail1.Exists
+temp = OEORD10detail1.Exists
+
+OEORD10detail1Fields("LINENUM").PutWithoutVerification ("-1")         ' Line Number
+
+OEORD10detail1.Read
+temp = OEORD10detail1.Exists
+temp = OEORD10detail1.Exists
+OEORD10detail1.RecordCreate 0
+temp = OEORD10detail1.Exists
+
+OEORD10detail1Fields("ITEM").Value = "S.WWV0111"                      ' Item
+OEORD10detail1Fields("PROCESSCMD").PutWithoutVerification ("1")       ' Process Command
+
+OEORD10detail1.Process
+temp = OEORD10detail1.Exists
+
+OEORD10detail1Fields("ORDUNIT").Value = "CRATE"                       ' Order Unit of Measure
+OEORD10detail1Fields("QTYORDERED").Value = "13.0000"                  ' Quantity Ordered
+
+temp = OEORD10detail1.Exists
+OEORD10detail1.Insert
+temp = OEORD10detail1.Exists
+temp = OEORD10detail1.Exists
+
+OEORD10detail1Fields("LINENUM").PutWithoutVerification ("-2")         ' Line Number
+
+OEORD10detail1.Read
+temp = OEORD10detail1.Exists
+temp = OEORD10detail1.Exists
+OEORD10detail1.RecordCreate 0
+temp = OEORD10detail1.Exists
+
+OEORD10detail1Fields("ITEM").Value = "S.WWV0112"                      ' Item
+OEORD10detail1Fields("PROCESSCMD").PutWithoutVerification ("1")       ' Process Command
+
+OEORD10detail1.Process
+temp = OEORD10detail1.Exists
+
+OEORD10detail1Fields("ORDUNIT").Value = "CRATE"                       ' Order Unit of Measure
+OEORD10detail1Fields("QTYORDERED").Value = "5.0000"                   ' Quantity Ordered
+
+temp = OEORD10detail1.Exists
+OEORD10detail1.Insert
+temp = OEORD10detail1.Exists
+temp = OEORD10detail1.Exists
+
+OEORD10detail1Fields("LINENUM").PutWithoutVerification ("-3")         ' Line Number
+
+OEORD10detail1.Read
+temp = OEORD10detail1.Exists
+temp = OEORD10detail1.Exists
+OEORD10detail1.RecordCreate 0
+temp = OEORD10detail1.Exists
+
+OEORD10detail1Fields("ITEM").Value = "S.WWV0805"                      ' Item
+OEORD10detail1Fields("PROCESSCMD").PutWithoutVerification ("1")       ' Process Command
+
+OEORD10detail1.Process
+temp = OEORD10detail1.Exists
+
+OEORD10detail1Fields("ORDUNIT").Value = "CRATE"                       ' Order Unit of Measure
+OEORD10detail1Fields("QTYORDERED").Value = "20.0000"                  ' Quantity Ordered
+
+temp = OEORD10detail1.Exists
+OEORD10detail1.Insert
+temp = OEORD10detail1.Exists
+temp = OEORD10detail1.Exists
+
+OEORD10detail1Fields("LINENUM").PutWithoutVerification ("-4")         ' Line Number
+
+OEORD10detail1.Read
+temp = OEORD10detail1.Exists
+temp = OEORD10detail1.Exists
+OEORD10detail1.RecordCreate 0
+temp = OEORD10detail1.Exists
+
+OEORD10detail1Fields("ITEM").Value = "S.WWV0655"                      ' Item
+OEORD10detail1Fields("PROCESSCMD").PutWithoutVerification ("1")       ' Process Command
+
+OEORD10detail1.Process
+temp = OEORD10detail1.Exists
+
+OEORD10detail1Fields("ORDUNIT").Value = "CRATE"                       ' Order Unit of Measure
+OEORD10detail1Fields("QTYORDERED").Value = "12.0000"                  ' Quantity Ordered
+
+temp = OEORD10detail1.Exists
+OEORD10detail1.Insert
+temp = OEORD10detail1.Exists
+temp = OEORD10detail1.Exists
+
+OEORD10detail1Fields("LINENUM").PutWithoutVerification ("-5")         ' Line Number
+
+OEORD10detail1.Read
+temp = OEORD10detail1.Exists
+temp = OEORD10detail1.Exists
+OEORD10detail1.RecordCreate 0
+temp = OEORD10detail1.Exists
+
+OEORD10detail1Fields("ITEM").Value = "S.WWV0656"                      ' Item
+OEORD10detail1Fields("PROCESSCMD").PutWithoutVerification ("1")       ' Process Command
+
+OEORD10detail1.Process
+temp = OEORD10detail1.Exists
+
+OEORD10detail1Fields("ORDUNIT").Value = "CRATE"                       ' Order Unit of Measure
+OEORD10detail1Fields("QTYORDERED").Value = "4.0000"                   ' Quantity Ordered
+
+temp = OEORD10detail1.Exists
+OEORD10detail1.Insert
+temp = OEORD10detail1.Exists
+temp = OEORD10detail1.Exists
+
+OEORD10detail1Fields("LINENUM").PutWithoutVerification ("-6")         ' Line Number
+
+OEORD10detail1.Read
+temp = OEORD10detail1.Exists
+temp = OEORD10detail1.Exists
+OEORD10detail1.RecordCreate 0
+temp = OEORD10detail1.Exists
+OEORD10detail1.Browse "", 1
+
+OEORD10detail1Fields("LINENUM").PutWithoutVerification ("-5")         ' Line Number
+
+OEORD10detail1.Read
+OEORD10detail5Fields("OPTFIELD").PutWithoutVerification ("OEPICK")    ' Optional Field
+
+OEORD10detail5Fields("OPTFIELD").PutWithoutVerification ("OEPICK")    ' Optional Field
+
+OEORD10detail5.Read
+
+OEORD10detail5Fields("VALIFBOOL").Value = "1"                         ' Yes/No Value
+
+temp = OEORD10detail5.Exists
+OEORD10detail5.Update
+
+OEORD10detail5Fields("OPTFIELD").PutWithoutVerification ("TRUCK")     ' Optional Field
+
+OEORD10detail5.Read
+
+OEORD10detail5Fields("VALIFTEXT").Value = "WWTRANS"                   ' Text Value
+
+OEORD10detail5.Update
+
+OEORD10detail5Fields("OPTFIELD").PutWithoutVerification ("TRUCK")     ' Optional Field
+
+OEORD10detail5.Read
+OEORD10headerFields("OECOMMAND").Value = "4"                          ' Process O/E Command
+
+OEORD10headerFields("REFERENCE").PutWithoutVerification ("WW PORTAL")   ' Order Reference
+
+OEORD10header.Process
+OEORD10header.Insert
+OEORD10header.Order = 1
+OEORD10header.Read
+OEORD10header.Order = 0
+OEORD10detail1Fields("LINENUM").PutWithoutVerification ("-32767")     ' Line Number
+OEORD10detail1.Browse "", 1
+OEORD10detail1.Fetch
+OEORD10detail9Fields("PRNCOMPNUM").PutWithoutVerification ("-2147483647")   ' Parent Component Number
+
+OEORD10detail9Fields("COMPNUM").PutWithoutVerification ("-2147483647")   ' Component Number
+
+OEORD10detail9.Browse "", 1
+OEORD10detail9.Fetch
+OEORD10detail3Fields("UNIQUIFIER").PutWithoutVerification ("-32767")   ' Uniquifier
+OEORD10detail3.Browse "", 1
+OEORD10detail3.Fetch
+OEORD10detail2Fields("PAYMENT").PutWithoutVerification ("-32767")     ' Payment Number
+OEORD10detail2.Browse "", -1
+OEORD10detail2.Fetch
+
+OEORD10detail2Fields("PAYMENT").PutWithoutVerification ("-1")         ' Payment Number
+OEORD10detail2.Browse "", 1
+
+OEORD10detail2Fields("PAYMENT").PutWithoutVerification ("-32767")     ' Payment Number
+
+OEORD10detail2.Browse "", -1
+OEORD10detail2.Fetch
+temp = OEORD10header.Exists
+
+
+Exit Sub
+
+ACCPACErrorHandler:
+  Dim lCount As Long
+  Dim lIndex As Long
+
+  If Errors Is Nothing Then
+       MsgBox Err.Description
+  Else
+      lCount = Errors.Count
+
+      If lCount = 0 Then
+          MsgBox Err.Description
+      Else
+          For lIndex = 0 To lCount - 1
+              MsgBox Errors.Item(lIndex)
+          Next
+          Errors.Clear
+      End If
+      Resume Next
+
+  End If
+
+End Sub

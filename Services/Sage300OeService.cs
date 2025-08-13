@@ -6,48 +6,6 @@ using ElginOeIntegration.Models;
 using ElginOeIntegration.Exceptions;
 using ACCPAC.Advantage;
 
-namespace ElginOeIntegration.Models
-{
-    public class OeOrderHeader
-    {
-        public string OrderNumber { get; set; }
-        public string CustomerCode { get; set; }
-        public string CustomerName { get; set; }
-        public DateTime OrderDate { get; set; }
-        public DateTime RequestedShipDate { get; set; }
-        public string ShipViaCode { get; set; }
-        public string TermsCode { get; set; }
-        public string SalespersonCode { get; set; }
-        public string Reference { get; set; }
-        public string SpecialInstructions { get; set; }
-        public decimal TotalAmount { get; set; }
-        public string Currency { get; set; } = "ZAR";
-        public List<OeOrderDetail> OrderDetails { get; set; } = new List<OeOrderDetail>();
-    }
-
-    public class OeOrderDetail
-    {
-        public int LineNumber { get; set; }
-        public string ItemCode { get; set; }
-        public string ItemDescription { get; set; }
-        public string Location { get; set; }
-        public decimal Quantity { get; set; }
-        public string UnitOfMeasure { get; set; }
-        public decimal UnitPrice { get; set; }
-        public decimal ExtendedPrice { get; set; }
-        public DateTime RequestedShipDate { get; set; }
-        public string Comments { get; set; }
-    }
-
-    public class OeImportData
-    {
-        public List<OeOrderHeader> Orders { get; set; } = new List<OeOrderHeader>();
-        public string BatchId { get; set; }
-        public DateTime ImportDate { get; set; } = DateTime.Now;
-        public string Source { get; set; } = "Woolworths Integration";
-    }
-}
-
 namespace ElginOeIntegration.Services
 {
     public interface ISage300OeService : ISage300Service
@@ -146,19 +104,19 @@ namespace ElginOeIntegration.Services
             OEORD1detail12 = mDBLinkCmpRW.OpenView("OE0503");
             OEORD1detail12Fields = OEORD1detail12.Fields;
 
-            OEORD1header.Compose(OEORD1detail1, Nothing, OEORD1detail3, OEORD1detail2, OEORD1detail4, OEORD1detail5);
-            OEORD1detail1.Compose(OEORD1header, OEORD1detail8, OEORD1detail12, OEORD1detail9, OEORD1detail6, OEORD1detail7);
-            OEORD1detail2.Compose(OEORD1header);
-            OEORD1detail3.Compose(OEORD1header, OEORD1detail1);
-            OEORD1detail4.Compose(OEORD1header);
-            OEORD1detail5.Compose(OEORD1header);
-            OEORD1detail6.Compose(OEORD1detail1);
-            OEORD1detail7.Compose(OEORD1detail1);
-            OEORD1detail8.Compose(OEORD1detail1);
-            OEORD1detail9.Compose(OEORD1detail1, OEORD1detail10, OEORD1detail11);
-            OEORD1detail10.Compose(OEORD1detail9);
-            OEORD1detail11.Compose(OEORD1detail9);
-            OEORD1detail12.Compose(OEORD1detail1);
+            OEORD1header.Compose(new View[] { OEORD1detail1, null, OEORD1detail3, OEORD1detail2, OEORD1detail4, OEORD1detail5 });
+            OEORD1detail1.Compose(new View[] { OEORD1header, OEORD1detail8, OEORD1detail12, OEORD1detail9, OEORD1detail6, OEORD1detail7 });
+            OEORD1detail2.Compose(new View[] { OEORD1header });
+            OEORD1detail3.Compose(new View[] { OEORD1header, OEORD1detail1 });
+            OEORD1detail4.Compose(new View[] { OEORD1header });
+            OEORD1detail5.Compose(new View[] { OEORD1header });
+            OEORD1detail6.Compose(new View[] { OEORD1detail1 });
+            OEORD1detail7.Compose(new View[] { OEORD1detail1 });
+            OEORD1detail8.Compose(new View[] { OEORD1detail1 });
+            OEORD1detail9.Compose(new View[] { OEORD1detail1, OEORD1detail10, OEORD1detail11 });
+            OEORD1detail10.Compose(new View[] { OEORD1detail9 });
+            OEORD1detail11.Compose(new View[] { OEORD1detail9 });
+            OEORD1detail12.Compose(new View[] { OEORD1detail1 });
 
             LogInfo("Sage300 OE views initialized successfully");
         }
@@ -202,7 +160,7 @@ namespace ElginOeIntegration.Services
                     try
                     {
                         var orderResult = await ProcessSingleOrderAsync(order);
-                        
+
                         if (orderResult.Success)
                         {
                             result.RecordsSuccessful++;
@@ -226,7 +184,7 @@ namespace ElginOeIntegration.Services
                 }
 
                 result.Success = result.RecordsFailed == 0;
-                result.Message = result.Success 
+                result.Message = result.Success
                     ? $"Successfully imported {result.RecordsSuccessful} orders"
                     : $"Imported {result.RecordsSuccessful} orders, {result.RecordsFailed} failed";
 
@@ -283,16 +241,168 @@ namespace ElginOeIntegration.Services
                 // 3. Add order details
                 // 4. Validate and post
 
-                await SimulateOrderImport(order);
+                var temp = OEORD1header.Exists;
 
-                LogDebug($"Successfully processed order {order.OrderNumber} with {order.OrderDetails.Count} line items");
-                
-                return CreateSuccessResult(1, $"Order {order.OrderNumber} imported successfully");
+
+                OEORD1headerFields.FieldByName("DRIVENBYUI").SetValue("1", false); // Driven by UI
+                OEORD1header.Cancel();
+                OEORD1header.Init();
+
+                OEORD1detail2.Browse("", true);
+                OEORD1detail2.Fetch(false);
+                OEORD1headerFields.FieldByName("CUSTOMER").SetValue(order.CustomerCode, true); // Customer Code
+
+                OEORD1detail2.Browse("", true);
+
+                OEORD1detail2Fields.FieldByName("PAYMENT").SetValue("-32767", false); // Payment Number
+                OEORD1detail2.Browse("", true);
+                OEORD1detail2.Fetch(false);
+
+                OEORD1headerFields.FieldByName("PROCESSCMD").SetValue("1", false); // Process OIP Command
+                OEORD1header.Process();
+
+                OEORD1headerFields.FieldByName("PONUMBER").SetValue(order.PoNumber, true); // Purchase Order Number
+                OEORD1headerFields.FieldByName("REQUESDATE").SetValue(order.RequestDate, true); // Date Requested
+                OEORD1headerFields.FieldByName("EXPDATE").SetValue(order.ExpectedShipDate, true); // Expected Ship Date
+
+
+
+                // Details
+                foreach (var line in order.OrderDetails)
+                {
+                    temp = OEORD1detail1.Exists;
+                    OEORD1detail1.RecordClear();
+                    temp = OEORD1detail1.Exists;
+
+                    OEORD1detail1.RecordCreate(ViewRecordCreate.NoInsert);
+                    temp = OEORD1detail1.Exists;
+
+                    OEORD1detail1Fields.FieldByName("ITEM").SetValue(line.ItemCode, true); // Item
+                    OEORD1detail1Fields.FieldByName("PROCESSCMD").SetValue("1", false); // Process Command
+
+                    OEORD1detail1.Process();
+                    temp = OEORD1detail1.Exists;
+
+                    OEORD1detail5.Update();
+
+                    OEORD1detail1Fields.FieldByName("ORDUNIT").SetValue("CRATE", true); // Order Unit of Measure
+                    OEORD1detail1Fields.FieldByName("QTYORDERED").SetValue(line.Quantity, true); // Quantity Ordered
+
+                    temp = OEORD1detail1.Exists;
+                    OEORD1detail1.Insert();
+                    temp = OEORD1detail1.Exists;
+
+                    OEORD1detail1Fields.FieldByName("LINENUM").SetValue("-1", false); // Line Number
+
+                    OEORD1detail1.Read(true);
+                    temp = OEORD1detail1.Exists;
+
+
+                    OEORD1detail1.RecordCreate(ViewRecordCreate.NoInsert);
+                    temp = OEORD1detail1.Exists;
+
+                    OEORD1detail1Fields.FieldByName("LINENUM").SetValue("-1", false); // Line Number
+
+                    OEORD1detail1.Read(true);
+                    OEORD1detail5Fields.FieldByName("OPTFIELD").SetValue("OEPICK", false); // Optional Field
+
+                    OEORD1detail5Fields.FieldByName("OPTFIELD").SetValue("OEPICK", false); // Optional Field
+
+                    OEORD1detail5.Read(true);
+
+                    OEORD1detail5Fields.FieldByName("VALIFBOOL").SetValue("1", true); // Yes/No Value
+
+                    temp = OEORD1detail5.Exists;
+                    OEORD1detail5.Update();
+
+                    OEORD1detail5Fields.FieldByName("OPTFIELD").SetValue("TRUCK", false); // Optional Field
+
+                    OEORD1detail5.Read(true);
+
+                    OEORD1detail5Fields.FieldByName("VALIFTEXT").SetValue("WWTRANS", true); // Text Value
+
+                    OEORD1detail5.Update();
+
+                    OEORD1detail5Fields.FieldByName("OPTFIELD").SetValue("TRUCK", false); // Optional Field
+
+                    OEORD1detail5.Read(true);
+                    OEORD1headerFields.FieldByName("OECOMMAND").SetValue("4", true); // Process O/E Command
+
+                    OEORD1headerFields.FieldByName("REFERENCE").SetValue("WW PORTAL", false); // Order Reference
+                    OEORD1headerFields.FieldByName("DESC").SetValue("70295363 FOOD WC1", false); // Order Description
+
+                    OEORD1header.Process();
+                    OEORD1header.Insert();
+                    OEORD1header.Order = 1;
+                    OEORD1header.Read(true);
+                    OEORD1header.Order = 0;
+                    OEORD1detail1Fields.FieldByName("LINENUM").SetValue("-32767", false); // Line Number
+                    OEORD1detail1.Browse("", true);
+                    OEORD1detail1.Fetch(false);
+                    OEORD1detail9Fields.FieldByName("PRNCOMPNUM").SetValue("-2147483647", false); // Parent Component Number
+
+                    OEORD1detail9Fields.FieldByName("COMPNUM").SetValue("-2147483647", false); // Component Number
+
+                    OEORD1detail9.Browse("", true);
+                    OEORD1detail9.Fetch(false);
+                    OEORD1detail3Fields.FieldByName("UNIQUIFIER").SetValue("-32767", false); // Uniquifier
+                    OEORD1detail3.Browse("", true);
+                    OEORD1detail3.Fetch(false);
+                    OEORD1detail2Fields.FieldByName("PAYMENT").SetValue("-32767", false); // Payment Number
+                    OEORD1detail2.Browse("", false);
+                    OEORD1detail2.Fetch(false);
+
+                    OEORD1detail2Fields.FieldByName("PAYMENT").SetValue("-1", false); // Payment Number
+                    OEORD1detail2.Browse("", true);
+
+                    OEORD1detail2Fields.FieldByName("PAYMENT").SetValue("-32767", false); // Payment Number
+
+                    OEORD1detail2.Browse("", false);
+                    OEORD1detail2.Fetch(false);
+                    temp = OEORD1header.Exists;
+                    OEORD1detail1Fields.FieldByName("LINENUM").SetValue("32", false); // Line Number
+                    OEORD1detail1.Read(true);
+                    OEORD1headerFields.FieldByName("OECOMMAND").SetValue("4", true); // Process O/E Command
+                    OEORD1header.Process();
+                    temp = OEORD1header.Exists;
+                    OEORD1header.Update();
+                    OEORD1header.Order = 1;
+                    OEORD1header.Read(true);
+                    OEORD1header.Order = 0;
+                    OEORD1detail1Fields.FieldByName("LINENUM").SetValue("-32767", false); // Line Number
+                    OEORD1detail1.Browse("", true);
+                    OEORD1detail1.Fetch(false);
+                    OEORD1detail9Fields.FieldByName("PRNCOMPNUM").SetValue("-2147483647", false); // Parent Component Number
+
+                    OEORD1detail9Fields.FieldByName("COMPNUM").SetValue("-2147483647", false); // Component Number
+
+                    OEORD1detail9.Browse("", true);
+                    OEORD1detail9.Fetch(false);
+                    OEORD1detail3Fields.FieldByName("UNIQUIFIER").SetValue("-32767", false); // Uniquifier
+                    OEORD1detail3.Browse("", true);
+                    OEORD1detail3.Fetch(false);
+                    OEORD1detail2Fields.FieldByName("PAYMENT").SetValue("-32767", false); // Payment Number
+                    OEORD1detail2.Browse("", false);
+                    OEORD1detail2.Fetch(false);
+                    OEORD1detail2.Browse("", true);
+
+                    OEORD1detail2Fields.FieldByName("PAYMENT").SetValue("-32767", false); // Payment Number
+
+                    OEORD1detail2.Browse("", false);
+                    OEORD1detail2.Fetch(false);
+                    temp = OEORD1header.Exists;
+                }
+
+                var orderNumber = OEORD1headerFields.FieldByName("").Value.ToString();
+
+                LogDebug($"Successfully processed order {orderNumber} with {order.OrderDetails.Count} line items");
+
+                return CreateSuccessResult(1, $"Order {orderNumber} imported successfully");
             }
             catch (Exception ex)
             {
-                LogError($"Error processing order {order.OrderNumber}: {ex.Message}");
-                return CreateFailureResult($"Failed to process order {order.OrderNumber}: {ex.Message}", ex);
+                LogError($"Error processing order: {ex.Message}");
+                return CreateFailureResult($"Error processing order: {ex.Message}", ex);
             }
         }
 
@@ -350,7 +460,7 @@ namespace ElginOeIntegration.Services
             try
             {
                 LogDebug($"Validating customer {customerCode}");
-                
+
                 // TODO: Replace with actual Sage300 customer validation
                 // Example: var customer = oeSession.Customers.Find(customerCode);
                 await Task.Delay(100); // Simulate lookup time
@@ -370,7 +480,7 @@ namespace ElginOeIntegration.Services
             try
             {
                 LogDebug($"Validating item {itemCode}");
-                
+
                 // TODO: Replace with actual Sage300 item validation
                 // Example: var item = icSession.Items.Find(itemCode);
                 await Task.Delay(50); // Simulate lookup time
@@ -390,14 +500,14 @@ namespace ElginOeIntegration.Services
             try
             {
                 LogDebug("Getting next order number");
-                
+
                 // TODO: Replace with actual Sage300 order number generation
                 // Example: var nextNumber = oeSession.GetNextOrderNumber();
                 await Task.Delay(100); // Simulate lookup time
 
                 // For demo purposes, generate a simple order number
                 var orderNumber = $"WW{DateTime.Now:yyyyMMdd}{DateTime.Now.Ticks % 10000:D4}";
-                
+
                 LogDebug($"Generated order number: {orderNumber}");
                 return orderNumber;
             }
@@ -408,13 +518,7 @@ namespace ElginOeIntegration.Services
             }
         }
 
-        private async Task SimulateOrderImport(OeOrderHeader order)
-        {
-            // Simulate the time it takes to import an order
-            LogDebug($"Simulating import of order {order.OrderNumber}...");
-            await Task.Delay(500 + (order.OrderDetails.Count * 100)); // Simulate processing time
-            LogDebug($"Simulated import completed for order {order.OrderNumber}");
-        }
+
 
         public override async Task DisposeAsync()
         {
