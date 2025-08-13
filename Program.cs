@@ -7,6 +7,7 @@ using SimpleInjector;
 using ElginOeIntegration.Models;
 using ElginOeIntegration.Services;
 using ElginOeIntegration.Utils;
+using System.Configuration;
 
 namespace ElginOeIntegration
 {
@@ -21,8 +22,10 @@ namespace ElginOeIntegration
             {
                 // Set properties as needed, e.g.:
                 SiteUrl = "http://caissanet.woolworths.co.za/WebClients/SPort/Login.aspx?ReturnUrl=%2fWebClients%2fSPort%2fSupplierPlansJDAReport.aspx&__CFW_AuthFailed=True",
-                Username = "s54506_010",
-                Password = "Elgin2020f",
+
+                Username = ConfigurationManager.AppSettings["WoolworthsUsername"],
+                Password = ConfigurationManager.AppSettings["WoolworthsPassword"],
+
                 StoragePath = ".downloads"
                 // SiteName = "Woolworths"
             };
@@ -30,11 +33,10 @@ namespace ElginOeIntegration
 
             var sage300Config = new Sage300Config
             {
-                ServerName = "localhost",
-                DatabaseId = "SAMLTD",
-                UserId = "ADMIN",
-                Password = "password",
-                Version = "68A"
+                CompanyId = ConfigurationManager.AppSettings["Sage300CompanyId"],
+                UserId = ConfigurationManager.AppSettings["Sage300UserId"],
+                Password = ConfigurationManager.AppSettings["Sage300Password"],
+                Version = ConfigurationManager.AppSettings["Sage300Version"],
             };
             container.RegisterInstance(sage300Config);
 
@@ -42,7 +44,7 @@ namespace ElginOeIntegration
             container.Register<IWoolworthsScraperService, WoolworthsScraperService>();
             container.Register<IXmlExtractorService, XmlExtractorService>();
             container.Register<IDataMappingService, DataMappingService>();
-            //container.Register<ISage300OeService, Sage300OeService>();
+            container.Register<ISage300OeService, Sage300OeService>();
 
             container.Register<IFullIntegrationWorkflow, FullIntegrationWorkflow>();
 
@@ -52,7 +54,9 @@ namespace ElginOeIntegration
             // Resolve and use
             var service = container.GetInstance<IFullIntegrationWorkflow>();
 
-            service.RunCompleteWorkflowAsync().GetAwaiter().GetResult();
+            //service.RunCompleteWorkflowAsync().GetAwaiter().GetResult();
+
+            service.RunTestWorkflowAsync().GetAwaiter().GetResult();
         }
     }
 }
