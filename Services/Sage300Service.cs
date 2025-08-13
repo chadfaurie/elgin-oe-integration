@@ -38,7 +38,7 @@ namespace ElginOeIntegration.Services
         Task DisconnectAsync();
         Task<Sage300ImportResult> ImportDataAsync<T>(T data) where T : class;
         Sage300ConnectionInfo GetConnectionInfo();
-        Task InitializeViews();
+        void InitializeViews();
     }
 
     public abstract class Sage300Service : IntegrationService, ISage300Service

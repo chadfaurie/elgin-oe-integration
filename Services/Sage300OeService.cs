@@ -146,6 +146,20 @@ namespace ElginOeIntegration.Services
             OEORD1detail12 = mDBLinkCmpRW.OpenView("OE0503");
             OEORD1detail12Fields = OEORD1detail12.Fields;
 
+            OEORD1header.Compose(OEORD1detail1, Nothing, OEORD1detail3, OEORD1detail2, OEORD1detail4, OEORD1detail5);
+            OEORD1detail1.Compose(OEORD1header, OEORD1detail8, OEORD1detail12, OEORD1detail9, OEORD1detail6, OEORD1detail7);
+            OEORD1detail2.Compose(OEORD1header);
+            OEORD1detail3.Compose(OEORD1header, OEORD1detail1);
+            OEORD1detail4.Compose(OEORD1header);
+            OEORD1detail5.Compose(OEORD1header);
+            OEORD1detail6.Compose(OEORD1detail1);
+            OEORD1detail7.Compose(OEORD1detail1);
+            OEORD1detail8.Compose(OEORD1detail1);
+            OEORD1detail9.Compose(OEORD1detail1, OEORD1detail10, OEORD1detail11);
+            OEORD1detail10.Compose(OEORD1detail9);
+            OEORD1detail11.Compose(OEORD1detail9);
+            OEORD1detail12.Compose(OEORD1detail1);
+
             LogInfo("Sage300 OE views initialized successfully");
         }
 
