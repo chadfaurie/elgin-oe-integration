@@ -46,8 +46,41 @@ namespace ElginOeIntegration.Services
         protected Sage300ConnectionInfo _connectionInfo;
         protected bool _isConnected = false;
 
-        private Session session;
-        private DBLink mDBLinkCmpRW;
+        private Session _session;
+        private DBLink _mDBLinkCmpRW;
+
+        public Session Session
+        {
+            get
+            {
+                if(!_isConnected)
+                {
+                    throw new InvalidOperationException("Session is not connected. Please call ConnectAsync() first.");
+                }
+
+                return _session;
+            }
+        }
+
+#pragma warning disable IDE1006 // Naming Styles
+        public DBLink mDBLinkCmpRW
+#pragma warning restore IDE1006 // Naming Styles
+        {
+            get
+            {
+                if(!_isConnected)
+                {
+                    throw new InvalidOperationException("Company DBLink is not connected. Please call ConnectAsync() first.");
+                }
+
+                return _mDBLinkCmpRW;
+            }
+        }
+
+        public DBLink CompanyDBLink
+        {
+            get => this.mDBLinkCmpRW;
+        }
 
         protected Sage300Service(Sage300Config config)
         {
@@ -82,9 +115,9 @@ namespace ElginOeIntegration.Services
             {
                 LogDebug("Attempting to connect to Sage300...");
 
-                session = new Session();
+                _session = new Session();
 
-                var initd = session.Init("", "XY", "XY1000", _config.Version);
+                var initd = _session.Init("", "XY", "XY1000", _config.Version);
 
                 //if (!initd)
                 //{
@@ -92,14 +125,14 @@ namespace ElginOeIntegration.Services
                 //}
                 
 
-                foreach (Organization org in session.Organizations)
+                foreach (Organization org in _session.Organizations)
                 {
                     Console.WriteLine("Company ID: [" + org.ID + "] Name: \"" +
                         org.Name + "\" Type: " + org.Type);
                 }
 
-                session.Open(_config.UserId, _config.Password, _config.CompanyId, DateTime.Today, 0);
-                mDBLinkCmpRW = session.OpenDBLink(DBLinkType.Company, DBLinkFlags.ReadWrite);
+                _session.Open(_config.UserId, _config.Password, _config.CompanyId, DateTime.Today, 0);
+                _mDBLinkCmpRW = _session.OpenDBLink(DBLinkType.Company, DBLinkFlags.ReadWrite);
 
                 _isConnected = true;
                 _connectionInfo.IsConnected = true;
@@ -128,9 +161,8 @@ namespace ElginOeIntegration.Services
                 {
                     LogDebug("Disconnecting from Sage300...");
 
-                    // TODO: Replace with actual Sage300 SDK disconnection code
-                    // Example: session.Disconnect();
-                    await Task.Delay(500); // Simulate disconnection time
+                    _session.Dispose();
+                    _session = null;
 
                     _isConnected = false;
                     _connectionInfo.IsConnected = false;
