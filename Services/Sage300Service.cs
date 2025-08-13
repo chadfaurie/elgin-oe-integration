@@ -38,9 +38,10 @@ namespace ElginOeIntegration.Services
         Task DisconnectAsync();
         Task<Sage300ImportResult> ImportDataAsync<T>(T data) where T : class;
         Sage300ConnectionInfo GetConnectionInfo();
+        Task InitializeViews();
     }
 
-    public abstract class Sage300Service : ISage300Service
+    public abstract class Sage300Service : IntegrationService, ISage300Service
     {
         protected readonly Sage300Config _config;
         protected Sage300ConnectionInfo _connectionInfo;
@@ -94,21 +95,6 @@ namespace ElginOeIntegration.Services
             };
         }
 
-        protected void LogDebug(string message)
-        {
-            Console.WriteLine($"[DEBUG] {DateTime.Now:yyyy-MM-dd HH:mm:ss} - {GetType().Name}: {message}");
-        }
-
-        protected void LogError(string message)
-        {
-            Console.WriteLine($"[ERROR] {DateTime.Now:yyyy-MM-dd HH:mm:ss} - {GetType().Name}: {message}");
-        }
-
-        protected void LogInfo(string message)
-        {
-            Console.WriteLine($"[INFO] {DateTime.Now:yyyy-MM-dd HH:mm:ss} - {GetType().Name}: {message}");
-        }
-
         public virtual async Task<bool> ConnectAsync()
         {
             try
@@ -124,7 +110,6 @@ namespace ElginOeIntegration.Services
                 //    throw new Sage300ConnectionException("Failed to initialize Sage300 session.");
                 //}
                 
-
                 foreach (Organization org in _session.Organizations)
                 {
                     Console.WriteLine("Company ID: [" + org.ID + "] Name: \"" +
@@ -138,6 +123,8 @@ namespace ElginOeIntegration.Services
                 _connectionInfo.IsConnected = true;
                 _connectionInfo.LastConnectionTime = DateTime.Now;
                 _connectionInfo.LastError = null;
+
+                InitializeViews();
 
                 LogInfo("Successfully connected to Sage300");
                 return true;
@@ -175,6 +162,10 @@ namespace ElginOeIntegration.Services
                 LogError($"Error during disconnection: {ex.Message}");
                 // Don't throw on disconnect errors, just log them
             }
+        }
+
+        public virtual void InitializeViews(){
+            // Do nothing by default
         }
 
         public Sage300ConnectionInfo GetConnectionInfo()

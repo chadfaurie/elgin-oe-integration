@@ -67,14 +67,45 @@ namespace ElginOeIntegration.Services
         protected View OEORD1detail1;
         protected ViewFields OEORD1detail1Fields;
 
+        protected View OEORD1detail2;
+        protected ViewFields OEORD1detail2Fields;
+
+        protected View OEORD1detail3;
+        protected ViewFields OEORD1detail3Fields;
+
+        protected View OEORD1detail4;
+        protected ViewFields OEORD1detail4Fields;
+
+        protected View OEORD1detail5;
+        protected ViewFields OEORD1detail5Fields;
+
+        protected View OEORD1detail6;
+        protected ViewFields OEORD1detail6Fields;
+
+        protected View OEORD1detail7;
+        protected ViewFields OEORD1detail7Fields;
+
+        protected View OEORD1detail8;
+        protected ViewFields OEORD1detail8Fields;
+
+        protected View OEORD1detail9;
+        protected ViewFields OEORD1detail9Fields;
+
+        protected View OEORD1detail10;
+        protected ViewFields OEORD1detail10Fields;
+
+        protected View OEORD1detail11;
+        protected ViewFields OEORD1detail11Fields;
+
+        protected View OEORD1detail12;
+        protected ViewFields OEORD1detail12Fields;
 
         public Sage300OeService(Sage300Config config) : base(config)
         {
             LogInfo("Initializing Sage300 OE Service");
         }
 
-
-        public bool Init()
+        public override void InitializeViews()
         {
             OEORD1header = mDBLinkCmpRW.OpenView("OE0520");
             OEORD1headerFields = OEORD1header.Fields;
@@ -82,84 +113,41 @@ namespace ElginOeIntegration.Services
             OEORD1detail1 = mDBLinkCmpRW.OpenView("OE0500");
             OEORD1detail1Fields = OEORD1detail1.Fields;
 
+            OEORD1detail2 = mDBLinkCmpRW.OpenView("OE0740");
+            OEORD1detail2Fields = OEORD1detail2.Fields;
 
+            OEORD1detail3 = mDBLinkCmpRW.OpenView("OE0180");
+            OEORD1detail3Fields = OEORD1detail3.Fields;
 
-            // TODO: To increase efficiency, comment out any unused DB links.
-            // Dim mDBLinkCmpRW As AccpacCOMAPI.AccpacDBLink
-            //Set mDBLinkCmpRW = OpenDBLink(DBLINK_COMPANY, DBLINK_FLG_READWRITE)
+            OEORD1detail4 = mDBLinkCmpRW.OpenView("OE0526");
+            OEORD1detail4Fields = OEORD1detail4.Fields;
 
-            //Dim mDBLinkSysRW As AccpacCOMAPI.AccpacDBLink
-            //Set mDBLinkSysRW = OpenDBLink(DBLINK_SYSTEM, DBLINK_FLG_READWRITE)
+            OEORD1detail5 = mDBLinkCmpRW.OpenView("OE0522");
+            OEORD1detail5Fields = OEORD1detail5.Fields;
 
-            //Dim temp As Boolean
-            //Dim OEORD1header As AccpacCOMAPI.AccpacView
-            //Dim OEORD1headerFields As AccpacCOMAPI.AccpacViewFields
-            //mDBLinkCmpRW.OpenView "OE0520", OEORD1header
-            //Set OEORD1headerFields = OEORD1header.Fields
+            OEORD1detail6 = mDBLinkCmpRW.OpenView("OE0508");
+            OEORD1detail6Fields = OEORD1detail6.Fields;
 
-//Dim OEORD1detail1 As AccpacCOMAPI.AccpacView
-//Dim OEORD1detail1Fields As AccpacCOMAPI.AccpacViewFields
-//mDBLinkCmpRW.OpenView "OE0500", OEORD1detail1
-//Set OEORD1detail1Fields = OEORD1detail1.Fields
+            OEORD1detail7 = mDBLinkCmpRW.OpenView("OE0507");
+            OEORD1detail7Fields = OEORD1detail7.Fields;
 
-Dim OEORD1detail2 As AccpacCOMAPI.AccpacView
-Dim OEORD1detail2Fields As AccpacCOMAPI.AccpacViewFields
-mDBLinkCmpRW.OpenView "OE0740", OEORD1detail2
-Set OEORD1detail2Fields = OEORD1detail2.Fields
+            OEORD1detail8 = mDBLinkCmpRW.OpenView("OE0501");
+            OEORD1detail8Fields = OEORD1detail8.Fields;
 
-Dim OEORD1detail3 As AccpacCOMAPI.AccpacView
-Dim OEORD1detail3Fields As AccpacCOMAPI.AccpacViewFields
-mDBLinkCmpRW.OpenView "OE0180", OEORD1detail3
-Set OEORD1detail3Fields = OEORD1detail3.Fields
+            OEORD1detail9 = mDBLinkCmpRW.OpenView("OE0502");
+            OEORD1detail9Fields = OEORD1detail9.Fields;
 
-Dim OEORD1detail4 As AccpacCOMAPI.AccpacView
-Dim OEORD1detail4Fields As AccpacCOMAPI.AccpacViewFields
-mDBLinkCmpRW.OpenView "OE0526", OEORD1detail4
-Set OEORD1detail4Fields = OEORD1detail4.Fields
+            OEORD1detail10 = mDBLinkCmpRW.OpenView("OE0504");
+            OEORD1detail10Fields = OEORD1detail10.Fields;
 
-Dim OEORD1detail5 As AccpacCOMAPI.AccpacView
-Dim OEORD1detail5Fields As AccpacCOMAPI.AccpacViewFields
-mDBLinkCmpRW.OpenView "OE0522", OEORD1detail5
-Set OEORD1detail5Fields = OEORD1detail5.Fields
+            OEORD1detail11 = mDBLinkCmpRW.OpenView("OE0506");
+            OEORD1detail11Fields = OEORD1detail11.Fields;
 
-Dim OEORD1detail6 As AccpacCOMAPI.AccpacView
-Dim OEORD1detail6Fields As AccpacCOMAPI.AccpacViewFields
-mDBLinkCmpRW.OpenView "OE0508", OEORD1detail6
-Set OEORD1detail6Fields = OEORD1detail6.Fields
+            OEORD1detail12 = mDBLinkCmpRW.OpenView("OE0503");
+            OEORD1detail12Fields = OEORD1detail12.Fields;
 
-Dim OEORD1detail7 As AccpacCOMAPI.AccpacView
-Dim OEORD1detail7Fields As AccpacCOMAPI.AccpacViewFields
-mDBLinkCmpRW.OpenView "OE0507", OEORD1detail7
-Set OEORD1detail7Fields = OEORD1detail7.Fields
-
-Dim OEORD1detail8 As AccpacCOMAPI.AccpacView
-Dim OEORD1detail8Fields As AccpacCOMAPI.AccpacViewFields
-mDBLinkCmpRW.OpenView "OE0501", OEORD1detail8
-Set OEORD1detail8Fields = OEORD1detail8.Fields
-
-Dim OEORD1detail9 As AccpacCOMAPI.AccpacView
-Dim OEORD1detail9Fields As AccpacCOMAPI.AccpacViewFields
-mDBLinkCmpRW.OpenView "OE0502", OEORD1detail9
-Set OEORD1detail9Fields = OEORD1detail9.Fields
-
-Dim OEORD1detail10 As AccpacCOMAPI.AccpacView
-Dim OEORD1detail10Fields As AccpacCOMAPI.AccpacViewFields
-mDBLinkCmpRW.OpenView "OE0504", OEORD1detail10
-Set OEORD1detail10Fields = OEORD1detail10.Fields
-
-Dim OEORD1detail11 As AccpacCOMAPI.AccpacView
-Dim OEORD1detail11Fields As AccpacCOMAPI.AccpacViewFields
-mDBLinkCmpRW.OpenView "OE0506", OEORD1detail11
-Set OEORD1detail11Fields = OEORD1detail11.Fields
-
-Dim OEORD1detail12 As AccpacCOMAPI.AccpacView
-Dim OEORD1detail12Fields As AccpacCOMAPI.AccpacViewFields
-mDBLinkCmpRW.OpenView "OE0503", OEORD1detail12
-Set OEORD1detail12Fields = OEORD1detail12.Fields
-
-                return true;
+            LogInfo("Sage300 OE views initialized successfully");
         }
-
 
         public override async Task<Sage300ImportResult> ImportDataAsync<T>(T data)
         {
