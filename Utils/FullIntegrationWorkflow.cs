@@ -17,11 +17,15 @@ namespace ElginOeIntegration.Utils
     {
         private readonly IWoolworthsScraperService scraperService;
         private readonly IXmlExtractorService xmlExtractorService;
+        private readonly ISage300OeService sage300OeService;
 
-        public FullIntegrationWorkflow(IWoolworthsScraperService scraperService, IXmlExtractorService xmlExtractorService )
+        public FullIntegrationWorkflow(IWoolworthsScraperService scraperService, 
+            IXmlExtractorService xmlExtractorService,
+            ISage300OeService sage300OeService)
         {
             this.scraperService = scraperService;
             this.xmlExtractorService = xmlExtractorService;
+            this.sage300OeService = sage300OeService;
             // Constructor can be used for dependency injection if needed
         }
 
@@ -141,29 +145,18 @@ namespace ElginOeIntegration.Utils
 
             try
             {
-                var sage300Config = new Sage300Config
-                {
-                    ServerName = "localhost",
-                    DatabaseId = "SAMLTD",
-                    UserId = "ADMIN",
-                    Password = "password"
-                };
-
-                var sage300Service = new Sage300OeService(sage300Config);
-
                 LogDebug("Testing Sage300 connection...");
-                var connectionTest = await sage300Service.TestConnectionAsync();
+                var connectionTest = await sage300OeService.ConnectAsync();
 
                 if (connectionTest)
                 {
                     LogDebug("✓ Sage300 connection test successful");
+                    
+                    var nextOrderNumber = await sage300OeService.GetNextOrderNumberAsync();
 
-                    // Test order number generation
-                    await sage300Service.ConnectAsync();
-                    var nextOrderNumber = await sage300Service.GetNextOrderNumberAsync();
                     LogDebug($"✓ Generated order number: {nextOrderNumber}");
 
-                    await sage300Service.DisconnectAsync();
+                    await sage300OeService.DisconnectAsync();
                 }
                 else
                 {

@@ -1,7 +1,9 @@
+using ElginOeIntegration.Exceptions;
+using ElginOeIntegration.Models;
 using System;
 using System.Threading.Tasks;
-using ElginOeIntegration.Models;
-using ElginOeIntegration.Exceptions;
+using ACCPAC.Advantage;
+using System.Collections.Generic;
 
 namespace ElginOeIntegration.Exceptions
 {
@@ -35,7 +37,6 @@ namespace ElginOeIntegration.Services
         Task<bool> ConnectAsync();
         Task DisconnectAsync();
         Task<Sage300ImportResult> ImportDataAsync<T>(T data) where T : class;
-        Task<bool> TestConnectionAsync();
         Sage300ConnectionInfo GetConnectionInfo();
     }
 
@@ -45,6 +46,9 @@ namespace ElginOeIntegration.Services
         protected Sage300ConnectionInfo _connectionInfo;
         protected bool _isConnected = false;
 
+        private Session session;
+        private DBLink mDBLinkCmpRW;
+
         protected Sage300Service(Sage300Config config)
         {
             _config = config ?? throw new ArgumentNullException(nameof(config));
@@ -52,7 +56,6 @@ namespace ElginOeIntegration.Services
             
             _connectionInfo = new Sage300ConnectionInfo
             {
-                ConnectionString = BuildConnectionString(),
                 IsConnected = false,
                 LastConnectionTime = DateTime.MinValue
             };
@@ -73,25 +76,30 @@ namespace ElginOeIntegration.Services
             Console.WriteLine($"[INFO] {DateTime.Now:yyyy-MM-dd HH:mm:ss} - {GetType().Name}: {message}");
         }
 
-        protected virtual string BuildConnectionString()
-        {
-            // Basic connection string format - this would need to be adapted based on actual Sage300 SDK
-            return $"Server={_config.ServerName};Database={_config.DatabaseId};UserId={_config.UserId};Password={_config.Password};Version={_config.Version};Timeout={_config.ConnectionTimeout}";
-        }
-
         public virtual async Task<bool> ConnectAsync()
         {
             try
             {
                 LogDebug("Attempting to connect to Sage300...");
 
-                // This is where you would use the actual Sage300 SDK connection logic
-                // For now, we'll simulate the connection
-                await Task.Delay(1000); // Simulate connection time
+                session = new Session();
 
-                // TODO: Replace with actual Sage300 SDK connection code
-                // Example: var session = new Sage300Session();
-                // session.Connect(_connectionInfo.ConnectionString);
+                var initd = session.Init("", "XY", "XY1000", _config.Version);
+
+                //if (!initd)
+                //{
+                //    throw new Sage300ConnectionException("Failed to initialize Sage300 session.");
+                //}
+                
+
+                foreach (Organization org in session.Organizations)
+                {
+                    Console.WriteLine("Company ID: [" + org.ID + "] Name: \"" +
+                        org.Name + "\" Type: " + org.Type);
+                }
+
+                session.Open(_config.UserId, _config.Password, _config.CompanyId, DateTime.Today, 0);
+                mDBLinkCmpRW = session.OpenDBLink(DBLinkType.Company, DBLinkFlags.ReadWrite);
 
                 _isConnected = true;
                 _connectionInfo.IsConnected = true;
@@ -106,9 +114,9 @@ namespace ElginOeIntegration.Services
                 _isConnected = false;
                 _connectionInfo.IsConnected = false;
                 _connectionInfo.LastError = ex.Message;
-                
+
                 LogError($"Failed to connect to Sage300: {ex.Message}");
-                throw new Sage300ConnectionException($"Connection failed: {ex.Message}", ex);
+                throw new Sage300ConnectionException($"Connection failed: {ex.Message ?? ex.InnerException.Message}", ex);
             }
         }
 
@@ -134,38 +142,6 @@ namespace ElginOeIntegration.Services
             {
                 LogError($"Error during disconnection: {ex.Message}");
                 // Don't throw on disconnect errors, just log them
-            }
-        }
-
-        public virtual async Task<bool> TestConnectionAsync()
-        {
-            try
-            {
-                LogDebug("Testing Sage300 connection...");
-                
-                var wasConnected = _isConnected;
-                
-                if (!_isConnected)
-                {
-                    await ConnectAsync();
-                }
-
-                // TODO: Perform actual connection test
-                // Example: var result = session.TestConnection();
-                await Task.Delay(500); // Simulate test
-
-                if (!wasConnected)
-                {
-                    await DisconnectAsync();
-                }
-
-                LogInfo("Connection test successful");
-                return true;
-            }
-            catch (Exception ex)
-            {
-                LogError($"Connection test failed: {ex.Message}");
-                return false;
             }
         }
 

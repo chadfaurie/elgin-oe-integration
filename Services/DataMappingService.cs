@@ -13,18 +13,8 @@ namespace ElginOeIntegration.Services
         Task<OeOrderDetail> MapPlanDetailToOrderDetailAsync(PlanDetail planDetail, int lineNumber);
     }
 
-    public class DataMappingService : IDataMappingService
+    public class DataMappingService : IntegrationService, IDataMappingService
     {
-        protected void LogDebug(string message)
-        {
-            Console.WriteLine($"[DEBUG] {DateTime.Now:yyyy-MM-dd HH:mm:ss} - {GetType().Name}: {message}");
-        }
-
-        protected void LogInfo(string message)
-        {
-            Console.WriteLine($"[INFO] {DateTime.Now:yyyy-MM-dd HH:mm:ss} - {GetType().Name}: {message}");
-        }
-
         public async Task<OeImportData> MapPlanDownloadToOeOrdersAsync(PlanDownload planDownload)
         {
             LogInfo($"Starting mapping of {planDownload.PlanDetail.Count} plan details to OE orders");
@@ -45,8 +35,10 @@ namespace ElginOeIntegration.Services
 
                 foreach (var supplierGroup in groupedBySupplier)
                 {
-                    // Further group by delivery date to create separate orders per delivery date
-                    var groupedByDate = supplierGroup.GroupBy(p => p.DeliveryDate.Date);
+                    // Further group by delivery date (parsed from IntoDCDate) to create separate orders per delivery date
+                    var groupedByDate = supplierGroup
+                        .Where(p => !string.IsNullOrEmpty(p.IntoDCDate))
+                        .GroupBy(p => DateTime.Parse(p.IntoDCDate));
 
                     foreach (var dateGroup in groupedByDate)
                     {
@@ -68,8 +60,8 @@ namespace ElginOeIntegration.Services
         public async Task<OeOrderHeader> MapPlanDetailToOrderAsync(IGrouping<DateTime, PlanDetail> groupedDetails)
         {
             var firstDetail = groupedDetails.First();
-            var deliveryDate = firstDetail.DeliveryDate;
-            var supplierCode = firstDetail.SupplierCode;
+            var deliveryDate = DateTime.Parse(firstDetail.IntoDCDate);
+            var supplierCode = firstDetail.ProductSKU;
 
             LogDebug($"Mapping order for supplier {supplierCode} with delivery date {deliveryDate:yyyy-MM-dd}");
 
@@ -85,8 +77,9 @@ namespace ElginOeIntegration.Services
                 TermsCode = "NET30",
                 SalespersonCode = "SYSTEM",
                 Reference = $"Woolworths Plan - {supplierCode}",
-                SpecialInstructions = $"Delivery Date: {deliveryDate:yyyy-MM-dd}, Department: {firstDetail.Department}, Region: {firstDetail.Region}",
-                Currency = "ZAR"
+                SpecialInstructions = $"Delivery Date: {deliveryDate:yyyy-MM-dd}, Department: {firstDetail.DepartmentName}, Region: {firstDetail.Region}",
+                Currency = "ZAR",
+                OrderDetails = new List<OeOrderDetail>()
             };
 
             // Map order details
@@ -113,14 +106,14 @@ namespace ElginOeIntegration.Services
             var orderDetail = new OeOrderDetail
             {
                 LineNumber = lineNumber,
-                ItemCode = MapProductCodeToItemCode(planDetail.ProductCode),
-                ItemDescription = planDetail.Description,
+                ItemCode = MapProductCodeToItemCode(planDetail.ProductSKU),
+                ItemDescription = planDetail.ProductName,
                 Location = MapRegionToLocation(planDetail.Region),
                 Quantity = planDetail.Quantity,
                 UnitOfMeasure = DetermineUnitOfMeasure(planDetail.TraySize),
                 UnitPrice = 0, // Will be populated from Sage300 item master
                 ExtendedPrice = 0, // Will be calculated after unit price is determined
-                RequestedShipDate = planDetail.DeliveryDate,
+                RequestedShipDate = DateTime.TryParse(planDetail.IntoDCDate, out var dt) ? dt : DateTime.MinValue,
                 Comments = !string.IsNullOrEmpty(planDetail.TraySize) ? $"Tray Size: {planDetail.TraySize}" : string.Empty
             };
 
@@ -193,13 +186,13 @@ namespace ElginOeIntegration.Services
                 return "EACH";
 
             var trayUpper = traySize.ToUpperInvariant();
-            
+
             if (trayUpper.Contains("CASE") || trayUpper.Contains("CTN"))
                 return "CASE";
-            
+
             if (trayUpper.Contains("BOX"))
                 return "BOX";
-                
+
             if (trayUpper.Contains("TRAY"))
                 return "TRAY";
 
