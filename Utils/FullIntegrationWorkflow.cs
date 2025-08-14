@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ElginOeIntegration.Services;
 using ElginOeIntegration.Models;
+using System.Collections.Generic;
 
 namespace ElginOeIntegration.Utils
 {
@@ -151,7 +152,34 @@ namespace ElginOeIntegration.Utils
                 if (connectionTest)
                 {
                     LogDebug("✓ Sage300 connection test successful");
-                    
+
+                    var testOrder = new OeOrderHeader
+                    {
+                        CustomerCode = "WOOL001",
+                        Description = "Test Order from Woolworths Integration",
+                        Reference = "Test Order Reference",
+                        PoNumber = "TEST-PO-001",
+                        ExpectedShipDate = DateTime.Now.AddDays(7),
+                        RequestDate = DateTime.Now,
+                        OrderDetails = new List<OeOrderDetail>
+                        {
+                            new OeOrderDetail
+                            {
+                                ItemCode = "S.WWP1875",
+                                Quantity = 1,
+                                UnitOfMeasure = "CRATE",
+                            },
+                             new OeOrderDetail
+                            {
+                                ItemCode = "S.WWP1875",
+                                Quantity = 2,
+                                UnitOfMeasure = "CRATE",
+                            }
+                        }
+                    };
+
+                    await sage300OeService.ImportSingleOrderAsync(testOrder);
+
                     var nextOrderNumber = await sage300OeService.GetNextOrderNumberAsync();
 
                     LogDebug($"✓ Generated order number: {nextOrderNumber}");

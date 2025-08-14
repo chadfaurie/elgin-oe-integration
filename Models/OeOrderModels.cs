@@ -10,18 +10,15 @@ namespace ElginOeIntegration.Models
         public DateTime RequestDate { get; set; }
         public DateTime ExpectedShipDate { get; set; }
         public List<OeOrderDetail> OrderDetails { get; set; } = new List<OeOrderDetail>();
+        public string Reference { get; set; }
+        public string Description { get; set; }
     }
 
     public class OeOrderDetail
     {
         public string ItemCode { get; set; }
-        public string Location { get; set; }
         public decimal Quantity { get; set; }
         public string UnitOfMeasure { get; set; }
-        public decimal UnitPrice { get; set; }
-        public decimal ExtendedPrice { get; set; }
-        public DateTime RequestedShipDate { get; set; }
-        public string Comments { get; set; }
     }
 
     public class OeImportData

@@ -67,18 +67,8 @@ namespace ElginOeIntegration.Services
 
             var order = new OeOrderHeader
             {
-                // Order will get number from Sage300
-                OrderNumber = string.Empty,
                 CustomerCode = MapSupplierToCustomer(supplierCode),
-                CustomerName = GetCustomerName(supplierCode),
-                OrderDate = DateTime.Now,
-                RequestedShipDate = deliveryDate,
-                ShipViaCode = "STANDARD",
-                TermsCode = "NET30",
-                SalespersonCode = "SYSTEM",
                 Reference = $"Woolworths Plan - {supplierCode}",
-                SpecialInstructions = $"Delivery Date: {deliveryDate:yyyy-MM-dd}, Department: {firstDetail.DepartmentName}, Region: {firstDetail.Region}",
-                Currency = "ZAR",
                 OrderDetails = new List<OeOrderDetail>()
             };
 
@@ -91,10 +81,8 @@ namespace ElginOeIntegration.Services
                 lineNumber++;
             }
 
-            // Calculate total amount
-            order.TotalAmount = order.OrderDetails.Sum(d => d.ExtendedPrice);
 
-            LogDebug($"Created order for supplier {supplierCode} with {order.OrderDetails.Count} line items, total: {order.TotalAmount:C}");
+            LogDebug($"Created order for supplier {supplierCode} with {order.OrderDetails.Count} line items");
 
             return order;
         }
@@ -105,16 +93,11 @@ namespace ElginOeIntegration.Services
 
             var orderDetail = new OeOrderDetail
             {
-                LineNumber = lineNumber,
+                
                 ItemCode = MapProductCodeToItemCode(planDetail.ProductSKU),
-                ItemDescription = planDetail.ProductName,
-                Location = MapRegionToLocation(planDetail.Region),
+                
                 Quantity = planDetail.Quantity,
                 UnitOfMeasure = DetermineUnitOfMeasure(planDetail.TraySize),
-                UnitPrice = 0, // Will be populated from Sage300 item master
-                ExtendedPrice = 0, // Will be calculated after unit price is determined
-                RequestedShipDate = DateTime.TryParse(planDetail.IntoDCDate, out var dt) ? dt : DateTime.MinValue,
-                Comments = !string.IsNullOrEmpty(planDetail.TraySize) ? $"Tray Size: {planDetail.TraySize}" : string.Empty
             };
 
             return orderDetail;

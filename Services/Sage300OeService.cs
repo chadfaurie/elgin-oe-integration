@@ -1,10 +1,11 @@
+using ACCPAC.Advantage;
+using ElginOeIntegration.Exceptions;
+using ElginOeIntegration.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
-using ElginOeIntegration.Models;
-using ElginOeIntegration.Exceptions;
-using ACCPAC.Advantage;
 
 namespace ElginOeIntegration.Services
 {
@@ -66,43 +67,18 @@ namespace ElginOeIntegration.Services
         public override void InitializeViews()
         {
             OEORD1header = mDBLinkCmpRW.OpenView("OE0520");
-            OEORD1headerFields = OEORD1header.Fields;
-
             OEORD1detail1 = mDBLinkCmpRW.OpenView("OE0500");
-            OEORD1detail1Fields = OEORD1detail1.Fields;
-
             OEORD1detail2 = mDBLinkCmpRW.OpenView("OE0740");
-            OEORD1detail2Fields = OEORD1detail2.Fields;
-
             OEORD1detail3 = mDBLinkCmpRW.OpenView("OE0180");
-            OEORD1detail3Fields = OEORD1detail3.Fields;
-
             OEORD1detail4 = mDBLinkCmpRW.OpenView("OE0526");
-            OEORD1detail4Fields = OEORD1detail4.Fields;
-
             OEORD1detail5 = mDBLinkCmpRW.OpenView("OE0522");
-            OEORD1detail5Fields = OEORD1detail5.Fields;
-
             OEORD1detail6 = mDBLinkCmpRW.OpenView("OE0508");
-            OEORD1detail6Fields = OEORD1detail6.Fields;
-
             OEORD1detail7 = mDBLinkCmpRW.OpenView("OE0507");
-            OEORD1detail7Fields = OEORD1detail7.Fields;
-
             OEORD1detail8 = mDBLinkCmpRW.OpenView("OE0501");
-            OEORD1detail8Fields = OEORD1detail8.Fields;
-
             OEORD1detail9 = mDBLinkCmpRW.OpenView("OE0502");
-            OEORD1detail9Fields = OEORD1detail9.Fields;
-
             OEORD1detail10 = mDBLinkCmpRW.OpenView("OE0504");
-            OEORD1detail10Fields = OEORD1detail10.Fields;
-
             OEORD1detail11 = mDBLinkCmpRW.OpenView("OE0506");
-            OEORD1detail11Fields = OEORD1detail11.Fields;
-
             OEORD1detail12 = mDBLinkCmpRW.OpenView("OE0503");
-            OEORD1detail12Fields = OEORD1detail12.Fields;
 
             OEORD1header.Compose(new View[] { OEORD1detail1, null, OEORD1detail3, OEORD1detail2, OEORD1detail4, OEORD1detail5 });
             OEORD1detail1.Compose(new View[] { OEORD1header, OEORD1detail8, OEORD1detail12, OEORD1detail9, OEORD1detail6, OEORD1detail7 });
@@ -117,6 +93,20 @@ namespace ElginOeIntegration.Services
             OEORD1detail10.Compose(new View[] { OEORD1detail9 });
             OEORD1detail11.Compose(new View[] { OEORD1detail9 });
             OEORD1detail12.Compose(new View[] { OEORD1detail1 });
+
+            OEORD1headerFields = OEORD1header.Fields;
+            OEORD1detail1Fields = OEORD1detail1.Fields;
+            OEORD1detail2Fields = OEORD1detail2.Fields;
+            OEORD1detail3Fields = OEORD1detail3.Fields;
+            OEORD1detail4Fields = OEORD1detail4.Fields;
+            OEORD1detail5Fields = OEORD1detail5.Fields;
+            OEORD1detail6Fields = OEORD1detail6.Fields;
+            OEORD1detail7Fields = OEORD1detail7.Fields;
+            OEORD1detail8Fields = OEORD1detail8.Fields;
+            OEORD1detail9Fields = OEORD1detail9.Fields;
+            OEORD1detail10Fields = OEORD1detail10.Fields;
+            OEORD1detail11Fields = OEORD1detail11.Fields;
+            OEORD1detail12Fields = OEORD1detail12.Fields;
 
             LogInfo("Sage300 OE views initialized successfully");
         }
@@ -164,22 +154,22 @@ namespace ElginOeIntegration.Services
                         if (orderResult.Success)
                         {
                             result.RecordsSuccessful++;
-                            LogDebug($"Successfully imported order {order.OrderNumber}");
+                            LogDebug($"Successfully imported order");
                         }
                         else
                         {
                             result.RecordsFailed++;
-                            result.FailedRecords.Add($"Order {order.OrderNumber}: {orderResult.Message}");
+                            result.FailedRecords.Add($"Order: {orderResult.Message}");
                             result.Errors.AddRange(orderResult.Errors);
-                            LogError($"Failed to import order {order.OrderNumber}: {orderResult.Message}");
+                            LogError($"Failed to import order: {orderResult.Message}");
                         }
                     }
                     catch (Exception ex)
                     {
                         result.RecordsFailed++;
-                        result.FailedRecords.Add($"Order {order.OrderNumber}: {ex.Message}");
-                        result.Errors.Add($"Exception processing order {order.OrderNumber}: {ex.Message}");
-                        LogError($"Exception processing order {order.OrderNumber}: {ex.Message}");
+                        result.FailedRecords.Add($"Order: {ex.Message}");
+                        result.Errors.Add($"Exception processing order: {ex.Message}");
+                        LogError($"Exception processing order: {ex.Message}");
                     }
                 }
 
@@ -207,13 +197,14 @@ namespace ElginOeIntegration.Services
 
             try
             {
-                LogDebug($"Importing single order {order.OrderNumber}");
+                LogDebug($"Importing single order");
                 return await ProcessSingleOrderAsync(order);
             }
             catch (Exception ex)
             {
-                LogError($"Error importing single order {order.OrderNumber}: {ex.Message}");
-                return CreateFailureResult($"Failed to import order {order.OrderNumber}: {ex.Message}", ex);
+                LogError($"Error importing single order: {ex.Message}");
+
+                return CreateFailureResult($"Failed to import order: {ex.Message}", ex);
             }
         }
 
@@ -228,22 +219,19 @@ namespace ElginOeIntegration.Services
                     return validationResult;
                 }
 
-                // Generate order number if not provided
-                if (string.IsNullOrEmpty(order.OrderNumber))
-                {
-                    order.OrderNumber = await GetNextOrderNumberAsync();
-                }
-
                 // OE Order Header
                 var temp = OEORD1header.Exists;
 
-                OEORD1headerFields.FieldByName("DRIVENBYUI").SetValue("0", false); // Driven by UI
+                //OEORD1headerFields.FieldByName("DRIVENBYUI").SetValue("0", false); // Driven by UI
                 OEORD1header.Cancel();
                 OEORD1header.Init();
+                OEORD1header.RecordCreate(ViewRecordCreate.NoInsert);
 
                 OEORD1detail2.Browse("", true);
                 OEORD1detail2.Fetch(false);
-                OEORD1headerFields.FieldByName("CUSTOMER").SetValue(order.CustomerCode, true); // Customer Code
+
+                var f = OEORD1headerFields.FieldByName("CUSTOMER");
+                f.SetValue(order.CustomerCode, true); // Customer Code
 
                 OEORD1detail2.Browse("", true);
 
@@ -268,7 +256,7 @@ namespace ElginOeIntegration.Services
 
                 foreach (var line in order.OrderDetails)
                 {
-                    temp = OEORD1detail1.Exists
+                    temp = OEORD1detail1.Exists;
                     OEORD1detail1.RecordClear();
                     temp = OEORD1detail1.Exists;
                     OEORD1detail1.RecordCreate(ViewRecordCreate.NoInsert);
@@ -282,9 +270,9 @@ namespace ElginOeIntegration.Services
 
                     OEORD1detail1.Insert();
 
-                    OEORD1detail1Fields.FieldByName("LINENUM").PutWithoutVerification("-1"); // Line Number
+                    OEORD1detail1Fields.FieldByName("LINENUM").SetValue("-1", true); // Line Number
 
-                    OEORD1detail1.Read();
+                    OEORD1detail1.Read(false);
 
                     // OEORD1detail1.RecordCreate(ViewRecordCreate.NoInsert);
                     // temp = OEORD1detail1.Exists;
@@ -415,7 +403,7 @@ namespace ElginOeIntegration.Services
                 OEORD1header.Process();
                 OEORD1header.Insert();
                 OEORD1header.Order = 1;
-                OEORD1header.Read();
+                OEORD1header.Read(false);
                 OEORD1header.Order = 0;
 
                 var orderNumber = OEORD1headerFields.FieldByName("").Value.ToString();
@@ -433,7 +421,7 @@ namespace ElginOeIntegration.Services
 
         private void setOptionalField(string field, string type, string value){
             OEORD1detail5Fields.FieldByName("OPTFIELD").SetValue(field, false); // Optional Field
-            OEORD1detail5.Read();
+            OEORD1detail5.Read(true);
 
             OEORD1detail5Fields.FieldByName(type).SetValue(value, true); // Text Value
 
@@ -448,9 +436,6 @@ namespace ElginOeIntegration.Services
             if (string.IsNullOrEmpty(order.CustomerCode))
                 errors.Add("Customer code is required");
 
-            if (order.OrderDate == DateTime.MinValue)
-                errors.Add("Order date is required");
-
             if (order.OrderDetails == null || !order.OrderDetails.Any())
                 errors.Add("Order must have at least one line item");
 
@@ -463,11 +448,14 @@ namespace ElginOeIntegration.Services
             }
 
             // Validate items exist
-            foreach (var detail in order.OrderDetails ?? new List<OeOrderDetail>())
+            foreach (var item in (order.OrderDetails ?? new List<OeOrderDetail>()).Select((value, i) => new { i, value }))
             {
+                var detail = item.value;
+                var index = item.i;
+            
                 if (string.IsNullOrEmpty(detail.ItemCode))
                 {
-                    errors.Add($"Item code is required for line {detail.LineNumber}");
+                    errors.Add($"Item code is required for line {index}");
                     continue;
                 }
 
@@ -476,7 +464,7 @@ namespace ElginOeIntegration.Services
                     errors.Add($"Item {detail.ItemCode} not found in Sage300");
 
                 if (detail.Quantity <= 0)
-                    errors.Add($"Quantity must be greater than 0 for line {detail.LineNumber}");
+                    errors.Add($"Quantity must be greater than 0 for line {index}");
             }
 
             if (errors.Any())

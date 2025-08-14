@@ -83,7 +83,7 @@
     <Folder Include="references\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Services\reference.cs" />
+    <Content Include="Services\reference 2.txt" />
     <Content Include="Services\reference.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
