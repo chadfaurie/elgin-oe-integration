@@ -1,0 +1,144 @@
+
+
+
+
+OEORD1headerFields("DRIVENBYUI").Value = "1"                          ' Driven by UI
+
+OEORD1header.Cancel
+OEORD1header.Cancel
+OEORD1header.Init
+OEORD1detail2.Browse "", 1
+OEORD1detail2.Fetch
+OEORD1headerFields("CUSTOMER").Value = "WOOL001"                      ' Customer Number
+OEORD1detail2.Browse "", 1
+
+OEORD1detail2Fields("PAYMENT").PutWithoutVerification ("-32767")      ' Payment Number
+
+OEORD1detail2.Browse "", -1
+OEORD1detail2.Fetch
+OEORD1headerFields("PROCESSCMD").PutWithoutVerification ("1")         ' Process OIP Command
+OEORD1header.Process
+
+OEORD1headerFields("PONUMBER").Value = "TEST_PO"                      ' Purchase Order Number
+OEORD1headerFields("REQUESDATE").Value = DateSerial(2025, 8, 28)      ' Date Requested
+OEORD1headerFields("EXPDATE").Value = DateSerial(2025, 8, 14)         ' Expected Ship Date
+temp = OEORD1detail1.Exists
+OEORD1detail1.RecordClear
+temp = OEORD1detail1.Exists
+OEORD1detail1.RecordCreate 0
+
+OEORD1detail1Fields("ITEM").Value = "S.WWP1875"                       ' Item
+
+OEORD1detail1.Process
+
+OEORD1detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+OEORD1detail1Fields("QTYORDERED").Value = "1.0000"                    ' Quantity Ordered
+
+OEORD1detail1.Insert
+
+OEORD1detail1Fields("LINENUM").PutWithoutVerification ("-1")          ' Line Number
+
+OEORD1detail1.Read
+temp = OEORD1detail1.Exists
+OEORD1detail1.RecordCreate 0
+
+OEORD1detail1Fields("ITEM").Value = "S.WWP1875"                       ' Item
+
+OEORD1detail1.Process
+
+OEORD1detail1Fields("QTYORDERED").Value = "2.0000"                    ' Quantity Ordered
+
+OEORD1detail1Fields("ORDUNIT").Value = "CRATE"                        ' Order Unit of Measure
+
+OEORD1detail1.Insert
+
+OEORD1detail1Fields("LINENUM").PutWithoutVerification ("-2")          ' Line Number
+
+OEORD1detail1.Read
+OEORD1detail5Fields("OPTFIELD").PutWithoutVerification ("FRESHFROZEN")   ' Optional Field
+OEORD1detail5.Read
+
+OEORD1detail5Fields("VALIFTEXT").Value = "FROZEN"                     ' Text Value
+
+OEORD1detail5.Update
+
+OEORD1detail5Fields("OPTFIELD").PutWithoutVerification ("OEPICK")     ' Optional Field
+
+OEORD1detail5.Read
+
+OEORD1detail5Fields("VALIFBOOL").Value = "1"                          ' Yes/No Value
+
+temp = OEORD1detail5.Exists
+OEORD1detail5.Update
+
+OEORD1detail5Fields("OPTFIELD").PutWithoutVerification ("TRUCK")      ' Optional Field
+
+OEORD1detail5.Read
+
+OEORD1detail5Fields("VALIFTEXT").Value = "BALEKA2"                    ' Text Value
+
+OEORD1detail5.Update
+
+OEORD1detail5Fields("OPTFIELD").PutWithoutVerification ("TRUCK")      ' Optional Field
+
+OEORD1detail5.Read
+OEORD1headerFields("OECOMMAND").Value = "4"                           ' Process O/E Command
+
+OEORD1headerFields("REFERENCE").PutWithoutVerification ("REF_TEST")   ' Order Reference
+OEORD1headerFields("DESC").PutWithoutVerification ("DESC_TEST")       ' Order Description
+
+OEORD1header.Process
+OEORD1header.Insert
+OEORD1header.Order = 1
+OEORD1header.Read
+OEORD1header.Order = 0
+OEORD1detail1Fields("LINENUM").PutWithoutVerification ("-32767")      ' Line Number
+OEORD1detail1.Browse "", 1
+OEORD1detail1.Fetch
+OEORD1detail9Fields("PRNCOMPNUM").PutWithoutVerification ("-2147483647")   ' Parent Component Number
+
+OEORD1detail9Fields("COMPNUM").PutWithoutVerification ("-2147483647")   ' Component Number
+
+OEORD1detail9.Browse "", 1
+OEORD1detail9.Fetch
+OEORD1detail3Fields("UNIQUIFIER").PutWithoutVerification ("-32767")   ' Uniquifier
+OEORD1detail3.Browse "", 1
+OEORD1detail3.Fetch
+OEORD1detail2Fields("PAYMENT").PutWithoutVerification ("-32767")      ' Payment Number
+OEORD1detail2.Browse "", -1
+OEORD1detail2.Fetch
+
+OEORD1detail2Fields("PAYMENT").PutWithoutVerification ("-1")          ' Payment Number
+OEORD1detail2.Browse "", 1
+
+OEORD1detail2Fields("PAYMENT").PutWithoutVerification ("-32767")      ' Payment Number
+
+OEORD1detail2.Browse "", -1
+OEORD1detail2.Fetch
+temp = OEORD1header.Exists
+
+
+Exit Sub
+
+ACCPACErrorHandler:
+  Dim lCount As Long
+  Dim lIndex As Long
+
+  If Errors Is Nothing Then
+       MsgBox Err.Description
+  Else
+      lCount = Errors.Count
+
+      If lCount = 0 Then
+          MsgBox Err.Description
+      Else
+          For lIndex = 0 To lCount - 1
+              MsgBox Errors.Item(lIndex)
+          Next
+          Errors.Clear
+      End If
+      Resume Next
+
+  End If
+
+End Sub

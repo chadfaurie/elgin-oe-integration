@@ -234,17 +234,10 @@ namespace ElginOeIntegration.Services
                     order.OrderNumber = await GetNextOrderNumberAsync();
                 }
 
-                // TODO: Replace with actual Sage300 OE SDK calls
-                // Example Sage300 OE import logic:
-                // 1. Open OE Order Entry batch
-                // 2. Create order header
-                // 3. Add order details
-                // 4. Validate and post
-
+                // OE Order Header
                 var temp = OEORD1header.Exists;
 
-
-                OEORD1headerFields.FieldByName("DRIVENBYUI").SetValue("1", false); // Driven by UI
+                OEORD1headerFields.FieldByName("DRIVENBYUI").SetValue("0", false); // Driven by UI
                 OEORD1header.Cancel();
                 OEORD1header.Init();
 
@@ -265,133 +258,165 @@ namespace ElginOeIntegration.Services
                 OEORD1headerFields.FieldByName("REQUESDATE").SetValue(order.RequestDate, true); // Date Requested
                 OEORD1headerFields.FieldByName("EXPDATE").SetValue(order.ExpectedShipDate, true); // Expected Ship Date
 
-
+                OEORD1headerFields.FieldByName("REFERENCE").SetValue (order.Reference, false); // Order Reference
+                OEORD1headerFields.FieldByName("DESC").SetValue (order.Description, false); // Order Description
 
                 // Details
+                temp = OEORD1detail1.Exists;
+                OEORD1detail1.RecordClear();
+                temp = OEORD1detail1.Exists;
+
                 foreach (var line in order.OrderDetails)
                 {
-                    temp = OEORD1detail1.Exists;
+                    temp = OEORD1detail1.Exists
                     OEORD1detail1.RecordClear();
                     temp = OEORD1detail1.Exists;
-
                     OEORD1detail1.RecordCreate(ViewRecordCreate.NoInsert);
-                    temp = OEORD1detail1.Exists;
 
                     OEORD1detail1Fields.FieldByName("ITEM").SetValue(line.ItemCode, true); // Item
-                    OEORD1detail1Fields.FieldByName("PROCESSCMD").SetValue("1", false); // Process Command
 
                     OEORD1detail1.Process();
-                    temp = OEORD1detail1.Exists;
-
-                    OEORD1detail5.Update();
 
                     OEORD1detail1Fields.FieldByName("ORDUNIT").SetValue("CRATE", true); // Order Unit of Measure
                     OEORD1detail1Fields.FieldByName("QTYORDERED").SetValue(line.Quantity, true); // Quantity Ordered
 
-                    temp = OEORD1detail1.Exists;
                     OEORD1detail1.Insert();
-                    temp = OEORD1detail1.Exists;
 
-                    OEORD1detail1Fields.FieldByName("LINENUM").SetValue("-1", false); // Line Number
+                    OEORD1detail1Fields.FieldByName("LINENUM").PutWithoutVerification("-1"); // Line Number
 
-                    OEORD1detail1.Read(true);
-                    temp = OEORD1detail1.Exists;
+                    OEORD1detail1.Read();
+
+                    // OEORD1detail1.RecordCreate(ViewRecordCreate.NoInsert);
+                    // temp = OEORD1detail1.Exists;
+
+                    // OEORD1detail1Fields.FieldByName("ITEM").SetValue(line.ItemCode, true); // Item
+                    // OEORD1detail1Fields.FieldByName("PROCESSCMD").SetValue("1", false); // Process Command
+
+                    // OEORD1detail1.Process();
+                    // temp = OEORD1detail1.Exists;
+
+                    // OEORD1detail5.Update();
+
+                    // OEORD1detail1Fields.FieldByName("ORDUNIT").SetValue("CRATE", true); // Order Unit of Measure
+                    // OEORD1detail1Fields.FieldByName("QTYORDERED").SetValue(line.Quantity, true); // Quantity Ordered
+
+                    // temp = OEORD1detail1.Exists;
+                    // OEORD1detail1.Insert();
+                    // temp = OEORD1detail1.Exists;
+
+                    // OEORD1detail1Fields.FieldByName("LINENUM").SetValue("-1", false); // Line Number
+
+                    // OEORD1detail1.Read(true);
+                    // temp = OEORD1detail1.Exists;
 
 
-                    OEORD1detail1.RecordCreate(ViewRecordCreate.NoInsert);
-                    temp = OEORD1detail1.Exists;
+                    // OEORD1detail1.RecordCreate(ViewRecordCreate.NoInsert);
+                    // temp = OEORD1detail1.Exists;
 
-                    OEORD1detail1Fields.FieldByName("LINENUM").SetValue("-1", false); // Line Number
+                    // OEORD1detail1Fields.FieldByName("LINENUM").SetValue("-1", false); // Line Number
 
-                    OEORD1detail1.Read(true);
-                    OEORD1detail5Fields.FieldByName("OPTFIELD").SetValue("OEPICK", false); // Optional Field
+                    // OEORD1detail1.Read(true);
+                    // OEORD1detail5Fields.FieldByName("OPTFIELD").SetValue("OEPICK", false); // Optional Field
 
-                    OEORD1detail5Fields.FieldByName("OPTFIELD").SetValue("OEPICK", false); // Optional Field
+                    // OEORD1detail5Fields.FieldByName("OPTFIELD").SetValue("OEPICK", false); // Optional Field
 
-                    OEORD1detail5.Read(true);
+                    // OEORD1detail5.Read(true);
 
-                    OEORD1detail5Fields.FieldByName("VALIFBOOL").SetValue("1", true); // Yes/No Value
+                    // OEORD1detail5Fields.FieldByName("VALIFBOOL").SetValue("1", true); // Yes/No Value
 
-                    temp = OEORD1detail5.Exists;
-                    OEORD1detail5.Update();
+                    // temp = OEORD1detail5.Exists;
+                    // OEORD1detail5.Update();
 
-                    OEORD1detail5Fields.FieldByName("OPTFIELD").SetValue("TRUCK", false); // Optional Field
+                    // OEORD1detail5Fields.FieldByName("OPTFIELD").SetValue("TRUCK", false); // Optional Field
 
-                    OEORD1detail5.Read(true);
+                    // OEORD1detail5.Read(true);
 
-                    OEORD1detail5Fields.FieldByName("VALIFTEXT").SetValue("WWTRANS", true); // Text Value
+                    // OEORD1detail5Fields.FieldByName("VALIFTEXT").SetValue("WWTRANS", true); // Text Value
 
-                    OEORD1detail5.Update();
+                    // OEORD1detail5.Update();
 
-                    OEORD1detail5Fields.FieldByName("OPTFIELD").SetValue("TRUCK", false); // Optional Field
+                    // OEORD1detail5Fields.FieldByName("OPTFIELD").SetValue("TRUCK", false); // Optional Field
 
-                    OEORD1detail5.Read(true);
-                    OEORD1headerFields.FieldByName("OECOMMAND").SetValue("4", true); // Process O/E Command
+                    // OEORD1detail5.Read(true);
+                    // OEORD1headerFields.FieldByName("OECOMMAND").SetValue("4", true); // Process O/E Command
 
-                    OEORD1headerFields.FieldByName("REFERENCE").SetValue("WW PORTAL", false); // Order Reference
-                    OEORD1headerFields.FieldByName("DESC").SetValue("70295363 FOOD WC1", false); // Order Description
+                    // OEORD1headerFields.FieldByName("REFERENCE").SetValue("WW PORTAL", false); // Order Reference
+                    // OEORD1headerFields.FieldByName("DESC").SetValue("70295363 FOOD WC1", false); // Order Description
 
-                    OEORD1header.Process();
-                    OEORD1header.Insert();
-                    OEORD1header.Order = 1;
-                    OEORD1header.Read(true);
-                    OEORD1header.Order = 0;
-                    OEORD1detail1Fields.FieldByName("LINENUM").SetValue("-32767", false); // Line Number
-                    OEORD1detail1.Browse("", true);
-                    OEORD1detail1.Fetch(false);
-                    OEORD1detail9Fields.FieldByName("PRNCOMPNUM").SetValue("-2147483647", false); // Parent Component Number
+                    // OEORD1header.Process();
+                    // OEORD1header.Insert();
+                    // OEORD1header.Order = 1;
+                    // OEORD1header.Read(true);
+                    // OEORD1header.Order = 0;
+                    // OEORD1detail1Fields.FieldByName("LINENUM").SetValue("-32767", false); // Line Number
+                    // OEORD1detail1.Browse("", true);
+                    // OEORD1detail1.Fetch(false);
+                    // OEORD1detail9Fields.FieldByName("PRNCOMPNUM").SetValue("-2147483647", false); // Parent Component Number
 
-                    OEORD1detail9Fields.FieldByName("COMPNUM").SetValue("-2147483647", false); // Component Number
+                    // OEORD1detail9Fields.FieldByName("COMPNUM").SetValue("-2147483647", false); // Component Number
 
-                    OEORD1detail9.Browse("", true);
-                    OEORD1detail9.Fetch(false);
-                    OEORD1detail3Fields.FieldByName("UNIQUIFIER").SetValue("-32767", false); // Uniquifier
-                    OEORD1detail3.Browse("", true);
-                    OEORD1detail3.Fetch(false);
-                    OEORD1detail2Fields.FieldByName("PAYMENT").SetValue("-32767", false); // Payment Number
-                    OEORD1detail2.Browse("", false);
-                    OEORD1detail2.Fetch(false);
+                    // OEORD1detail9.Browse("", true);
+                    // OEORD1detail9.Fetch(false);
+                    // OEORD1detail3Fields.FieldByName("UNIQUIFIER").SetValue("-32767", false); // Uniquifier
+                    // OEORD1detail3.Browse("", true);
+                    // OEORD1detail3.Fetch(false);
+                    // OEORD1detail2Fields.FieldByName("PAYMENT").SetValue("-32767", false); // Payment Number
+                    // OEORD1detail2.Browse("", false);
+                    // OEORD1detail2.Fetch(false);
 
-                    OEORD1detail2Fields.FieldByName("PAYMENT").SetValue("-1", false); // Payment Number
-                    OEORD1detail2.Browse("", true);
+                    // OEORD1detail2Fields.FieldByName("PAYMENT").SetValue("-1", false); // Payment Number
+                    // OEORD1detail2.Browse("", true);
 
-                    OEORD1detail2Fields.FieldByName("PAYMENT").SetValue("-32767", false); // Payment Number
+                    // OEORD1detail2Fields.FieldByName("PAYMENT").SetValue("-32767", false); // Payment Number
 
-                    OEORD1detail2.Browse("", false);
-                    OEORD1detail2.Fetch(false);
-                    temp = OEORD1header.Exists;
-                    OEORD1detail1Fields.FieldByName("LINENUM").SetValue("32", false); // Line Number
-                    OEORD1detail1.Read(true);
-                    OEORD1headerFields.FieldByName("OECOMMAND").SetValue("4", true); // Process O/E Command
-                    OEORD1header.Process();
-                    temp = OEORD1header.Exists;
-                    OEORD1header.Update();
-                    OEORD1header.Order = 1;
-                    OEORD1header.Read(true);
-                    OEORD1header.Order = 0;
-                    OEORD1detail1Fields.FieldByName("LINENUM").SetValue("-32767", false); // Line Number
-                    OEORD1detail1.Browse("", true);
-                    OEORD1detail1.Fetch(false);
-                    OEORD1detail9Fields.FieldByName("PRNCOMPNUM").SetValue("-2147483647", false); // Parent Component Number
+                    // OEORD1detail2.Browse("", false);
+                    // OEORD1detail2.Fetch(false);
+                    // temp = OEORD1header.Exists;
+                    // OEORD1detail1Fields.FieldByName("LINENUM").SetValue("32", false); // Line Number
+                    // OEORD1detail1.Read(true);
+                    // OEORD1headerFields.FieldByName("OECOMMAND").SetValue("4", true); // Process O/E Command
+                    // OEORD1header.Process();
+                    // temp = OEORD1header.Exists;
+                    // OEORD1header.Update();
+                    // OEORD1header.Order = 1;
+                    // OEORD1header.Read(true);
+                    // OEORD1header.Order = 0;
+                    // OEORD1detail1Fields.FieldByName("LINENUM").SetValue("-32767", false); // Line Number
+                    // OEORD1detail1.Browse("", true);
+                    // OEORD1detail1.Fetch(false);
+                    // OEORD1detail9Fields.FieldByName("PRNCOMPNUM").SetValue("-2147483647", false); // Parent Component Number
 
-                    OEORD1detail9Fields.FieldByName("COMPNUM").SetValue("-2147483647", false); // Component Number
+                    // OEORD1detail9Fields.FieldByName("COMPNUM").SetValue("-2147483647", false); // Component Number
 
-                    OEORD1detail9.Browse("", true);
-                    OEORD1detail9.Fetch(false);
-                    OEORD1detail3Fields.FieldByName("UNIQUIFIER").SetValue("-32767", false); // Uniquifier
-                    OEORD1detail3.Browse("", true);
-                    OEORD1detail3.Fetch(false);
-                    OEORD1detail2Fields.FieldByName("PAYMENT").SetValue("-32767", false); // Payment Number
-                    OEORD1detail2.Browse("", false);
-                    OEORD1detail2.Fetch(false);
-                    OEORD1detail2.Browse("", true);
+                    // OEORD1detail9.Browse("", true);
+                    // OEORD1detail9.Fetch(false);
+                    // OEORD1detail3Fields.FieldByName("UNIQUIFIER").SetValue("-32767", false); // Uniquifier
+                    // OEORD1detail3.Browse("", true);
+                    // OEORD1detail3.Fetch(false);
+                    // OEORD1detail2Fields.FieldByName("PAYMENT").SetValue("-32767", false); // Payment Number
+                    // OEORD1detail2.Browse("", false);
+                    // OEORD1detail2.Fetch(false);
+                    // OEORD1detail2.Browse("", true);
 
-                    OEORD1detail2Fields.FieldByName("PAYMENT").SetValue("-32767", false); // Payment Number
+                    // OEORD1detail2Fields.FieldByName("PAYMENT").SetValue("-32767", false); // Payment Number
 
-                    OEORD1detail2.Browse("", false);
-                    OEORD1detail2.Fetch(false);
-                    temp = OEORD1header.Exists;
+                    // OEORD1detail2.Browse("", false);
+                    // OEORD1detail2.Fetch(false);
+                    // temp = OEORD1header.Exists;
                 }
+
+                // Optional Fields
+                this.setOptionalField("FRESHFROZEN", "VALIFTEXT", "FROZEN");
+                this.setOptionalField("OEPICK", "VALIFBOOL", "1");
+                this.setOptionalField("TRUCK", "VALIFTEXT", "BALEKA2");
+
+                // Not sure what this does yet
+                OEORD1headerFields.FieldByName("OECOMMAND").SetValue("4", true); // Process O/E Command
+                OEORD1header.Process();
+                OEORD1header.Insert();
+                OEORD1header.Order = 1;
+                OEORD1header.Read();
+                OEORD1header.Order = 0;
 
                 var orderNumber = OEORD1headerFields.FieldByName("").Value.ToString();
 
@@ -404,6 +429,15 @@ namespace ElginOeIntegration.Services
                 LogError($"Error processing order: {ex.Message}");
                 return CreateFailureResult($"Error processing order: {ex.Message}", ex);
             }
+        }
+
+        private void setOptionalField(string field, string type, string value){
+            OEORD1detail5Fields.FieldByName("OPTFIELD").SetValue(field, false); // Optional Field
+            OEORD1detail5.Read();
+
+            OEORD1detail5Fields.FieldByName(type).SetValue(value, true); // Text Value
+
+            OEORD1detail5.Update();
         }
 
         private async Task<Sage300ImportResult> ValidateOrderAsync(OeOrderHeader order)
@@ -517,8 +551,6 @@ namespace ElginOeIntegration.Services
                 throw new Sage300ImportException($"Failed to generate order number: {ex.Message}", ex);
             }
         }
-
-
 
         public override async Task DisposeAsync()
         {
